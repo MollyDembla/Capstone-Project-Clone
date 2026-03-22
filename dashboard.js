@@ -1,5 +1,7 @@
-const ASANA_DATA = {
-	Konasana: {
+const FALLBACK_ASANA_CATALOG = [
+	{
+		id: 'konasana',
+		name: 'Konasana',
 		description:
 			'Konasana (angle pose) stretches the sides of the body, improves spinal flexibility, and helps with balance and breathing control. Keep both feet grounded and lengthen through the raised arm while bending sideways.',
 		faqs: [
@@ -7,25 +9,39 @@ const ASANA_DATA = {
 			'Q: How far should I bend? A: Bend until you feel a stretch without collapsing your chest.',
 			'Q: Where should my gaze be? A: Look forward or slightly upward while keeping the neck relaxed.',
 		],
-		tutorialSteps: [
-			{
-				title: 'Step 1',
-				caption: 'Stand tall with feet apart and raise one arm straight overhead.',
-				videoUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-			},
-			{
-				title: 'Step 2',
-				caption: 'Bend sideways from the waist while keeping chest open and legs straight.',
-				videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-			},
-			{
-				title: 'Step 3',
-				caption: 'Hold the posture with steady breathing, then return slowly to center.',
-				videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-			},
-		],
+		photoLinks: ['/poses/pose-1.png', '/poses/pose-2.png', '/poses/pose-3.png'],
+		videoLinks: ['https://www.w3schools.com/html/mov_bbb.mp4'],
+		tutorialCaption: 'Follow this guided Konasana demo video.',
 	},
-};
+];
+
+function getAsanaDataMap() {
+	const catalog = Array.isArray(window.__yogmitraAsanas) && window.__yogmitraAsanas.length
+		? window.__yogmitraAsanas
+		: FALLBACK_ASANA_CATALOG;
+
+	const map = {};
+	for (const asana of catalog) {
+		const asanaName = asana?.name || asana?.id || 'Unknown Asana';
+		const photoLinks = Array.isArray(asana?.photoLinks) ? asana.photoLinks : [];
+		const videoLinks = Array.isArray(asana?.videoLinks) ? asana.videoLinks : [];
+
+		map[asanaName] = {
+			description: asana?.description || 'Details not available.',
+			faqs: Array.isArray(asana?.faqs) && asana.faqs.length ? asana.faqs : ['Details not available.'],
+			tutorialVideo: {
+				caption: asana?.tutorialCaption || 'Details not available.',
+				videoUrl: videoLinks[0] || 'https://www.w3schools.com/html/mov_bbb.mp4',
+			},
+			poseImages: photoLinks.map((src, index) => ({
+				src,
+				alt: `${asanaName} pose example ${index + 1}`,
+			})),
+		};
+	}
+
+	return map;
+}
 
 function getPredictionClass(label) {
 	if (label === 'correct') return 'pred-correct';
@@ -40,38 +56,61 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 	const faqList = document.getElementById('faqList');
 	const tutorialVideo = document.getElementById('tutorialVideo');
 	const tutorialCaption = document.getElementById('tutorialCaption');
-	const tutorialSteps = document.getElementById('tutorialSteps');
+	const tutorialPoseGallery = document.getElementById('tutorialPoseGallery');
+	const tutorialModeToggle = document.getElementById('tutorialModeToggle');
 	const generateReportBtn = document.getElementById('generateReportBtn');
 	const startSessionBtn = document.getElementById('startSessionBtn');
 	const endSessionBtn = document.getElementById('endSessionBtn');
 	const logoutBtn = document.getElementById('logoutBtn');
+	let currentTutorialMode = 'pose';
+	const ASANA_DATA = getAsanaDataMap();
+
+	function setTutorialMode(mode) {
+		currentTutorialMode = mode;
+		const showPose = mode !== 'video';
+
+		tutorialPoseGallery.classList.toggle('hidden', !showPose);
+		tutorialVideo.classList.toggle('hidden', showPose);
+		tutorialModeToggle.textContent = showPose ? 'Show Video' : 'Show Pose';
+	}
+
+	function renderPoseGallery(images) {
+		tutorialPoseGallery.innerHTML = '';
+		if (!images.length) {
+			const emptyItem = document.createElement('div');
+			emptyItem.className = 'tutorial-pose-item tutorial-pose-item-empty';
+			emptyItem.textContent = 'Pose images not available.';
+			tutorialPoseGallery.appendChild(emptyItem);
+			return;
+		}
+
+		for (const image of images) {
+			const item = document.createElement('div');
+			item.className = 'tutorial-pose-item';
+
+			const img = document.createElement('img');
+			img.src = image.src;
+			img.alt = image.alt;
+
+			item.appendChild(img);
+			tutorialPoseGallery.appendChild(item);
+		}
+	}
 
 	function renderAsana(asanaName) {
-		const config = ASANA_DATA[asanaName];
+		const config = ASANA_DATA[asanaName] || ASANA_DATA.Konasana || Object.values(ASANA_DATA)[0];
 		asanaDescription.textContent = config.description;
 		faqList.innerHTML = config.faqs.map((item) => `<li>${item}</li>`).join('');
-
-		tutorialSteps.innerHTML = '';
-		config.tutorialSteps.forEach((step, index) => {
-			const button = document.createElement('button');
-			button.type = 'button';
-			button.className = `step-btn ${index === 0 ? 'active' : ''}`;
-			button.textContent = step.title;
-			button.addEventListener('click', () => {
-				tutorialVideo.src = step.videoUrl;
-				tutorialCaption.textContent = step.caption;
-				for (const sibling of tutorialSteps.querySelectorAll('.step-btn')) {
-					sibling.classList.remove('active');
-				}
-				button.classList.add('active');
-			});
-			tutorialSteps.appendChild(button);
-		});
-
-		tutorialVideo.src = config.tutorialSteps[0].videoUrl;
-		tutorialCaption.textContent = config.tutorialSteps[0].caption;
+		tutorialVideo.src = config.tutorialVideo.videoUrl;
+		tutorialCaption.textContent = config.tutorialVideo.caption;
+		renderPoseGallery(config.poseImages);
+		setTutorialMode('pose');
 		onAsanaChanged(asanaName);
 	}
+
+	tutorialModeToggle.addEventListener('click', () => {
+		setTutorialMode(currentTutorialMode === 'pose' ? 'video' : 'pose');
+	});
 
 	asanaSelect.addEventListener('change', () => renderAsana(asanaSelect.value));
 	generateReportBtn.addEventListener('click', onGenerateReport);

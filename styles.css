@@ -82,6 +82,19 @@ h3 {
 	font-size: clamp(2rem, 4vw, 2.6rem);
 }
 
+.login-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.login-logo {
+	width: 84px;
+	height: 84px;
+	object-fit: contain;
+	margin: 0;
+}
+
 .login-card p,
 .modal-card p {
 	margin: 8px 0 16px;
@@ -206,6 +219,18 @@ button:hover {
 	gap: 12px;
 }
 
+.header-brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.dashboard-logo {
+	width: 42px;
+	height: 42px;
+	object-fit: contain;
+}
+
 .logout-btn {
 	padding: 8px 12px;
 	border-radius: 10px;
@@ -232,7 +257,7 @@ button:hover {
 
 .dashboard-grid {
 	display: grid;
-	grid-template-columns: 320px 1fr;
+	grid-template-columns: 416px 1fr;
 	gap: 14px;
 }
 
@@ -287,13 +312,20 @@ button:hover {
 	margin-bottom: 10px;
 }
 
-.tutorial-wrap video {
-	width: 100%;
+.tutorial-media-container {
+	width: 85%;
+	margin: 0 auto;
 	border-radius: 14px;
 	border: 1px solid rgba(156, 197, 220, 0.18);
 	background: #000;
 	aspect-ratio: 16 / 9;
-	object-fit: cover;
+	overflow: hidden;
+}
+
+.tutorial-media-container > video,
+.tutorial-media-container > .tutorial-pose-gallery {
+	width: 100%;
+	height: 100%;
 }
 
 #tutorialCaption {
@@ -301,13 +333,12 @@ button:hover {
 	color: var(--muted);
 }
 
-.step-buttons {
+.tutorial-toggle {
 	display: flex;
 	gap: 8px;
-	flex-wrap: wrap;
 }
 
-.step-btn {
+.tutorial-toggle-btn {
 	padding: 7px 10px;
 	border-radius: 999px;
 	border: 1px solid rgba(156, 197, 220, 0.3);
@@ -316,10 +347,52 @@ button:hover {
 	font-size: 0.82rem;
 }
 
-.step-btn.active {
+.tutorial-toggle-btn.active {
 	border-color: rgba(56, 244, 163, 0.8);
 	color: #031118;
 	background: linear-gradient(135deg, #35f0a0, #4bd8ff);
+}
+
+.tutorial-pose-gallery {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 10px;
+	padding: 10px;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.tutorial-pose-item {
+	flex: 0 0 calc((100% - 20px) / 3);
+	min-width: calc((100% - 20px) / 3);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid rgba(156, 197, 220, 0.3);
+	border-radius: 12px;
+	overflow: hidden;
+	background: rgba(3, 10, 18, 0.8);
+}
+
+.tutorial-pose-item-empty {
+	font-size: 0.9rem;
+	color: var(--muted);
+	padding: 12px;
+	text-align: center;
+}
+
+.tutorial-pose-item img {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	object-fit: contain;
+	display: block;
+}
+
+#tutorialVideo {
+	display: block;
+	object-fit: contain;
 }
 
 .practice-grid {

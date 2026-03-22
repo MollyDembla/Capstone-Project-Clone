@@ -701,7 +701,7 @@ async function handleGenerateReport() {
 		});
 		renderReport(report);
 	} catch (error) {
-		renderReport(`Could not generate Gemini report: ${error.message}`);
+		renderReport(`Could not generate OpenRouter report: ${error.message}`);
 	}
 }
 
