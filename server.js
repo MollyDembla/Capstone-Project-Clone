@@ -1,12 +1,20 @@
 const express = require('express');
 const path = require('path');
-
+const fs = require('fs');
+require('dotenv').config();
 const PORT = process.env.PORT || 8000;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini';
 const app = express();
+const DIST_DIR = path.join(__dirname, 'dist');
+const HAS_DIST_BUILD = fs.existsSync(path.join(DIST_DIR, 'index.html'));
 
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(__dirname));
+if (HAS_DIST_BUILD) {
+	app.use(express.static(DIST_DIR));
+} else {
+	app.use(express.static(__dirname));
+}
 
 function buildPrompt(data) {
 	const session = data.session || {};
@@ -122,61 +130,64 @@ app.post('/api/report', async (req, res) => {
 			return;
 		}
 
-		if (!GEMINI_API_KEY) {
+		if (!OPENROUTER_API_KEY) {
 			res.json({
-				report: `${fallbackReport(payload)}\n\nGemini is not configured on server. Set GEMINI_API_KEY and restart server.`,
+				report: `${fallbackReport(payload)}\n\nOpenRouter is not configured on server. Set OPENROUTER_API_KEY and restart server.`,
 			});
 			return;
 		}
 
-		const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
 		let lastErrorStatus = 0;
-		let lastErrorDetails = 'Unknown Gemini API error.';
+		let lastErrorDetails = 'Unknown OpenRouter API error.';
+		const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+				'Content-Type': 'application/json',
+				'HTTP-Referer': process.env.OPENROUTER_SITE_URL || `http://localhost:${PORT}`,
+				'X-Title': process.env.OPENROUTER_APP_NAME || 'YogMitra',
+			},
+			body: JSON.stringify({
+				model: OPENROUTER_MODEL,
+				messages: [
+					{ role: 'user', content: buildPrompt(payload) },
+				],
+				temperature: 0.2,
+				top_p: 0.9,
+				max_tokens: 1400,
+			}),
+		});
 
-		for (const model of models) {
-			const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
-			const response = await fetch(endpoint, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					contents: [{ parts: [{ text: buildPrompt(payload) }] }],
-					generationConfig: {
-						temperature: 0.2,
-						topP: 0.9,
-						maxOutputTokens: 1400,
-					},
-				}),
-			});
-
-			if (response.ok) {
-				const result = await response.json();
-				const text = result?.candidates?.[0]?.content?.parts?.map((p) => p.text).join('\n').trim();
-				if (text) {
-					res.json({ report: text, source: 'gemini', model });
-					return;
-				}
-				lastErrorStatus = 502;
-				lastErrorDetails = `Gemini returned empty response for model ${model}.`;
-				continue;
+		if (response.ok) {
+			const result = await response.json();
+			const content = result?.choices?.[0]?.message?.content;
+			const text = Array.isArray(content)
+				? content.map((part) => (typeof part === 'string' ? part : part?.text || '')).join('\n').trim()
+				: String(content || '').trim();
+			if (text) {
+				res.json({ report: text, source: 'openrouter', model: OPENROUTER_MODEL });
+				return;
 			}
-
+			lastErrorStatus = 502;
+			lastErrorDetails = `OpenRouter returned empty response for model ${OPENROUTER_MODEL}.`;
+		} else {
 			lastErrorStatus = response.status;
 			lastErrorDetails = await response.text();
 		}
 
 		const quotaLikely = lastErrorStatus === 429 || /quota|resource_exhausted|rate/i.test(lastErrorDetails);
 		const fallbackNote = quotaLikely
-			? 'Gemini quota/rate limit reached. Showing detailed local coaching report instead.'
-			: 'Gemini is temporarily unavailable. Showing detailed local coaching report instead.';
+			? 'OpenRouter quota/rate limit reached. Showing detailed local coaching report instead.'
+			: 'OpenRouter is temporarily unavailable. Showing detailed local coaching report instead.';
 
 		res.json({
 			report: `${fallbackReport(payload)}\n\n${fallbackNote}`,
 			source: 'fallback',
-			reason: quotaLikely ? 'quota_exceeded' : 'gemini_unavailable',
+			reason: quotaLikely ? 'quota_exceeded' : 'openrouter_unavailable',
 		});
 	} catch (error) {
 		res.json({
-			report: `${fallbackReport(req.body?.data || {})}\n\nServer error while contacting Gemini: ${error.message}\nShowing detailed local coaching report instead.`,
+			report: `${fallbackReport(req.body?.data || {})}\n\nServer error while contacting OpenRouter: ${error.message}\nShowing detailed local coaching report instead.`,
 			source: 'fallback',
 			reason: 'server_error',
 		});
@@ -184,7 +195,7 @@ app.post('/api/report', async (req, res) => {
 });
 
 app.use((_req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
+	res.sendFile(path.join(HAS_DIST_BUILD ? DIST_DIR : __dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {

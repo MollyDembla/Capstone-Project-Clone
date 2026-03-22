@@ -12,7 +12,7 @@ YogMitra helps a user practice Konasana using webcam-based pose detection and a 
 - Shows live coaching cues during the session.
 - Computes session score/result at session end.
 - Generates a detailed practice report through backend report API.
-- Falls back to a local detailed report when Gemini quota is unavailable.
+- Falls back to a local detailed report when OpenRouter quota is unavailable.
 
 ## What We Have Built So Far
 
@@ -66,8 +66,8 @@ YogMitra helps a user practice Konasana using webcam-based pose detection and a 
 ### 5) Backend Report API
 
 - Added Express backend endpoint: `POST /api/report`
-- Uses Gemini when available.
-- If Gemini quota/rate is exceeded, returns a detailed local fallback report instead of failing.
+- Uses OpenRouter when available.
+- If OpenRouter quota/rate is exceeded, returns a detailed local fallback report instead of failing.
 
 ## Project Structure
 
@@ -80,7 +80,7 @@ YogMitra helps a user practice Konasana using webcam-based pose detection and a 
 - `dashboard.js` - DOM rendering utilities
 - `login.js` - Auth/profile/session persistence
 - `report.js` - Frontend report API caller
-- `server.js` - Express server + Gemini/fallback report endpoint
+- `server.js` - Express server + OpenRouter/fallback report endpoint
 - `script.js` - Dataset generation script
 - `train.js` - Model training script
 - `pose_dataset.json` - Generated dataset
@@ -98,19 +98,63 @@ YogMitra helps a user practice Konasana using webcam-based pose detection and a 
 npm install
 ```
 
-## Start server
+## Run (React + API together)
 
-PowerShell:
+Build frontend and start backend (serves `dist`):
 
 ```powershell
-$env:PORT=8080
-$env:GEMINI_API_KEY="YOUR_GEMINI_KEY"
+npm run build
+$env:PORT=8000
+$env:OPENROUTER_API_KEY="YOUR_OPENROUTER_KEY"
 npm start
 ```
 
 Open:
 
-- `http://localhost:8080`
+- `http://localhost:8000`
+
+## Run in development
+
+Use two terminals:
+
+Terminal 1 (API server):
+
+```powershell
+$env:PORT=8000
+$env:OPENROUTER_API_KEY="YOUR_OPENROUTER_KEY"
+npm run server
+```
+
+Terminal 2 (React app with API proxy):
+
+```powershell
+npm run dev
+```
+
+Open:
+
+- `http://localhost:5173`
+
+## Set Permanent OpenRouter API Key (Windows)
+
+If you do not want to set `$env:OPENROUTER_API_KEY` every time, set it once permanently:
+
+```powershell
+setx OPENROUTER_API_KEY "YOUR_OPENROUTER_KEY"
+```
+
+Then:
+
+1. Close all open terminals.
+2. Open a new terminal.
+3. Run server normally:
+
+```powershell
+$env:PORT=8000
+npm run server
+```
+
+Note: `setx` affects new terminals only (not the currently open one).
 
 ## How to Use
 
@@ -130,13 +174,13 @@ Open:
 
 ## Report Behavior
 
-- Primary: Gemini-generated detailed report.
-- Fallback: detailed local report if Gemini is unavailable or quota-limited.
+- Primary: OpenRouter-generated detailed report.
+- Fallback: detailed local report if OpenRouter is unavailable or quota-limited.
 
 ## Known Notes
 
 - Current asana flow is focused on Konasana.
-- Gemini output depends on API quota/billing availability.
+- OpenRouter output depends on API quota/billing availability.
 - Best real-time results require full body visibility and stable lighting.
 
 ## Quick Dev Commands

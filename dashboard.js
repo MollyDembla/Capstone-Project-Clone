@@ -1,5 +1,7 @@
-const ASANA_DATA = {
-	Konasana: {
+const FALLBACK_ASANA_CATALOG = [
+	{
+		id: 'konasana',
+		name: 'Konasana',
 		description:
 			'Konasana (angle pose) stretches the sides of the body, improves spinal flexibility, and helps with balance and breathing control. Keep both feet grounded and lengthen through the raised arm while bending sideways.',
 		faqs: [
@@ -8,9 +10,9 @@ const ASANA_DATA = {
 			'Q: Where should my gaze be? A: Look forward or slightly upward while keeping the neck relaxed.',
 		],
 		anatomicalFocus: {
-			targetMuscles: 'Obliques, Core, Shoulders, Hamstrings & Inner Thighs',
-			healthBenefits: 'Improves spinal flexibility, strengthens core, enhances digestion, and reduces back stiffness.',
-			precautions: 'Avoid with lower back injury. Only bend sideways. Don\'t overstretch. Maintain steady breathing.',
+			targetMuscles: '<ul><li><b>Obliques (side abdominal muscles)</b> – primary muscles engaged during the side bend</li><li><b>Core muscles</b> – stabilize the body and maintain balance</li><li><b>Shoulders & arms</b> – support the raised arm and help in stretching</li><li><b>Hamstrings & inner thighs</b> – lightly stretched due to wide stance</li></ul>',
+			healthBenefits: '<ul><li>Improves flexibility of the spine, especially side bending</li><li>Strengthens the core and waist muscles</li><li>Enhances digestion by compressing and stretching abdominal organs</li><li>Improves posture and balance</li><li>Helps in reducing stiffness in the back and sides</li></ul>',
+			precautions: '<ul><li>Avoid if you have lower back injury or severe spinal issues</li><li>Do not bend forward or backward — only sideways bending should be done</li><li>Avoid overstretching; go only as far as comfortable</li><li>Keep breathing normal and steady</li></ul>',
 		},
 		tutorialSteps: [
 			{
@@ -21,16 +23,53 @@ const ASANA_DATA = {
 			{
 				title: 'Step 2',
 				caption: 'Bend sideways from the waist while keeping chest open and legs straight.',
-				videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+				videoUrl: 'src/konasana video.mp4',
 			},
 			{
 				title: 'Step 3',
 				caption: 'Hold the posture with steady breathing, then return slowly to center.',
-				videoUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+				videoUrl: 'src/konasana video.mp4',
 			},
 		],
+		photoLinks: [
+			'src/konasana step 1.png',
+			'src/konasana step 2.png',
+			'src/konasana step 3.png',
+		],
+		videoLinks: ['src/konasana video.mp4'],
+		tutorialCaption: 'Follow this guided Konasana demo video.',
 	},
-};
+];
+
+function getAsanaDataMap() {
+	const catalog = Array.isArray(window.__yogmitraAsanas) && window.__yogmitraAsanas.length
+		? window.__yogmitraAsanas
+		: FALLBACK_ASANA_CATALOG;
+
+	const map = {};
+	for (const asana of catalog) {
+		const asanaName = asana?.name || asana?.id || 'Unknown Asana';
+		const photoLinks = Array.isArray(asana?.photoLinks) ? asana.photoLinks : [];
+		const videoLinks = Array.isArray(asana?.videoLinks) ? asana.videoLinks : [];
+
+		map[asanaName] = {
+			description: asana?.description || 'Details not available.',
+			faqs: Array.isArray(asana?.faqs) && asana.faqs.length ? asana.faqs : ['Details not available.'],
+			tutorialVideo: {
+				caption: asana?.tutorialCaption || 'Details not available.',
+				videoUrl: videoLinks[0] || 'src/konasana video.mp4',
+			},
+			poseImages: photoLinks.map((src, index) => ({
+				src,
+				alt: `${asanaName} pose example ${index + 1}`,
+			})),
+			anatomicalFocus: asana?.anatomicalFocus || null,
+			tutorialSteps: asana?.tutorialSteps || [],
+		};
+	}
+
+	return map;
+}
 
 function getPredictionClass(label) {
 	if (label === 'correct') return 'pred-correct';
@@ -46,83 +85,122 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 	const anatomicalFocusContainer = document.getElementById('anatomicalFocusContainer');
 	const tutorialVideo = document.getElementById('tutorialVideo');
 	const tutorialSteps = document.getElementById('tutorialSteps');
+	const tutorialCaption = document.getElementById('tutorialCaption');
+	const tutorialPoseGallery = document.getElementById('tutorialPoseGallery');
+	const tutorialModeToggle = document.getElementById('tutorialModeToggle');
 	const generateReportBtn = document.getElementById('generateReportBtn');
 	const startSessionBtn = document.getElementById('startSessionBtn');
 	const endSessionBtn = document.getElementById('endSessionBtn');
 	const logoutBtn = document.getElementById('logoutBtn');
-	const tutorialStaticSteps = document.getElementById('tutorialStaticSteps');
 
-	tutorialVideo.addEventListener('pause', () => {
-		tutorialStaticSteps.style.display = 'grid';
-	});
+	let currentTutorialMode = 'pose';
+	const ASANA_DATA = getAsanaDataMap();
 
-	tutorialVideo.addEventListener('play', () => {
-		tutorialStaticSteps.style.display = 'none';
-	});
+	function setTutorialMode(mode) {
+		currentTutorialMode = mode;
+		const showPose = mode !== 'video';
 
-	function renderAsana(asanaName) {
-		const config = ASANA_DATA[asanaName];
-		asanaDescription.textContent = config.description;
-		faqList.innerHTML = config.faqs.map((item) => {
-			const splitIdx = item.indexOf(' A: ');
-			const q = item.substring(0, splitIdx).replace('Q: ', '');
-			const a = item.substring(splitIdx + 4);
-			return `
-				<div class="faq-item">
-					<div class="faq-q">${q}</div>
-					<div class="faq-a">${a}</div>
-				</div>
-			`;
-		}).join('');
+		if (tutorialPoseGallery) tutorialPoseGallery.classList.toggle('hidden', !showPose);
+		if (tutorialVideo) tutorialVideo.classList.toggle('hidden', showPose);
+		if (tutorialModeToggle) tutorialModeToggle.textContent = showPose ? 'Show Video' : 'Show Pose';
+	}
 
-		if (config.anatomicalFocus) {
-			anatomicalFocusContainer.innerHTML = `
-				<div class="focus-row">
-					<strong>Target Muscles:</strong> <span>${config.anatomicalFocus.targetMuscles}</span>
-				</div>
-				<div class="focus-row">
-					<strong>Benefits:</strong> <span>${config.anatomicalFocus.healthBenefits}</span>
-				</div>
-				<div class="focus-row">
-					<strong>Precautions:</strong> <span>${config.anatomicalFocus.precautions}</span>
-				</div>
-			`;
-			anatomicalFocusContainer.parentElement.style.display = 'block';
-		} else {
-			anatomicalFocusContainer.parentElement.style.display = 'none';
+	function renderPoseGallery(images) {
+		if (!tutorialPoseGallery) return;
+		tutorialPoseGallery.innerHTML = '';
+		if (!images.length) {
+			const emptyItem = document.createElement('div');
+			emptyItem.className = 'tutorial-pose-item tutorial-pose-item-empty';
+			emptyItem.textContent = 'Pose images not available.';
+			tutorialPoseGallery.appendChild(emptyItem);
+			return;
 		}
 
-		// tutorialSteps.innerHTML = '';
-		// config.tutorialSteps.forEach((step, index) => {
-		// 	const button = document.createElement('button');
-		// 	button.type = 'button';
-		// 	button.className = `step-btn ${index === 0 ? 'active' : ''}`;
-		// 	button.textContent = step.title;
-		// 	button.addEventListener('click', () => {
-		// 		tutorialVideo.src = step.videoUrl;
-		// 		tutorialCaption.textContent = step.caption;
-		// 		for (const sibling of tutorialSteps.querySelectorAll('.step-btn')) {
-		// 			sibling.classList.remove('active');
-		// 		}
-		// 		button.classList.add('active');
-		// 		if (tutorialVideo.paused) {
-		// 			tutorialStaticSteps.style.display = 'grid';
-		// 		} else {
-		// 			tutorialStaticSteps.style.display = 'none';
-		// 		}
-		// 	});
-		// 	tutorialSteps.appendChild(button);
-		// });
+		images.forEach((image, index) => {
+			const item = document.createElement('div');
+			item.className = 'tutorial-pose-item';
+			item.style.flexDirection = 'column';
+			item.style.justifyContent = 'flex-start';
+			item.style.padding = '8px';
+			item.style.gap = '8px';
 
-		tutorialVideo.src = config.tutorialSteps[0].videoUrl;
-		
-		if (tutorialVideo.paused) {
-			tutorialStaticSteps.style.display = 'grid';
-		} else {
-			tutorialStaticSteps.style.display = 'none';
+			const img = document.createElement('img');
+			img.src = image.src;
+			img.alt = image.alt;
+			img.style.borderRadius = '8px';
+			img.style.width = '100%';
+			img.style.height = 'auto';
+			img.style.flex = '1';
+			img.style.objectFit = 'cover';
+
+			const label = document.createElement('p');
+			label.textContent = `Step ${index + 1}`;
+			label.style.margin = '0';
+			label.style.fontWeight = 'bold';
+			label.style.color = 'white';
+			label.style.textAlign = 'center';
+			label.style.fontSize = '0.9rem';
+
+			item.appendChild(img);
+			item.appendChild(label);
+			tutorialPoseGallery.appendChild(item);
+		});
+	}
+
+	function renderAsana(asanaName) {
+		const config = ASANA_DATA[asanaName] || ASANA_DATA.Konasana || Object.values(ASANA_DATA)[0];
+		asanaDescription.textContent = config.description;
+		if (faqList) {
+			faqList.innerHTML = config.faqs.map((item) => {
+				const splitIdx = item.indexOf(' A: ');
+				if (splitIdx !== -1) {
+					const q = item.substring(0, splitIdx).replace('Q: ', '');
+					const a = item.substring(splitIdx + 4);
+					return `
+						<div class="faq-item">
+							<div class="faq-q">${q}</div>
+							<div class="faq-a">${a}</div>
+						</div>
+					`;
+				}
+				return `<div class="faq-item"><div class="faq-q">${item}</div></div>`;
+			}).join('');
+		}
+
+		if (anatomicalFocusContainer) {
+			if (config.anatomicalFocus) {
+				anatomicalFocusContainer.innerHTML = `
+					<div class="focus-row">
+						<strong>Target Muscles:</strong> <span>${config.anatomicalFocus.targetMuscles}</span>
+					</div>
+					<div class="focus-row">
+						<strong>Benefits:</strong> <span>${config.anatomicalFocus.healthBenefits}</span>
+					</div>
+					<div class="focus-row">
+						<strong>Precautions:</strong> <span>${config.anatomicalFocus.precautions}</span>
+					</div>
+				`;
+				anatomicalFocusContainer.parentElement.style.display = 'block';
+			} else {
+				anatomicalFocusContainer.parentElement.style.display = 'none';
+			}
+		}
+
+		if (tutorialVideo) tutorialVideo.src = config.tutorialSteps && config.tutorialSteps.length ? config.tutorialSteps[0].videoUrl : (config.tutorialVideo ? config.tutorialVideo.videoUrl : '');
+		if (tutorialCaption && config.tutorialVideo) tutorialCaption.textContent = config.tutorialVideo.caption;
+
+		if (typeof renderPoseGallery === 'function') {
+			renderPoseGallery(config.poseImages || []);
+		}
+		if (typeof setTutorialMode === 'function') {
+			setTutorialMode('pose');
 		}
 		onAsanaChanged(asanaName);
 	}
+
+	tutorialModeToggle.addEventListener('click', () => {
+		setTutorialMode(currentTutorialMode === 'pose' ? 'video' : 'pose');
+	});
 
 	asanaSelect.addEventListener('change', () => renderAsana(asanaSelect.value));
 	generateReportBtn.addEventListener('click', onGenerateReport);

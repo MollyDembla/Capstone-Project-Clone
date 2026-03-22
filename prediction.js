@@ -7,7 +7,7 @@ function toOneHot(value, ordered) {
 }
 
 export class PredictionEngine {
-	constructor(modelPath = 'model/model.json') {
+	constructor(modelPath = '/model/model.json') {
 		this.modelPath = modelPath;
 		this.model = null;
 	}
