@@ -18,17 +18,17 @@ const FALLBACK_ASANA_CATALOG = [
 			{
 				title: 'Step 1',
 				caption: 'Stand tall with feet apart and raise one arm straight overhead.',
-				videoUrl: 'src/konasana video.mp4',
+				videoUrl: 'src/Long Konasana video with music.mp4',
 			},
 			{
 				title: 'Step 2',
 				caption: 'Bend sideways from the waist while keeping chest open and legs straight.',
-				videoUrl: 'src/konasana video.mp4',
+				videoUrl: 'src/Long Konasana video with music.mp4',
 			},
 			{
 				title: 'Step 3',
 				caption: 'Hold the posture with steady breathing, then return slowly to center.',
-				videoUrl: 'src/konasana video.mp4',
+				videoUrl: 'src/Long Konasana video with music.mp4',
 			},
 		],
 		photoLinks: [
@@ -36,7 +36,7 @@ const FALLBACK_ASANA_CATALOG = [
 			'src/konasana step 2.png',
 			'src/konasana step 3.png',
 		],
-		videoLinks: ['src/konasana video.mp4'],
+		videoLinks: ['src/Long Konasana video with music.mp4'],
 		tutorialCaption: 'Follow this guided Konasana demo video.',
 	},
 ];
@@ -57,7 +57,7 @@ function getAsanaDataMap() {
 			faqs: Array.isArray(asana?.faqs) && asana.faqs.length ? asana.faqs : ['Details not available.'],
 			tutorialVideo: {
 				caption: asana?.tutorialCaption || 'Details not available.',
-				videoUrl: videoLinks[0] || 'src/konasana video.mp4',
+				videoUrl: videoLinks[0] || 'src/Long Konasana video with music.mp4',
 			},
 			poseImages: photoLinks.map((src, index) => ({
 				src,
