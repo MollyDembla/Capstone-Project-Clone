@@ -273,6 +273,8 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 				// tutorialVideo.muted = true; // ensure muted to bypass strict auto-play policies
 				// tutorialVideo.play().catch(e => console.error("Auto-play prevented:", e));
 			}
+		});
+	}
 
 	if (backToDashboardBtn && dashboardView && livePracticeView) {
 		backToDashboardBtn.addEventListener('click', () => {
