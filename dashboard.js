@@ -236,8 +236,30 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 
 	if (openLivePracticeBtn && dashboardView && livePracticeView) {
 		openLivePracticeBtn.addEventListener('click', () => {
+			console.log('Open Live Practice Page clicked. Transitioning views...');
 			dashboardView.classList.add('hidden');
 			livePracticeView.classList.remove('hidden');
+
+			// Automatically switch to video mode for the live practice tutorial context
+			const practiceContext = tutorialContexts.find(ctx => ctx.video && ctx.video.id === 'tutorialVideo');
+			if (practiceContext) {
+				console.log('Switching to video mode...');
+				setTutorialModeForContext(practiceContext, 'video');
+			}
+
+			// Automatically start session and tutorial video
+			if (typeof onStartSession === 'function') {
+				console.log('Auto-starting session via onStartSession...');
+				onStartSession();
+			} else {
+				console.log('Error: onStartSession is not a function');
+			}
+			
+			if (tutorialVideo) {
+				console.log('Attempting to play background tutorial video...');
+				tutorialVideo.muted = true; // ensure muted to bypass strict auto-play policies
+				tutorialVideo.play().catch(e => console.error("Auto-play prevented:", e));
+			}
 		});
 	}
 

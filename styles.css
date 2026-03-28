@@ -934,4 +934,29 @@ button:hover {
 	margin: 0;
 	padding: 0;
 	font-size: 0.82rem;
-}
+}/* New Layout Refactor */
+.top-navbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; background: #1a1a1a; border-bottom: 1px solid #333; }
+.nav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: bold; font-size: 1.2rem; color: #fff; }
+.nav-logo { height: 32px; width: auto; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
+.nav-link { color: #aaa; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+.nav-link:hover, .nav-link.active { color: #00C6A0; }
+
+.page-container { padding: 2rem; max-width: 1200px; margin: 0 auto; color: white; }
+.split-layout { display: flex; gap: 2rem; }
+.left-section, .right-section { flex: 1; }
+
+.chatbot-panel { background: #1a1a1a; padding: 1.5rem; border-radius: 12px; height: 100%; display: flex; flex-direction: column; }
+.chat-messages { flex: 1; min-height: 400px; margin: 1rem 0; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; overflow-y: auto; }
+.msg.bot { background: #333; padding: 0.75rem; border-radius: 8px; display: inline-block; max-width: 80%; }
+.chat-input { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #444; background: transparent; color: white; }
+
+.video-container { position: relative; background: #1a1a1a; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; }
+.ai-badge { position: absolute; top: 1.5rem; right: 1.5rem; background: linear-gradient(90deg, #00C6A0, #009B8B); color: black; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; z-index: 10;}
+.instructor-video { width: 100%; border-radius: 8px; }
+
+.asana-details { background: #1a1a1a; padding: 1.5rem; border-radius: 12px; }
+.start-practice-btn { margin-top: 1rem; background: linear-gradient(90deg, #00C6A0, #009B8B); color: #000; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-weight: bold; cursor: pointer; transition: transform 0.2s; display: inline-block; text-decoration: none;}
+.start-practice-btn:hover { transform: scale(1.05); }
+
+.report-wrap, .practice-wrap { background: #1a1a1a; padding: 2rem; border-radius: 12px; }
