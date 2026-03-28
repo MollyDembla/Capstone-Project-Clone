@@ -256,9 +256,9 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 			}
 			
 			if (tutorialVideo) {
-				console.log('Attempting to play background tutorial video...');
-				tutorialVideo.muted = true; // ensure muted to bypass strict auto-play policies
-				tutorialVideo.play().catch(e => console.error("Auto-play prevented:", e));
+				console.log('Video loaded. User can play the tutorial video when ready.');
+				// tutorialVideo.muted = true; // ensure muted to bypass strict auto-play policies
+				// tutorialVideo.play().catch(e => console.error("Auto-play prevented:", e));
 			}
 		});
 	}
