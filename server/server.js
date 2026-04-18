@@ -537,9 +537,184 @@ app.post('/api/sedentary/chat', async (req, res) => {
 	}
 });
 
+// ── Mental Module Routes ───────────────────────────────────────────────────
+app.post('/api/mental/report', async (req, res) => {
+	try {
+		const data = req.body || {};
+		const asana = data.asana || 'Unknown';
+		const accuracy = Number(data.accuracy) || 0;
+		const avgError = Number(data.angles?.avgError) || 0;
+		const stability = Number(data.stability) || 0;
+		const duration = data.timing?.sessionDurationSec || 'unknown';
+
+		if (!OPENROUTER_API_KEY) {
+			const report = buildMentalFallbackReport(data);
+			res.json({ report, source: 'fallback', reason: 'missing_api_key' });
+			return;
+		}
+
+		const prompt = [
+			'You are a mental wellness yoga coach and mindfulness expert.',
+			'Write a concise, practical, and encouraging yoga session report focused on mental health benefits.',
+			'Use plain English suitable for a beginner. Include specific metrics from the data.',
+			'',
+			'Required sections (use these exact headers):',
+			'## Session Summary',
+			'## Pose Accuracy Analysis',
+			'## Mental Wellness Benefits',
+			'## What to Improve',
+			'## Next Session Recommendations',
+			'',
+			'Keep it 300-500 words. Be encouraging and mindfulness-focused.',
+			'',
+			`Asana: ${asana}`,
+			`Accuracy Score: ${accuracy.toFixed(1)}/100`,
+			`Average Angle Error: ${avgError.toFixed(1)} degrees`,
+			`Detection Stability: ${stability.toFixed(1)}%`,
+			`Session Duration: ${duration} seconds`,
+			`Top corrections: ${JSON.stringify(data.angles?.correctionCounts || {})}`,
+		].join('\n');
+
+		const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+				'Content-Type': 'application/json',
+				'HTTP-Referer': process.env.OPENROUTER_SITE_URL || `http://localhost:${PORT}`,
+				'X-Title': 'YogMitra Mental Module',
+			},
+			body: JSON.stringify({
+				model: OPENROUTER_MODEL,
+				messages: [{ role: 'user', content: prompt }],
+				temperature: 0.3,
+				max_tokens: 900,
+			}),
+		});
+
+		if (response.ok) {
+			const result = await response.json();
+			const content = result?.choices?.[0]?.message?.content;
+			const text = Array.isArray(content)
+				? content.map((p) => (typeof p === 'string' ? p : p?.text || '')).join('\n').trim()
+				: String(content || '').trim();
+			if (text) {
+				res.json({ report: text, source: 'openrouter', model: OPENROUTER_MODEL });
+				return;
+			}
+		}
+
+		res.json({ report: buildMentalFallbackReport(data), source: 'fallback', reason: 'openrouter_unavailable' });
+	} catch (error) {
+		res.json({ report: buildMentalFallbackReport(req.body || {}), source: 'fallback', reason: 'server_error' });
+	}
+});
+
+function buildMentalFallbackReport(data) {
+	const asana = data.asana || 'Unknown';
+	const accuracy = Number(data.accuracy) || 0;
+	const avgError = Number(data.angles?.avgError) || 0;
+	const corrections = data.angles?.correctionCounts || {};
+	const topFixes = Object.entries(corrections).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>`- ${k}`).join('\n') || '- No specific corrections recorded.';
+	const targetScore = Math.min(100, accuracy + 8).toFixed(0);
+
+	return `## Session Summary
+- **Asana:** ${asana}
+- **Accuracy Score:** ${accuracy.toFixed(1)} / 100
+- **Average Angle Error:** ${avgError.toFixed(1)}°
+- **Duration:** ~${data.timing?.sessionDurationSec || 0} seconds
+
+## Pose Accuracy Analysis
+Your session showed an average accuracy of ${accuracy.toFixed(1)}/100. ${accuracy >= 70 ? 'This is a solid performance — keep maintaining this consistency.' : accuracy >= 45 ? 'You are making good progress. Focus on posture alignment to improve further.' : 'This is a good starting point. With regular practice, your accuracy will improve significantly.'}
+
+## Mental Wellness Benefits
+Practicing ${asana} supports your mental health through:
+- Reduces cortisol (stress hormone) with controlled breathing and posture
+- Boosts serotonin through mindful movement and body awareness
+- Promotes parasympathetic (rest & digest) nervous system activation
+- Builds emotional resilience through consistent body-mind practice
+
+## What to Improve
+${topFixes}
+- Maintain steady nasal breathing throughout each pose hold
+- Keep full body visible in the camera frame for accurate analysis
+
+## Next Session Recommendations
+- Target score: ≥ ${targetScore}/100
+- Hold each ${asana} pose for 5–10 seconds longer
+- Practice slow 4-7-8 breathing: inhale 4s, hold 7s, exhale 8s
+- Add 5 minutes of seated meditation after your yoga session
+- Practice 4–5 days per week for sustained mental wellness benefits`;
+}
+
+app.post('/api/mental/chat', async (req, res) => {
+	try {
+		const question = String(req.body?.question || '').trim();
+		const context = req.body?.context || {};
+		if (!question) {
+			res.status(400).send('Missing question.');
+			return;
+		}
+
+		const asana = context.selectedAsana || 'yoga';
+		const desc = context.asanaInfo?.description || '';
+		const session = context.session;
+
+		if (!OPENROUTER_API_KEY) {
+			res.json({
+				reply: `I can answer questions about ${asana} and mental wellness yoga, but OpenRouter is not configured. Your question was: "${question}". Please set OPENROUTER_API_KEY to enable AI responses.`,
+				source: 'fallback',
+			});
+			return;
+		}
+
+		const prompt = [
+			'You are a mental wellness yoga coach. Answer concisely and practically.',
+			'Focus on mental health benefits, mindfulness, and pose corrections.',
+			`Asana: ${asana}`,
+			desc ? `Description: ${desc}` : '',
+			session ? `Session avg score: ${session.avgScore}/100, angle error: ${session.avgAngleError}°` : '',
+			'',
+			`User question: ${question}`,
+		].filter(Boolean).join('\n');
+
+		const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+				'Content-Type': 'application/json',
+				'HTTP-Referer': process.env.OPENROUTER_SITE_URL || `http://localhost:${PORT}`,
+				'X-Title': 'YogMitra Mental Module',
+			},
+			body: JSON.stringify({
+				model: OPENROUTER_MODEL,
+				messages: [{ role: 'user', content: prompt }],
+				temperature: 0.3,
+				max_tokens: 400,
+			}),
+		});
+
+		if (response.ok) {
+			const result = await response.json();
+			const content = result?.choices?.[0]?.message?.content;
+			const text = Array.isArray(content)
+				? content.map((p) => (typeof p === 'string' ? p : p?.text || '')).join('\n').trim()
+				: String(content || '').trim();
+			if (text) {
+				res.json({ reply: text, source: 'openrouter' });
+				return;
+			}
+		}
+
+		res.json({ reply: `I couldn't reach the AI right now. For ${asana}: focus on steady breathing, maintain alignment, and hold each pose with full awareness. Your question: "${question}"`, source: 'fallback' });
+	} catch (error) {
+		res.json({ reply: `Server error: ${error.message}`, source: 'fallback' });
+	}
+});
+// ── End Mental Module Routes ───────────────────────────────────────────────
+
 app.use('/api', (_req, res) => {
 	res.status(404).json({
-		error: 'Invalid API route. Use /api/sedentary/*',
+		error: 'Invalid API route. Use /api/sedentary/* or /api/mental/*',
 	});
 });
 

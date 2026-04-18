@@ -159,8 +159,33 @@ export default function App() {
 						<label>Health Notes (optional)
 							<input id="profileHealthNotes" type="text" maxLength={180} placeholder="Any pain, stiffness, condition, or lifestyle notes" />
 						</label>
-						<button type="submit">Open Dashboard</button>
+						<button type="submit">Continue to Module Selection</button>
 					</form>
+				</div>
+			</div>
+
+			{/* Module Selection Modal */}
+			<div id="moduleSelectModal" className="modal hidden">
+				<div className="modal-card module-select-card">
+					<div className="module-select-header">
+						<img src="/logo.png" alt="YogMitra logo" className="login-logo" style={{width:'52px',height:'52px'}} />
+						<h2>Choose Your Wellness Module</h2>
+						<p>Select the type of yoga practice you want to start today.</p>
+					</div>
+					<div className="module-select-grid">
+						<button id="selectSedentaryBtn" className="module-card-btn" type="button">
+							<span className="module-icon">🧘</span>
+							<span className="module-title">Sedentary Yoga</span>
+							<span className="module-desc">AI-powered posture analysis for Konasana and other asanas with real-time webcam tracking, angle scoring, and session reports.</span>
+							<span className="module-badge">Pose Correction</span>
+						</button>
+						<button id="selectMentalBtn" className="module-card-btn module-card-mental" type="button">
+							<span className="module-icon">🧠</span>
+							<span className="module-title">Mental Health Yoga</span>
+							<span className="module-desc">Yoga poses focused on mental wellness — Tadasana, Konasana, Trikonasana — with live pose detection, feedback, and AI reports.</span>
+							<span className="module-badge module-badge-mental">Mental Wellness</span>
+						</button>
+					</div>
 				</div>
 			</div>
 

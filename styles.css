@@ -1740,6 +1740,314 @@ button:hover {
   color: var(--muted);
 }
 
+/* ════════════════════════════════════════════════════════════
+   MODULE SELECTION MODAL
+   ════════════════════════════════════════════════════════════ */
+.module-select-card {
+	width: min(760px, 100%);
+	background: linear-gradient(170deg, rgba(17, 45, 70, 0.96), rgba(7, 20, 33, 0.98));
+	border: 1px solid var(--stroke);
+	border-radius: 24px;
+	padding: 32px;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
 
+.module-select-header {
+	text-align: center;
+	margin-bottom: 28px;
+}
 
+.module-select-header h2 {
+	font-size: clamp(1.4rem, 3vw, 2rem);
+	margin: 12px 0 6px;
+	background: linear-gradient(135deg, #36f4a3, #29a9ff);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
 
+.module-select-header p {
+	margin: 0;
+	color: var(--muted);
+	font-size: 0.95rem;
+}
+
+.module-select-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 18px;
+}
+
+@media (max-width: 600px) {
+	.module-select-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.module-card-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 22px 20px;
+	border-radius: 18px;
+	border: 1px solid rgba(54, 244, 163, 0.25);
+	background: linear-gradient(160deg, rgba(14, 40, 65, 0.9), rgba(7, 22, 40, 0.95));
+	color: var(--text);
+	cursor: pointer;
+	text-align: left;
+	transition: all 0.25s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.module-card-btn::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, rgba(54, 244, 163, 0.06), transparent 60%);
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.module-card-btn:hover {
+	border-color: rgba(54, 244, 163, 0.6);
+	transform: translateY(-4px);
+	box-shadow: 0 12px 36px rgba(54, 244, 163, 0.18);
+	filter: none;
+}
+
+.module-card-btn:hover::before {
+	opacity: 1;
+}
+
+.module-card-mental {
+	border-color: rgba(167, 139, 250, 0.3);
+	background: linear-gradient(160deg, rgba(30, 14, 65, 0.9), rgba(15, 7, 40, 0.95));
+}
+
+.module-card-mental::before {
+	background: linear-gradient(135deg, rgba(167, 139, 250, 0.08), transparent 60%);
+}
+
+.module-card-mental:hover {
+	border-color: rgba(167, 139, 250, 0.7);
+	box-shadow: 0 12px 36px rgba(167, 139, 250, 0.2);
+}
+
+.module-icon {
+	font-size: 2.4rem;
+	line-height: 1;
+}
+
+.module-title {
+	font-size: 1.2rem;
+	font-weight: 700;
+	font-family: 'Space Grotesk', sans-serif;
+	color: #e7f3ff;
+}
+
+.module-desc {
+	font-size: 0.85rem;
+	color: var(--muted);
+	line-height: 1.5;
+}
+
+.module-badge {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	background: linear-gradient(135deg, rgba(54, 244, 163, 0.2), rgba(41, 169, 255, 0.2));
+	border: 1px solid rgba(54, 244, 163, 0.35);
+	color: #36f4a3;
+	letter-spacing: 0.5px;
+}
+
+.module-badge-mental {
+	background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(236, 72, 153, 0.15));
+	border-color: rgba(167, 139, 250, 0.4);
+	color: #c4b5fd;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CHATBOT MESSAGE BUBBLES (used by mental module)
+   ════════════════════════════════════════════════════════════ */
+.chat-msg {
+	padding: 9px 13px;
+	border-radius: 12px;
+	font-size: 0.88rem;
+	line-height: 1.5;
+	max-width: 90%;
+	word-break: break-word;
+}
+
+.chat-msg-bot {
+	background: rgba(14, 35, 55, 0.85);
+	border: 1px solid rgba(154, 194, 219, 0.2);
+	color: #c4d6e6;
+	align-self: flex-start;
+	border-radius: 12px 12px 12px 4px;
+}
+
+.chat-msg-user {
+	background: linear-gradient(135deg, rgba(54, 244, 163, 0.18), rgba(41, 169, 255, 0.15));
+	border: 1px solid rgba(54, 244, 163, 0.3);
+	color: #e7f3ff;
+	align-self: flex-end;
+	margin-left: auto;
+	border-radius: 12px 12px 4px 12px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   REPORT ASSISTANT PANEL (mental module reuse)
+   ════════════════════════════════════════════════════════════ */
+.report-assistant-toggle {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	z-index: 50;
+	padding: 12px 18px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, #29de95, #29a9ff);
+	color: #03101c;
+	font-weight: 700;
+	box-shadow: 0 8px 24px rgba(41, 222, 149, 0.35);
+}
+
+.report-assistant-panel {
+	position: fixed;
+	bottom: 80px;
+	right: 24px;
+	width: min(420px, calc(100vw - 32px));
+	z-index: 50;
+	background: linear-gradient(170deg, rgba(14, 38, 62, 0.97), rgba(7, 19, 33, 0.98));
+	border: 1px solid var(--stroke);
+	border-radius: 20px;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+}
+
+.chatbot-box {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 18px;
+}
+
+.chatbot-head h2 {
+	font-size: 1.1rem;
+	margin-bottom: 4px;
+}
+
+.chatbot-head p {
+	margin: 0;
+	font-size: 0.82rem;
+	color: var(--muted);
+}
+
+.chatbot-messages {
+	height: 240px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 4px 2px;
+	scrollbar-width: thin;
+}
+
+.chatbot-form {
+	display: flex;
+	gap: 8px;
+}
+
+.chatbot-form input {
+	flex: 1;
+	padding: 8px 11px;
+	font-size: 0.88rem;
+	border-radius: 10px;
+}
+
+.chatbot-form button {
+	padding: 8px 14px;
+	font-size: 0.88rem;
+	border-radius: 10px;
+	white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════════════
+   REPORT BOX (mental module)
+   ════════════════════════════════════════════════════════════ */
+.report-box {
+	background: rgba(5, 16, 27, 0.6);
+	border: 1px solid var(--stroke);
+	border-radius: 14px;
+	padding: 18px;
+}
+
+.report-title-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 14px;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.report-source-badge {
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	background: rgba(54, 244, 163, 0.15);
+	border: 1px solid rgba(54, 244, 163, 0.3);
+	color: #36f4a3;
+}
+
+.report-output {
+	color: #c4d6e6;
+	font-size: 0.88rem;
+	line-height: 1.75;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* User stats inside mental dashboard */
+.user-stats-box {
+	display: grid;
+	gap: 12px;
+}
+
+.stats-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+.stat-card {
+	background: rgba(5, 16, 27, 0.55);
+	border: 1px solid rgba(156, 197, 220, 0.16);
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.stat-label {
+	font-size: 0.78rem;
+	color: var(--muted);
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--accent);
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+.stat-subtext {
+	font-size: 0.75rem;
+	color: var(--muted);
+}

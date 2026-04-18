@@ -185,10 +185,10 @@ export function initLogin({ onLoginSuccess, onProfileSubmit }) {
 		onLoginSuccess(activeUser);
 
 		if (savedProfile) {
-			dashboardView.classList.remove('hidden');
+			// Returning user with saved profile — go straight to module selector
 			profileModal.classList.add('hidden');
 			saveSession({ user: activeUser, profile: savedProfile });
-			onProfileSubmit(savedProfile);
+			showModuleSelector(savedProfile);
 			return;
 		}
 
@@ -232,19 +232,56 @@ export function initLogin({ onLoginSuccess, onProfileSubmit }) {
 			saveProfileForEmail(activeUser.email, profile);
 			saveSession({ user: activeUser, profile });
 		}
+		// Instead of opening dashboard directly, show module selector
 		profileModal.classList.add('hidden');
-		dashboardView.classList.remove('hidden');
-		onProfileSubmit(profile);
+		showModuleSelector(profile);
 	});
+
+	// ── Module Selector Logic ───────────────────────────────────────
+	let pendingProfile = null;
+
+	function showModuleSelector(profile) {
+		pendingProfile = profile;
+		const moduleModal = document.getElementById('moduleSelectModal');
+		if (moduleModal) moduleModal.classList.remove('hidden');
+	}
+
+	const selectSedentaryBtn = document.getElementById('selectSedentaryBtn');
+	const selectMentalBtn = document.getElementById('selectMentalBtn');
+
+	if (selectSedentaryBtn) {
+		selectSedentaryBtn.addEventListener('click', () => {
+			const moduleModal = document.getElementById('moduleSelectModal');
+			if (moduleModal) moduleModal.classList.add('hidden');
+			window.__yogmitraActiveModule = 'sedentary';
+			dashboardView.classList.remove('hidden');
+			onProfileSubmit(pendingProfile || {});
+		});
+	}
+
+	if (selectMentalBtn) {
+		selectMentalBtn.addEventListener('click', () => {
+			const moduleModal = document.getElementById('moduleSelectModal');
+			if (moduleModal) moduleModal.classList.add('hidden');
+			window.__yogmitraActiveModule = 'mental';
+			// The Router useEffect will pick up __yogmitraActiveModule and boot mental module.
+			// We dispatch a custom event to re-trigger the React Router.
+			window.dispatchEvent(new CustomEvent('yogmitra:moduleSelected', { detail: { module: 'mental' } }));
+			// Import and start the mental app directly as a fallback
+			import('./src/modules/mental/mentalApp.js')
+				.then(({ startMentalApp }) => startMentalApp())
+				.catch(err => console.error('Mental module boot error:', err));
+		});
+	}
 
 	const persistedSession = readSession();
 	if (persistedSession) {
 		activeUser = persistedSession.user;
 		loginView.classList.add('hidden');
 		profileModal.classList.add('hidden');
-		dashboardView.classList.remove('hidden');
 		onLoginSuccess(persistedSession.user);
-		onProfileSubmit(persistedSession.profile);
+		// Show module selector on every session restore so user can choose module
+		showModuleSelector(persistedSession.profile);
 	}
 
 	setMode(false);
