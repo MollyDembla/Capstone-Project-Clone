@@ -18,17 +18,17 @@ const FALLBACK_ASANA_CATALOG = [
 			{
 				title: 'Step 1',
 				caption: 'Stand tall with feet apart and raise one arm straight overhead.',
-				videoUrl: '/poses/konasana-video.mp4',
+				videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 			},
 			{
 				title: 'Step 2',
 				caption: 'Bend sideways from the waist while keeping chest open and legs straight.',
-				videoUrl: '/poses/konasana-video.mp4',
+				videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 			},
 			{
 				title: 'Step 3',
 				caption: 'Hold the posture with steady breathing, then return slowly to center.',
-				videoUrl: '/poses/konasana-video.mp4',
+				videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 			},
 		],
 		photoLinks: [
@@ -36,7 +36,7 @@ const FALLBACK_ASANA_CATALOG = [
 			'src/assets/konasana step 2.png',
 			'src/assets/konasana step 3.png',
 		],
-			videoLinks: ['/poses/konasana-video.mp4'],
+		videoLinks: ['/assets/yoga-poses/Long Konasana video with music.mp4'],
 		tutorialCaption: 'Follow this guided Konasana demo video.',
 	},
 ];
@@ -55,10 +55,12 @@ function getAsanaDataMap() {
 		map[asanaName] = {
 			description: asana?.description || 'Details not available.',
 			faqs: Array.isArray(asana?.faqs) && asana.faqs.length ? asana.faqs : ['Details not available.'],
-			tutorialVideo: {
-				caption: asana?.tutorialCaption || 'Details not available.',
-					videoUrl: videoLinks[0] || '/poses/konasana-video.mp4',
-			},
+			tutorialVideo: videoLinks.length
+				? {
+					caption: asana?.tutorialCaption || 'Details not available.',
+					videoUrl: videoLinks[0],
+				}
+				: null,
 			poseImages: photoLinks.map((src, index) => ({
 				src,
 				alt: `${asanaName} pose example ${index + 1}`,
@@ -225,16 +227,20 @@ export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onSt
 		}
 
 		for (const context of tutorialContexts) {
+			const hasTutorialVideo = Boolean(config.tutorialVideo?.videoUrl);
 			if (context.video) {
-				context.video.src = config.tutorialSteps && config.tutorialSteps.length
-					? config.tutorialSteps[0].videoUrl
-					: (config.tutorialVideo ? config.tutorialVideo.videoUrl : '');
+				context.video.src = hasTutorialVideo
+					? config.tutorialVideo.videoUrl
+					: '';
+				if (hasTutorialVideo) {
+					context.video.load();
+				}
 			}
 			if (context.caption && config.tutorialVideo) {
 				context.caption.textContent = config.tutorialVideo.caption;
 			}
 			renderPoseGallery(context.poseGallery, config.poseImages || []);
-			setTutorialModeForContext(context, 'pose');
+			setTutorialModeForContext(context, hasTutorialVideo ? 'video' : 'pose');
 		}
 		onAsanaChanged(asanaName);
 	}

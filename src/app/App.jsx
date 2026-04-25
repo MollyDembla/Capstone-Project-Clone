@@ -24,7 +24,7 @@ export default function App() {
 				'/src/assets/step 2 konasana image updated.png',
 				'/src/assets/step 3 konasana image updated.png',
 			],
-			videoLinks: ['/src/assets/Long Konasana video with music.mp4'],
+			videoLinks: ['/assets/yoga-poses/Long Konasana video with music.mp4'],
 			tutorialCaption: 'Follow this guided Konasana demo video.',
 			anatomicalFocus: {
 				targetMuscles: '<ul><li><b>Obliques (side abdominal muscles)</b> – primary muscles engaged during the side bend</li><li><b>Core muscles</b> – stabilize the body and maintain balance</li><li><b>Shoulders & arms</b> – support the raised arm and help in stretching</li><li><b>Hamstrings & inner thighs</b> – lightly stretched due to wide stance</li></ul>',
@@ -35,17 +35,17 @@ export default function App() {
 				{
 					title: 'Step 1',
 					caption: 'Stand tall with feet apart and raise one arm straight overhead.',
-					videoUrl: '/src/assets/Long Konasana video with music.mp4',
+					videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 				},
 				{
 					title: 'Step 2',
 					caption: 'Bend sideways from the waist while keeping chest open and legs straight.',
-					videoUrl: '/src/assets/Long Konasana video with music.mp4',
+					videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 				},
 				{
 					title: 'Step 3',
 					caption: 'Hold the posture with steady breathing, then return slowly to center.',
-					videoUrl: '/src/assets/Long Konasana video with music.mp4',
+					videoUrl: '/assets/yoga-poses/Long Konasana video with music.mp4',
 				},
 			],
 		},
