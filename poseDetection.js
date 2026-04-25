@@ -110,8 +110,8 @@ export class PoseStream {
 		this.stream = await navigator.mediaDevices.getUserMedia({
 			video: {
 				width: { ideal: 1280 },
-				height: { ideal: 720 },
-				aspectRatio: { ideal: 16 / 9 },
+				height: { ideal: 960 },
+				aspectRatio: { ideal: 4 / 3 },
 				facingMode: 'user',
 			},
 			audio: false,
