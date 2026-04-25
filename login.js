@@ -192,7 +192,11 @@ export function initLogin({ onLoginSuccess, onProfileSubmit }) {
 			return;
 		}
 
-		profileModal.classList.remove('hidden');
+		// Show profile modal with animation
+		setTimeout(() => {
+			profileModal.classList.remove('hidden');
+			void profileModal.offsetWidth; // Trigger reflow
+		}, 100);
 	});
 
 	profileForm.addEventListener('submit', (event) => {
@@ -234,8 +238,27 @@ export function initLogin({ onLoginSuccess, onProfileSubmit }) {
 		}
 		// Instead of opening dashboard directly, show module selector
 		profileModal.classList.add('hidden');
-		showModuleSelector(profile);
+		setTimeout(() => {
+			showModuleSelector(profile);
+		}, 300); // Wait for profile modal to exit before showing module selector
 	});
+
+	// ── Back Button in Profile Modal ────────────────────────────────
+	const profileBackBtn = document.getElementById('profileBackBtn');
+	if (profileBackBtn) {
+		profileBackBtn.addEventListener('click', () => {
+			// Hide profile modal
+			profileModal.classList.add('hidden');
+			// Show login view again
+			loginView.classList.remove('hidden');
+			// Reset the form
+			profileForm.reset();
+			// Reset the auth tab to sign in mode
+			setMode(false);
+			// Reset auth error
+			setAuthError('');
+		});
+	}
 
 	// ── Module Selector Logic ───────────────────────────────────────
 	let pendingProfile = null;
@@ -243,7 +266,11 @@ export function initLogin({ onLoginSuccess, onProfileSubmit }) {
 	function showModuleSelector(profile) {
 		pendingProfile = profile;
 		const moduleModal = document.getElementById('moduleSelectModal');
-		if (moduleModal) moduleModal.classList.remove('hidden');
+		if (moduleModal) {
+			// Force reflow to ensure animation starts from beginning
+			moduleModal.classList.remove('hidden');
+			void moduleModal.offsetWidth; // Trigger reflow
+		}
 	}
 
 	const selectSedentaryBtn = document.getElementById('selectSedentaryBtn');

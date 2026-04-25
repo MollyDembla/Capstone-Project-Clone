@@ -8,16 +8,16 @@ const IDEAL_POSES = {
   Trikonasana:[170, 170, 100, 100, 170, 170, 160, 150],
 };
 
-const ANGLE_FEEDBACK = {
-  0: 'Straighten your left elbow.',
-  1: 'Straighten your right elbow.',
-  2: 'Adjust your left shoulder position.',
-  3: 'Adjust your right shoulder position.',
-  4: 'Keep your left leg straight.',
-  5: 'Keep your right leg straight.',
-  6: 'Align your hips properly.',
-  7: 'Keep your spine vertical and aligned.',
-};
+const ANGLE_FEEDBACK = [
+  'Straighten your left elbow.',
+  'Straighten your right elbow.',
+  'Adjust your left shoulder.',
+  'Adjust your right shoulder.',
+  'Keep your left leg straight.',
+  'Keep your right leg straight.',
+  'Align your hips properly.',
+  'Keep your spine vertical.',
+];
 
 const ASANA_CATALOG = {
   Tadasana: {
@@ -38,16 +38,16 @@ const ASANA_CATALOG = {
       precautions: '<ul><li>Avoid locking your knees</li><li>If you feel dizzy, widen your foot stance or practice near a wall</li><li>Keep your gaze steady at a single point (Drishti)</li><li>Ensure weight is distributed evenly across both feet</li></ul>',
     },
     photoLinks: [
-      '/src/assets/mental/tadasana-step1.png',
-      '/src/assets/mental/tadasana-step2.png',
-      '/src/assets/mental/tadasana-step3.png',
+      '/assets/yoga-poses/pose-neutral.png',
+      '/assets/yoga-poses/pose-arms-raised.png',
+      '/assets/yoga-poses/pose-stretch.png',
     ],
-    videoLinks: ['/src/assets/mental/tadasana-video.mp4'],
+    videoLinks: ['/assets/videos/tadasana-video.mp4'],
     tutorialCaption: 'Follow this guided Tadasana demo video for mental clarity.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Stand with feet together or slightly apart, arms by your side.', videoUrl: '/src/assets/mental/tadasana-video.mp4' },
-      { title: 'Step 2', caption: 'Interlace fingers, turn palms out, and raise arms straight overhead.', videoUrl: '/src/assets/mental/tadasana-video.mp4' },
-      { title: 'Step 3', caption: 'Lengthen through the spine, lifting through the crown of the head.', videoUrl: '/src/assets/mental/tadasana-video.mp4' },
+      { title: 'Step 1', caption: 'Stand with feet together or slightly apart, arms by your side.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 2', caption: 'Interlace fingers, turn palms out, and raise arms straight overhead.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 3', caption: 'Lengthen through the spine, lifting through the crown of the head.', videoUrl: '/assets/videos/tadasana-video.mp4' },
     ],
   },
   Konasana: {
@@ -68,16 +68,16 @@ const ASANA_CATALOG = {
       precautions: '<ul><li>Avoid if you have acute back pain</li><li>Do not bend forward or backward, only sideways</li></ul>',
     },
     photoLinks: [
-      '/src/assets/mental/konasana-step1.png',
-      '/src/assets/mental/konasana-step2.png',
-      '/src/assets/mental/konasana-step3.png',
+      '/assets/yoga-poses/pose-neutral.png',
+      '/assets/yoga-poses/pose-arms-raised.png',
+      '/assets/yoga-poses/pose-stretch.png',
     ],
-    videoLinks: ['/src/assets/mental/konasana-video.mp4'],
+    videoLinks: ['/assets/videos/tadasana-video.mp4'],
     tutorialCaption: 'Deepen your lateral stretch with this Konasana tutorial.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Stand tall and raise one arm overhead.', videoUrl: '/src/assets/mental/konasana-video.mp4' },
-      { title: 'Step 2', caption: 'Slide the other hand down your leg as you bend sideways.', videoUrl: '/src/assets/mental/konasana-video.mp4' },
-      { title: 'Step 3', caption: 'Hold and breathe into the side ribs, then return.', videoUrl: '/src/assets/mental/konasana-video.mp4' },
+      { title: 'Step 1', caption: 'Stand tall and raise one arm overhead.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 2', caption: 'Slide the other hand down your leg as you bend sideways.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 3', caption: 'Hold and breathe into the side ribs, then return.', videoUrl: '/assets/videos/tadasana-video.mp4' },
     ],
   },
   Trikonasana: {
@@ -97,16 +97,16 @@ const ASANA_CATALOG = {
       precautions: '<ul><li>Keep your legs straight but not hyper-extended</li><li>Look down if neck pain occurs</li></ul>',
     },
     photoLinks: [
-      '/src/assets/mental/trikonasana-step1.png',
-      '/src/assets/mental/trikonasana-step2.png',
-      '/src/assets/mental/trikonasana-step3.png',
+      '/assets/yoga-poses/pose-neutral.png',
+      '/assets/yoga-poses/pose-arms-raised.png',
+      '/assets/yoga-poses/pose-stretch.png',
     ],
-    videoLinks: ['/src/assets/mental/trikonasana-video.mp4'],
+    videoLinks: ['/assets/videos/tadasana-video.mp4'],
     tutorialCaption: 'Master the geometric precision of Triangle Pose.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Extend arms horizontally and step feet wide.', videoUrl: '/src/assets/mental/trikonasana-video.mp4' },
-      { title: 'Step 2', caption: 'Reach down toward your shin while keeping the chest open.', videoUrl: '/src/assets/mental/trikonasana-video.mp4' },
-      { title: 'Step 3', caption: 'Extend the top arm toward the sky and breathe.', videoUrl: '/src/assets/mental/trikonasana-video.mp4' },
+      { title: 'Step 1', caption: 'Extend arms horizontally and step feet wide.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 2', caption: 'Reach down toward your shin while keeping the chest open.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 3', caption: 'Extend the top arm toward the sky and breathe.', videoUrl: '/assets/videos/tadasana-video.mp4' },
     ],
   },
 };
@@ -114,14 +114,24 @@ const ASANA_CATALOG = {
 // ── Utility: calculate approximate joint angles from MoveNet keypoints
 function angleBetween(a, b, c) {
   if (!a || !b || !c) return 0;
+  // Check confidence scores - skip low confidence points
+  if ((a.score ?? 1) < 0.3 || (b.score ?? 1) < 0.3 || (c.score ?? 1) < 0.3) return 0;
+  
   const ab = { x: a.x - b.x, y: a.y - b.y };
   const cb = { x: c.x - b.x, y: c.y - b.y };
   const dot = ab.x * cb.x + ab.y * cb.y;
   const magAB = Math.sqrt(ab.x ** 2 + ab.y ** 2);
   const magCB = Math.sqrt(cb.x ** 2 + cb.y ** 2);
-  if (magAB === 0 || magCB === 0) return 0;
+  
+  // Avoid division by zero
+  if (magAB < 0.01 || magCB < 0.01) return 0;
+  
   const cosTheta = Math.max(-1, Math.min(1, dot / (magAB * magCB)));
-  return (Math.acos(cosTheta) * 180) / Math.PI;
+  const angleRad = Math.acos(cosTheta);
+  const angleDeg = (angleRad * 180) / Math.PI;
+  
+  // Return valid angle (0-180)
+  return Math.min(180, Math.max(0, angleDeg));
 }
 
 function extractAngles(kps) {
@@ -162,10 +172,22 @@ export default function MentalApp({ userName = 'User', onLogout }) {
   const [sessionSummary, setSessionSummary] = useState(null);
   const metricsRef = useRef({ frameCount:0, scoreSum:0, angleSum:0, bestScore:0, worstScore:100, corrections:{} });
   const detStatsRef = useRef({ totalDetections:0, avgConf:0 });
+  const sessionStartTimeRef = useRef(null);
 
   // Report state
   const [reportText, setReportText] = useState('');
   const [reportLoading, setReportLoading] = useState(false);
+  const [capturedFrames, setCapturedFrames] = useState([]);
+  const captureIntervalRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  // User profile state
+  const [userProfile, setUserProfile] = useState({
+    weight: localStorage.getItem('userWeight') || 70,
+    age: localStorage.getItem('userAge') || 30,
+    fitnessLevel: localStorage.getItem('userFitnessLevel') || 'moderate',
+    healthConditions: localStorage.getItem('userHealthConditions') || '',
+  });
 
   // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
@@ -175,44 +197,119 @@ export default function MentalApp({ userName = 'User', onLogout }) {
   const [chatInput, setChatInput] = useState('');
   const [chatSending, setChatSending] = useState(false);
   const [tutorialMode, setTutorialMode] = useState('pose'); // 'pose' | 'video'
+  const [imageErrors, setImageErrors] = useState({});
   const chatEndRef = useRef(null);
+  const rawVideoRef = useRef(null);
 
   const currentAsana = ASANA_CATALOG[selectedAsana];
+
+  function handleImageError(idx) {
+    setImageErrors(prev => ({ ...prev, [idx]: true }));
+  }
 
   useEffect(() => {
     if (chatEndRef.current) chatEndRef.current.scrollIntoView({ behavior:'smooth' });
   }, [chatMessages]);
+
+  useEffect(() => {
+    if (!sessionActive) return;
+    
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { width: { ideal: 640 }, height: { ideal: 480 } }, 
+          audio: false 
+        });
+        if (rawVideoRef.current) {
+          rawVideoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error('Camera access error:', err);
+      }
+    };
+
+    startCamera();
+    return () => {
+      console.log('useEffect cleanup: Stopping camera');
+      const video = rawVideoRef.current;
+      if (video && video.srcObject) {
+        const tracks = video.srcObject.getTracks();
+        tracks.forEach(track => {
+          track.stop();
+          track.enabled = false;
+        });
+        video.srcObject = null;
+        video.pause();
+        video.src = '';
+      }
+      console.log('useEffect cleanup: Camera stopped');
+    };
+  }, [sessionActive]);
+
+  // Auto-generate report when session summary is created
+  useEffect(() => {
+    if (sessionSummary && !reportLoading && view === 'livePractice') {
+      // Generate report immediately when summary is ready
+      generateReportNow(sessionSummary);
+    }
+  }, [sessionSummary]);
 
   // ── Keypoints handler ──────────────────────────────────────────
   function handleKeypoints(newKps) {
     setKeypoints(newKps);
     if (!sessionActive || !newKps || newKps.length < 17) return;
 
+    // Filter keypoints with minimum confidence
+    const confidentKps = newKps.filter(k => (k.score || 0) > 0.25);
+    if (confidentKps.length < 10) return; // Need at least 10 confident keypoints
+    
+    // Calculate average confidence from all keypoints
     const avgConf = newKps.reduce((s, k) => s + (k.score || 0), 0) / newKps.length;
     detStatsRef.current = {
       totalDetections: detStatsRef.current.totalDetections + 1,
-      avgConf,
+      avgConf: detStatsRef.current.avgConf + avgConf,
     };
 
+    // Extract angles and compare with ideal
     const userAngles = extractAngles(newKps);
     const idealAngles = IDEAL_POSES[selectedAsana] || IDEAL_POSES.Tadasana;
-    const errors = userAngles.map((a, i) => Math.abs(a - idealAngles[i]));
-    const avgError = errors.reduce((s, e) => s + e, 0) / errors.length;
+    
+    // Filter out zero angles (which indicate low confidence keypoints)
+    const validAngles = userAngles.map((a, i) => a > 0 ? a : null);
+    const errors = validAngles.map((a, i) => a !== null ? Math.abs(a - idealAngles[i]) : 0);
+    const avgError = errors.length > 0 ? errors.reduce((s, e) => s + e, 0) / errors.filter(e => e > 0).length : 0;
 
+    // Generate feedback based on significant deviations
     const fb = [];
-    errors.forEach((e, i) => { if (e > 15) fb.push(ANGLE_FEEDBACK[i]); });
-    if (fb.length === 0) fb.push('Great posture! Keep it steady.');
+    const FEEDBACK_THRESHOLD = 15; // degrees - more lenient
+    
+    errors.forEach((e, i) => { 
+      if (e > FEEDBACK_THRESHOLD && validAngles[i] !== null) {
+        fb.push(ANGLE_FEEDBACK[i]);
+      }
+    });
+    
+    if (fb.length === 0) {
+      fb.push('✓ Perfect alignment! Hold steady and breathe.');
+    }
     setFeedbackList(fb);
 
-    const angleAcc = Math.max(0, 100 - avgError * 3);
-    const stabilityScore = avgConf * 100;
-    const score = Math.max(0, Math.min(100, angleAcc * 0.6 + stabilityScore * 0.4));
+    // Calculate accuracy score: angle-based (70%) + stability-based (30%)
+    // Improved scoring: rewards good alignment while considering confidence
+    const avgErrorNormalized = Math.min(avgError / 30, 1); // Normalize error to 0-1 scale
+    const angleAcc = Math.max(0, 100 * (1 - avgErrorNormalized)); // More gradual penalty
+    const stabilityScore = Math.min(avgConf * 100, 100);
+    const score = Math.max(0, Math.min(100, angleAcc * 0.7 + stabilityScore * 0.3));
+    
     setPoseAccuracy(score.toFixed(1));
-    setPoseStatus(score >= 70 ? 'CORRECT' : score >= 45 ? 'NEUTRAL' : 'INCORRECT');
+    // Improved thresholds for better user experience
+    setPoseStatus(score >= 80 ? 'CORRECT' : score >= 60 ? 'NEUTRAL' : 'INCORRECT');
 
+    // Track metrics
     const m = metricsRef.current;
     const nextCorrections = { ...m.corrections };
     fb.forEach(msg => { nextCorrections[msg] = (nextCorrections[msg] || 0) + 1; });
+    
     metricsRef.current = {
       frameCount: m.frameCount + 1,
       scoreSum: m.scoreSum + score,
@@ -225,6 +322,7 @@ export default function MentalApp({ userName = 'User', onLogout }) {
 
   // ── Session controls ──────────────────────────────────────────
   function startSession() {
+    sessionStartTimeRef.current = Date.now();
     metricsRef.current = { frameCount:0, scoreSum:0, angleSum:0, bestScore:0, worstScore:100, corrections:{} };
     detStatsRef.current = { totalDetections:0, avgConf:0 };
     setFeedbackList([]);
@@ -232,84 +330,234 @@ export default function MentalApp({ userName = 'User', onLogout }) {
     setPoseStatus('NEUTRAL');
     setSessionSummary(null);
     setReportText('');
+    setCapturedFrames([]);
     setSessionActive(true);
+    
+    // Capture frames every 2 seconds (max 5 frames)
+    let frameCount = 0;
+    captureIntervalRef.current = setInterval(() => {
+      try {
+        const canvas = canvasRef.current;
+        const video = rawVideoRef.current;
+        
+        if (!canvas || !video) {
+          console.log('Canvas or video ref not available');
+          return;
+        }
+        
+        if (!video.srcObject) {
+          console.log('Video stream not available yet');
+          return;
+        }
+        
+        // Ensure video is ready
+        if (video.readyState !== video.HAVE_ENOUGH_DATA && video.readyState !== video.HAVE_FUTURE_DATA) {
+          console.log('Video not ready, readyState:', video.readyState);
+          return;
+        }
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = canvas.toDataURL('image/jpeg', 0.8);
+        frameCount++;
+        console.log(`Frame captured: ${frameCount}`);
+        setCapturedFrames(prev => [...prev.slice(-4), imageData]);
+      } catch (err) {
+        console.log('Frame capture error:', err.message);
+      }
+    }, 2000);
   }
 
   function endSession() {
+    console.log('endSession called');
+    
+    // AGGRESSIVE camera shutdown - multiple layers
+    console.log('Stopping camera with multiple shutdown methods...');
+    const video = rawVideoRef.current;
+    if (video) {
+      // Method 1: Stop all tracks
+      if (video.srcObject) {
+        const tracks = video.srcObject.getTracks();
+        console.log(`Stopping ${tracks.length} camera tracks`);
+        tracks.forEach(track => {
+          track.stop();
+          track.enabled = false;
+          console.log(`Stopped: ${track.kind} - ${track.label}`);
+        });
+        video.srcObject = null;
+      }
+      
+      // Method 2: Pause and clear
+      video.pause();
+      video.currentTime = 0;
+      video.src = '';
+      video.removeAttribute('src');
+      
+      // Method 3: Load empty
+      try {
+        video.load();
+      } catch (e) {
+        console.log('Video load error (expected):', e.message);
+      }
+      
+      console.log('✅ Camera fully shut down');
+    }
+    
     setSessionActive(false);
+    
+    // Stop frame capture
+    if (captureIntervalRef.current) {
+      clearInterval(captureIntervalRef.current);
+    }
+    
     const m = metricsRef.current;
     const fc = Math.max(1, m.frameCount);
-    setSessionSummary({
+    const detectionCount = Math.max(1, detStatsRef.current.totalDetections);
+    const sessionDuration = sessionStartTimeRef.current ? Math.round((Date.now() - sessionStartTimeRef.current) / 1000) : 0;
+    
+    const summary = {
       asana: selectedAsana,
-      totalFrames: detStatsRef.current.totalDetections,
-      avgScore: (m.scoreSum / fc).toFixed(1),
-      avgAngleError: (m.angleSum / fc).toFixed(1),
-      bestScore: m.bestScore.toFixed(1),
-      worstScore: m.worstScore.toFixed(1),
+      totalFrames: detectionCount,
+      avgScore: parseFloat((m.scoreSum / fc).toFixed(1)),
+      avgAngleError: parseFloat((m.angleSum / fc).toFixed(1)),
+      bestScore: m.bestScore === 0 ? 0 : parseFloat(m.bestScore.toFixed(1)),
+      worstScore: m.worstScore === 100 ? 0 : parseFloat(m.worstScore.toFixed(1)),
       corrections: m.corrections,
       status: poseStatus,
-    });
+      confidence: parseFloat((detStatsRef.current.avgConf / detectionCount * 100).toFixed(1)),
+      sessionDuration: sessionDuration,
+      frames: capturedFrames,
+      userProfile: userProfile,
+      improvementRate: fc > 0 ? Math.min(100, Math.round((m.bestScore - m.worstScore))) : 0,
+    };
+    
+    console.log('Session summary:', summary);
+    console.log('Frames in summary:', summary.frames);
+    console.log('Number of captured frames:', summary.frames?.length || 0);
+    setSessionSummary(summary);
+    generateReportNow(summary);
   }
 
   // ── Report ───────────────────────────────────────────────────
-  async function generateReport() {
-    if (!sessionSummary) return;
-    setReportLoading(true);
-    setView('report');
-
-    const payload = {
-      asana: sessionSummary.asana,
-      accuracy: parseFloat(sessionSummary.avgScore),
-      angles: { avgError: parseFloat(sessionSummary.avgAngleError), correctionCounts: sessionSummary.corrections },
-      timing: { framesCaptured: sessionSummary.totalFrames, sessionDurationSec: (sessionSummary.totalFrames / 30).toFixed(1) },
-      stability: detStatsRef.current.avgConf * 100,
-    };
-
-    try {
-      const res = await fetch('/api/mental/report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      setReportText(data.report || buildLocalReport(sessionSummary));
-    } catch {
-      setReportText(buildLocalReport(sessionSummary));
-    } finally {
-      setReportLoading(false);
+  async function generateReportNow(summary) {
+    console.log('generateReportNow called - generating INSTANT report');
+    if (!summary) {
+      console.warn('No summary provided to generateReportNow');
+      return;
     }
+    
+    // Generate local report INSTANTLY (do not wait for API)
+    console.log('Generating local report immediately...');
+    const reportContent = buildLocalReport(summary);
+    setReportText(reportContent);
+    setView('report');
+    setReportLoading(false);
+    console.log('Report displayed instantly');
+    
+    // Optional: Try API in background (non-blocking) with timeout
+    setTimeout(() => {
+      try {
+        const payload = {
+          asana: summary.asana,
+          accuracy: parseFloat(summary.avgScore),
+          angles: { avgError: parseFloat(summary.avgAngleError), correctionCounts: summary.corrections },
+          timing: { framesCaptured: summary.totalFrames, sessionDurationSec: summary.sessionDuration },
+          stability: parseFloat(summary.confidence || 0),
+        };
+        
+        fetch('/api/mental/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).then(res => res.json()).then(data => {
+          if (data.report && data.report.length > reportContent.length) {
+            console.log('Enhanced AI report available, updating...');
+            setReportText(data.report);
+          }
+        }).catch(err => console.log('API report optional:', err.message));
+      } catch (e) {
+        console.log('Background API fetch skipped');
+      }
+    }, 100);
+  }
+
+  function generateReport() {
+    if (!sessionSummary) return;
+    generateReportNow(sessionSummary);
   }
 
   function buildLocalReport(s) {
     const topCorrections = Object.entries(s.corrections || {})
       .sort((a,b) => b[1]-a[1])
       .slice(0,3)
-      .map(([msg]) => `- ${msg}`)
+      .map(([k]) => `- ${k}`)
       .join('\n') || '- No specific corrections recorded.';
 
-    return `## Mental Health Yoga Session Report
+    const mins = Math.floor((s.sessionDuration || 0) / 60);
+    const secs = (s.sessionDuration || 0) % 60;
+    const duration = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-**Asana:** ${s.asana}
-**Average Score:** ${s.avgScore} / 100
-**Best Score:** ${s.bestScore} | **Worst Score:** ${s.worstScore}
-**Average Angle Error:** ${s.avgAngleError}°
+    // User profile data for personalized recommendations
+    const weight = s.userProfile?.weight || 70;
+    const age = s.userProfile?.age || 30;
+    const fitnessLevel = s.userProfile?.fitnessLevel || 'moderate';
+    const weightCategory = weight > 85 ? 'higher body weight' : weight < 50 ? 'lighter frame' : 'average weight';
+    const ageCategory = age > 50 ? 'mature' : age < 25 ? 'young' : 'mid-age';
+    const holdDuration = weight > 85 ? '15-20 seconds' : age > 50 ? '20-25 seconds' : '30-45 seconds';
+    const frequencyAdvice = fitnessLevel === 'beginner' ? '2-3 times per week' : fitnessLevel === 'moderate' ? '4-5 times per week' : '6-7 times per week';
+    const strengthAdvice = weight > 85 ? 'use yoga props (blocks, straps) to reduce strain' : 'gradually increase depth and duration';
+    const cardioAdvice = age > 50 ? 'Focus on balance and stability' : 'Build endurance gradually';
+
+    return `## Mental Health Yoga Session Report - ${s.asana}
+
+**Date:** ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
+**Practitioner:** ${userName} | **Age:** ${age} years | **Weight:** ${weight}kg
+**Fitness Level:** ${fitnessLevel}
+**Session Duration:** ${duration}
+
+### Performance Metrics
+**Accuracy Score:** ${typeof s.avgScore === 'number' ? s.avgScore.toFixed(1) : s.avgScore} / 100
+**Confidence Level:** ${typeof s.confidence === 'number' ? s.confidence.toFixed(1) : s.confidence}%
 **Total Frames Analyzed:** ${s.totalFrames}
-**Final Status:** ${s.status}
+**Average Angle Error:** ${typeof s.avgAngleError === 'number' ? s.avgAngleError.toFixed(1) : s.avgAngleError}°
+**Best Score:** ${typeof s.bestScore === 'number' ? s.bestScore.toFixed(1) : s.bestScore} | **Worst Score:** ${typeof s.worstScore === 'number' ? s.worstScore.toFixed(1) : s.worstScore}
+**Session Status:** ${s.status}
 
-## Top Corrections Needed
+## Form Analysis
 ${topCorrections}
 
-## Recommendations
-- Focus on maintaining a neutral spine and slow, deep breaths throughout the pose.
-- Practice in front of a mirror to self-correct shoulder and hip alignment.
-- Hold each pose for 20–30 seconds longer in your next session.
-- Pair with 5 minutes of pranayama (alternate nostril breathing) before practice.
-- Maintain consistent practice 4–5 days per week for mental wellness benefits.
+## Mental Wellness Benefits
+Regular practice of ${s.asana} helps with:
+- Emotional balance and stress reduction
+- Improved focus and mental clarity
+- Enhanced breathing patterns and oxygen flow
+- Greater body awareness and mind-body connection
+- Nervous system regulation and relaxation
 
-## Next Session Goals
-- Aim for an average score ≥ ${Math.min(100, parseFloat(s.avgScore) + 8).toFixed(0)}/100
-- Reduce average angle error to ≤ ${Math.max(5, parseFloat(s.avgAngleError) - 3).toFixed(1)}°
-- Increase hold duration by 10 seconds per pose`;
+## Performance Insights
+Your accuracy score of **${(typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)).toFixed(1)}/100** indicates ${(typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)) >= 80 ? 'excellent form - keep practicing consistently!' : (typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)) >= 60 ? 'good progress - focus on the corrections listed above for further improvement.' : 'developing form - practice the pose regularly and focus on the alignment corrections provided.'}
+
+With a confidence level of **${(typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)).toFixed(1)}%**, your pose detection was ${(typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)) >= 80 ? 'very reliable and consistent.' : (typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)) >= 60 ? 'fairly consistent across the session.' : 'variable - try to maintain full body visibility in frame for better detection.'}
+
+## Next Session Recommendations (Personalized for ${ageCategory} with ${weightCategory})
+- **Optimal Hold Duration:** ${holdDuration} per pose
+- **Practice Frequency:** ${frequencyAdvice}
+- **Strength Focus:** ${strengthAdvice}
+- **Endurance Focus:** ${cardioAdvice}
+- **Breathing:** Use 4-7-8 technique (4 count inhale, 7 count hold, 8 count exhale)
+- **Recovery:** Take 5-10 minute meditation/pranayama session after practice
+- **Progression:** Increase hold time by 5 seconds each session while maintaining accuracy
+
+## Wellness Goal
+Consistency is key to mental wellness through yoga. Your profile (${age}yr, ${weight}kg, ${fitnessLevel} fitness) means ${frequencyAdvice} practice will build sustainable strength and mental clarity. Celebrate today's progress and commit to your next practice session!
+
+### What Makes You Unique
+- **Age-Appropriate Strategy:** ${cardioAdvice}
+- **Body-Specific Modifications:** When doing ${s.asana}, ${strengthAdvice} to prevent injury
+- **Mental Health Focus:** Consistent practice improves mood, reduces anxiety, and builds resilience
+- **Progress Tracking:** Compare your improvement rate (${s.improvementRate || 0}%) across sessions
+
+Your dedication to mental wellness through yoga is admirable. Keep practicing! 🙏`;
   }
 
   function downloadReport() {
@@ -361,6 +609,8 @@ ${topCorrections}
   // ─────────────────────────────────────────────────────────────
   return (
     <div style={{ minHeight:'100vh', padding: view === 'livePractice' ? '0' : '12px', display:'flex', flexDirection:'column', gap:'12px' }}>
+      {/* Hidden canvas for frame capture */}
+      <canvas ref={canvasRef} width={640} height={480} style={{ display:'none' }} />
 
       {/* ── DASHBOARD VIEW ───────────────────────────────── */}
       {view === 'dashboard' && (
@@ -449,7 +699,32 @@ ${topCorrections}
                     <div className="tutorial-pose-gallery">
                       {currentAsana.photoLinks.map((src, idx) => (
                         <div key={idx} className="tutorial-pose-item" style={{ flexDirection:'column', gap:'8px' }}>
-                          <img src={src} alt={`Step ${idx + 1}`} style={{ borderRadius:'8px', width:'100%', height:'auto', objectFit:'cover' }} />
+                          {imageErrors[idx] ? (
+                            <div style={{
+                              width:'100%',
+                              height:'200px',
+                              background:'rgba(54, 244, 163, 0.1)',
+                              border:'2px dashed rgba(54, 244, 163, 0.4)',
+                              borderRadius:'8px',
+                              display:'flex',
+                              flexDirection:'column',
+                              alignItems:'center',
+                              justifyContent:'center',
+                              padding:'16px',
+                              textAlign:'center'
+                            }}>
+                              <div style={{ fontSize:'2rem', marginBottom:'8px' }}>📸</div>
+                              <p style={{ margin:0, color:'#36f4a3', fontSize:'0.85rem', fontWeight:600 }}>Image Not Found</p>
+                              <p style={{ margin:'4px 0 0 0', color:'#a8c0d4', fontSize:'0.75rem' }}>Add {src.split('/').pop()} to public/assets/yoga-poses/</p>
+                            </div>
+                          ) : (
+                            <img 
+                              src={src} 
+                              alt={`Step ${idx + 1}`}
+                              onError={() => handleImageError(idx)}
+                              style={{ borderRadius:'6px', width:'100%', height:'100%', objectFit:'contain', display:'block' }} 
+                            />
+                          )}
                           <p style={{ margin:0, fontWeight:'bold', color:'white', textAlign:'center', fontSize:'0.9rem' }}>Step {idx + 1}</p>
                         </div>
                       ))}
@@ -513,43 +788,6 @@ ${topCorrections}
                   </div>
                 )}
               </div>
-
-              {/* Enhanced Chatbot panel */}
-              <div className="info-box" style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                  <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-                    <span style={{ fontSize:'1.2rem' }}>💬</span>
-                    <h3 style={{ margin:0 }}>Wellness & Pose Assistant</h3>
-                  </div>
-                  <button className="secondary-nav-btn" onClick={() => setChatOpen(!chatOpen)} style={{ padding:'6px 14px', fontSize:'0.85rem', borderRadius:'8px' }}>
-                    {chatOpen ? 'Minimize' : 'Chat Now'}
-                  </button>
-                </div>
-                {chatOpen && (
-                  <div style={{ background:'rgba(5,16,27,0.4)', borderRadius:'12px', padding:'12px', border:'1px solid var(--stroke)' }}>
-                    <div style={{ height:'220px', overflowY:'auto', display:'flex', flexDirection:'column', gap:'10px', padding:'4px', marginBottom:'12px', scrollbarWidth:'thin' }}>
-                      {chatMessages.map((m, i) => (
-                        <div key={i} className={m.role === 'user' ? 'chat-msg chat-msg-user' : 'chat-msg chat-msg-bot'} style={{ fontSize:'0.88rem' }}>
-                          {m.text}
-                        </div>
-                      ))}
-                      <div ref={chatEndRef} />
-                    </div>
-                    <form onSubmit={sendChat} style={{ display:'flex', gap:'8px' }}>
-                      <input 
-                        value={chatInput} 
-                        onChange={e => setChatInput(e.target.value)} 
-                        placeholder="Ask about poses, stress, or your progress..." 
-                        style={{ flex:1, padding:'10px 14px', borderRadius:'10px', background:'rgba(0,0,0,0.2)', border:'1px solid var(--stroke)', color:'var(--text)' }} 
-                      />
-                      <button type="submit" disabled={chatSending} style={{ padding:'10px 18px', borderRadius:'10px', background:'var(--accent)', color:'#03101c', fontWeight:700 }}>
-                        {chatSending ? '...' : 'Send'}
-                      </button>
-                    </form>
-                  </div>
-                )}
-                {!chatOpen && <p style={{ margin:0, fontSize:'0.85rem', color:'var(--muted)' }}>Ask me how {selectedAsana} can help reduce stress or how to improve your balance.</p>}
-              </div>
             </section>
           </div>
         </>
@@ -557,120 +795,245 @@ ${topCorrections}
 
       {/* ── LIVE PRACTICE VIEW ───────────────────────────── */}
       {view === 'livePractice' && (
-        <div className="dashboard live-practice-view" style={{ padding:'12px', height:'100vh', overflow:'auto' }}>
+        <main className="dashboard live-practice-view" style={{ padding:'12px', display:'flex', flexDirection:'column', gap:'12px' }}>
           {/* Header */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px', background:'var(--card)', border:'1px solid var(--stroke)', borderRadius:'14px', padding:'10px 14px' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-              <img src="/logo.png" alt="YogMitra" style={{ width:'36px', height:'36px', objectFit:'contain' }} />
-              <span style={{ fontWeight:700, fontSize:'1rem' }}>Live Practice — {selectedAsana}</span>
-              <span style={{ fontSize:'0.8rem', color:statusColor, fontWeight:700, padding:'3px 8px', background:'rgba(0,0,0,0.3)', borderRadius:'999px' }}>{sessionActive ? poseStatus : 'Paused'}</span>
-            </div>
-            <div style={{ display:'flex', gap:'8px' }}>
-              <button className="secondary-nav-btn" onClick={() => setView('dashboard')}>← Dashboard</button>
-              <button className="logout-btn" onClick={onLogout}>Logout</button>
-            </div>
-          </div>
-
-          {/* 3-column layout */}
-          <div className="live-top-row" style={{ marginBottom:'10px' }}>
-            {/* Asana info card */}
-            <div className="panel live-screen-card" style={{ padding:'12px', gridTemplateRows:'auto 1fr' }}>
-              <div className="section-head">
-                <h2 style={{ fontSize:'1rem' }}>Asana Info</h2>
-                <select value={selectedAsana} onChange={e => setSelectedAsana(e.target.value)} style={{ fontSize:'0.82rem', padding:'4px 8px', background:'rgba(5,16,27,0.8)', color:'var(--text)', border:'1px solid var(--stroke)', borderRadius:'8px' }}>
-                  {Object.keys(ASANA_CATALOG).map(a => <option key={a} value={a}>{a}</option>)}
-                </select>
+          <header className="header" style={{ marginBottom:'0' }}>
+            <div className="header-top">
+              <div className="header-brand">
+                <img src="/logo.png" alt="YogMitra" className="dashboard-logo" style={{ width:'32px', height:'32px' }} />
+                <h1 style={{ fontSize:'1.1rem', margin:0 }}>Live Practice — {selectedAsana}</h1>
               </div>
-              <div style={{ overflowY:'auto' }}>
-                <p style={{ fontSize:'0.83rem', color:'var(--muted)', lineHeight:'1.5', margin:'0 0 10px' }}>{currentAsana.description}</p>
-                <div style={{ fontSize:'0.8rem', color:'var(--muted)' }}>
-                  <strong style={{ color:'var(--accent)' }}>Mental Focus:</strong>
-                  <ul style={{ margin:'6px 0 0', paddingLeft:'16px', display:'grid', gap:'4px' }}>
-                    {currentAsana.focus.map(f => <li key={f}>{f}</li>)}
-                  </ul>
+              <div style={{ display:'flex', gap:'10px' }}>
+                <button className="secondary-nav-btn" onClick={() => setView('dashboard')}>Back to Dashboard</button>
+                <button className="logout-btn" onClick={onLogout}>Logout</button>
+              </div>
+            </div>
+            <p className="status-text" style={{ color:'var(--muted)', fontSize:'0.9rem', margin:'8px 0 0' }}>Position your full body: head, both palms, and both feet visible for accurate pose detection.</p>
+          </header>
+
+          {/* 3-Column Video Layout */}
+          <section className="live-session-layout" style={{ flex:1, display:'grid', gridTemplateRows:'1fr auto auto auto', gap:'10px', minHeight:0 }}>
+            <div className="live-top-row" style={{ display:'grid', gridTemplateColumns:'repeat(3, minmax(0, 1fr))', gap:'10px', minHeight:0 }}>
+              {/* LEFT: Instructor/Tutorial */}
+              <div className="panel live-screen-card instructor-card" style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                  <h3 style={{ margin:0, fontSize:'0.92rem', color:'#d6e9f9' }}>Instructor Video</h3>
+                  <button 
+                    className="tutorial-toggle-btn"
+                    onClick={() => {
+                      const btn = document.querySelector('.tutorial-toggle-btn');
+                      const gallery = document.querySelector('.asana-tutorial-gallery-mental');
+                      const video = document.querySelector('.asana-video-mental');
+                      if (gallery && video) {
+                        if (gallery.style.display === 'none') {
+                          gallery.style.display = 'block';
+                          video.style.display = 'none';
+                          btn.textContent = 'Show Video';
+                        } else {
+                          gallery.style.display = 'none';
+                          video.style.display = 'block';
+                          btn.textContent = 'Show Pose';
+                        }
+                      }
+                    }}
+                    style={{ fontSize:'0.75rem', padding:'4px 10px', background:'var(--button-bg)', color:'var(--text)', border:'1px solid var(--stroke)', borderRadius:'6px', cursor:'pointer' }}
+                  >
+                    Show Video
+                  </button>
+                </div>
+                <div className="asana-tutorial-gallery-mental" style={{ flex:1, minHeight:0, overflow:'hidden', borderRadius:'10px', background:'#000', display:'grid', gridTemplateColumns:'1fr', alignItems:'center', justifyContent:'center' }}>
+                  {currentAsana.photoLinks && currentAsana.photoLinks[0] && (
+                    <img src={currentAsana.photoLinks[0]} alt={`${selectedAsana} pose`} style={{ maxWidth:'100%', maxHeight:'100%', objectFit:'contain' }} />
+                  )}
+                </div>
+                <div className="asana-video-mental" style={{ flex:1, minHeight:0, overflow:'hidden', borderRadius:'10px', background:'#000', display:'none' }}>
+                  {currentAsana.videoLinks && currentAsana.videoLinks[0] && (
+                    <video src={currentAsana.videoLinks[0]} controls style={{ width:'100%', height:'100%', objectFit:'contain' }} />
+                  )}
+                </div>
+              </div>
+
+              {/* MIDDLE: User Raw Video */}
+              <div className="panel live-screen-card" style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+                <h3 style={{ margin:0, fontSize:'0.92rem', color:'#d6e9f9' }}>User (Raw)</h3>
+                <div style={{ flex:1, minHeight:0, background:'#000', borderRadius:'10px', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:'0.8rem' }}>
+                  {sessionActive ? (
+                    <video ref={rawVideoRef} style={{ width:'100%', height:'100%', objectFit:'cover' }} autoPlay playsInline muted></video>
+                  ) : (
+                    <div style={{ textAlign:'center' }}>Ready to capture</div>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT: User Markers */}
+              <div className="panel live-screen-card" style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+                <h3 style={{ margin:0, fontSize:'0.92rem', color:'#d6e9f9' }}>User (Markers)</h3>
+                <div style={{ flex:1, minHeight:0, background:'#000', borderRadius:'10px', overflow:'hidden', position:'relative' }}>
+                  {sessionActive ? (
+                    <PoseDetectorComponent 
+                      onKeypointsUpdate={handleKeypoints} 
+                      options={{ 
+                        modelType:'lite', 
+                        frameSkip:1, 
+                        minConfidence:0.45,
+                        targetFPS:30, 
+                        showDebugInfo:false,
+                        showSkeleton:true,
+                        hideUI:true,
+                      }} 
+                    />
+                  ) : (
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', color:'var(--muted)', fontSize:'0.8rem' }}>
+                      Click Start to detect
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Webcam Raw */}
-            <div className="panel live-screen-card">
-              <h3>Webcam (Raw)</h3>
-              <div style={{ flex:1, background:'#000', borderRadius:'12px', overflow:'hidden', minHeight:'240px', position:'relative' }}>
-                {sessionActive
-                  ? <PoseDetectorComponent onKeypointsUpdate={handleKeypoints} options={{ modelType:'lite', frameSkip:1, minConfidence:0.5, targetFPS:30, showDebugInfo:false, showSkeleton:false, hideUI:true }} />
-                  : <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', color:'var(--muted)', fontSize:'0.85rem' }}>Click Start Session to begin</div>
-                }
+            {/* Session Controls */}
+            <div className="live-session-controls-row" style={{ display:'flex', gap:'10px', justifyContent:'center', flexWrap:'wrap' }}>
+              <button onClick={startSession} disabled={sessionActive} className="session-control-btn" style={{ minWidth:'140px', padding:'10px 16px' }}>Start Session</button>
+              <button onClick={endSession} disabled={!sessionActive} className="session-control-btn" style={{ minWidth:'140px', padding:'10px 16px' }}>End Session</button>
+            </div>
+
+            {/* Camera Guide */}
+            <p className="camera-guide-text" style={{ textAlign:'center', margin:0, fontSize:'0.85rem', color:'var(--muted)' }}>Keep your full body visible: head, both palms, and both feet.</p>
+
+            {/* Stats Row */}
+            <div className="live-stats-row" style={{ display:'grid', gridTemplateColumns:'repeat(4, minmax(0, 1fr))', gap:'10px' }}>
+              <div className="panel live-stat-card" style={{ display:'grid', gap:'4px', alignContent:'start', padding:'12px', minHeight:0 }}>
+                <span style={{ fontSize:'0.8rem', color:'var(--muted)' }}>Prediction</span>
+                <strong style={{ fontSize:'1rem', color:statusColor }}>{sessionActive ? poseStatus : '—'}</strong>
+              </div>
+              <div className="panel live-stat-card" style={{ display:'grid', gap:'4px', alignContent:'start', padding:'12px', minHeight:0 }}>
+                <span style={{ fontSize:'0.8rem', color:'var(--muted)' }}>Confidence</span>
+                <strong style={{ fontSize:'1rem' }}>{sessionActive ? `${Math.round((keypoints.length/17)*100)}%` : '—'}</strong>
+              </div>
+              <div className="panel live-stat-card" style={{ display:'grid', gap:'4px', alignContent:'start', padding:'12px', minHeight:0 }}>
+                <span style={{ fontSize:'0.8rem', color:'var(--muted)' }}>Score (0-100)</span>
+                <strong style={{ fontSize:'1rem' }}>{sessionActive ? Math.round(poseAccuracy) : '—'}</strong>
+              </div>
+              <div className="panel live-stat-card live-feedback-card" style={{ display:'grid', gap:'4px', alignContent:'start', padding:'12px', minHeight:0 }}>
+                <span style={{ fontSize:'0.8rem', color:'var(--muted)' }}>Feedback</span>
+                <ul style={{ margin:0, paddingLeft:'16px', fontSize:'0.75rem', maxHeight:'60px', overflowY:'auto', display:'grid', gap:'2px' }}>
+                  {feedbackList.length > 0 ? feedbackList.map((f,i) => <li key={i} style={{ margin:0 }}>{f}</li>) : <li style={{ color:'var(--muted)', margin:0 }}>Waiting for stable pose…</li>}
+                </ul>
               </div>
             </div>
 
-            {/* Webcam Markers */}
-            <div className="panel live-screen-card">
-              <h3>Webcam (Markers)</h3>
-              <div style={{ flex:1, background:'#000', borderRadius:'12px', overflow:'hidden', minHeight:'240px', position:'relative' }}>
-                {sessionActive
-                  ? <PoseDetectorComponent onKeypointsUpdate={handleKeypoints} options={{ modelType:'lite', frameSkip:1, minConfidence:0.5, targetFPS:30, showDebugInfo:false, showSkeleton:true, hideUI:true }} />
-                  : <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', color:'var(--muted)', fontSize:'0.85rem' }}>Waiting for session…</div>
-                }
+            {/* Support Row */}
+            <div className="panel live-support-row" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px', padding:'12px', alignItems:'start' }}>
+              <div className="analysis-row session-summary-row" style={{ display:'grid', gap:'4px' }}>
+                <span style={{ fontSize:'0.85rem', color:'var(--muted)', fontWeight:700 }}>Session Summary</span>
+                <div className="session-summary-text" style={{ fontSize:'0.8rem', color:'var(--text)', minHeight:'40px', display:'flex', alignItems:'center' }}>
+                  {sessionSummary
+                    ? `${sessionSummary.asana} • Avg: ${sessionSummary.avgScore.toFixed(0)}/100 • Frames: ${sessionSummary.totalFrames}`
+                    : 'No session completed yet.'}
+                </div>
+              </div>
+              <div className="analysis-row session-summary-row" style={{ display:'grid', gap:'4px' }}>
+                <span style={{ fontSize:'0.85rem', color:'var(--muted)', fontWeight:700 }}>Live Coach</span>
+                <div className="session-summary-text" style={{ fontSize:'0.8rem', color:'var(--text)', minHeight:'40px', display:'flex', alignItems:'center' }}>
+                  {sessionActive
+                    ? feedbackList[0] || 'Keep your posture steady and breathe deeply.'
+                    : 'Start session to get real-time posture cues.'}
+                </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Session Controls */}
-          <div className="live-session-controls-row" style={{ marginBottom:'10px' }}>
-            <button onClick={startSession} disabled={sessionActive}>Start Session</button>
-            <button onClick={endSession} disabled={!sessionActive}>End Session</button>
-            <button className="secondary-nav-btn" onClick={generateReport} disabled={!sessionSummary}>Generate Report</button>
-          </div>
-          <p className="camera-guide-text">Keep your full body visible: head, both palms, and both feet in frame.</p>
+          {/* Floating Open Report Button */}
+          <button 
+            onClick={generateReport} 
+            disabled={!sessionSummary}
+            className="open-live-practice-btn"
+            style={{ 
+              position:'fixed', 
+              bottom:'24px', 
+              right:'24px', 
+              padding:'12px 20px', 
+              background:sessionSummary ? 'linear-gradient(135deg, #36f4a3, #29a9ff)' : 'var(--button-bg)',
+              color:sessionSummary ? '#03101c' : 'var(--text)',
+              fontSize:'0.9rem',
+              fontWeight:700,
+              border:'none',
+              borderRadius:'12px',
+              cursor:sessionSummary ? 'pointer' : 'not-allowed',
+              opacity:sessionSummary ? 1 : 0.5,
+              boxShadow: sessionSummary ? '0 8px 24px rgba(54, 244, 163, 0.4)' : 'none',
+              zIndex:50
+            }}
+          >
+            Open Report Page
+          </button>
 
-          {/* Stats Row */}
-          <div className="live-stats-row" style={{ marginBottom:'10px' }}>
-            <div className="panel live-stat-card">
-              <span>Pose Status</span>
-              <strong style={{ color: statusColor }}>{sessionActive ? poseStatus : '—'}</strong>
-            </div>
-            <div className="panel live-stat-card">
-              <span>Accuracy Score</span>
-              <strong>{sessionActive ? `${poseAccuracy}/100` : '—'}</strong>
-            </div>
-            <div className="panel live-stat-card">
-              <span>Keypoints</span>
-              <strong>{keypoints.length}/17</strong>
-            </div>
-            <div className="panel live-stat-card live-feedback-card">
-              <span>Live Feedback</span>
-              <ul id="feedbackList">{feedbackList.map((f,i) => <li key={i}>{f}</li>)}</ul>
-            </div>
-          </div>
+          {/* Floating Chat Button */}
+          <button 
+            className="floating-chat-button"
+            onClick={() => setChatOpen(!chatOpen)}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              right: sessionSummary ? '200px' : '24px',
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #36f4a3, #29a9ff)',
+              border: 'none',
+              color: '#03101c',
+              fontSize: '28px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              boxShadow: '0 8px 24px rgba(54, 244, 163, 0.4)',
+              zIndex: 49,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+              transform: chatOpen ? 'scale(0.95)' : 'scale(1)',
+            }}
+            title="Chat with Wellness Assistant"
+          >
+            {chatOpen ? '✕' : '💬'}
+          </button>
 
-          {/* Support Row */}
-          <div className="panel live-support-row">
-            <div className="analysis-row session-summary-row">
-              <span>Session Summary</span>
-              <div className="session-summary-text">
-                {sessionSummary
-                  ? `${sessionSummary.asana} — Avg: ${sessionSummary.avgScore}/100, Angle Err: ${sessionSummary.avgAngleError}°, Frames: ${sessionSummary.totalFrames}`
-                  : 'No session completed yet.'}
+          {/* Floating Chat Panel */}
+          {chatOpen && (
+            <div style={{ position:'fixed', bottom:'100px', right:sessionSummary ? '200px' : '24px', width:'400px', zIndex:48, background:'linear-gradient(170deg, rgba(14,38,62,0.99), rgba(7,19,33,0.99))', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'24px', boxShadow:'0 25px 60px rgba(0,0,0,0.7)', overflow:'hidden', animation:'slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+              <div style={{ padding:'24px', display:'flex', flexDirection:'column', gap:'14px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', paddingBottom:'12px', borderBottom:'1px solid rgba(54, 244, 163, 0.15)' }}>
+                  <div>
+                    <h2 style={{ fontSize:'1.15rem', margin:0, fontWeight:700, color:'#fff' }}>Wellness Assistant</h2>
+                    <p style={{ margin:'4px 0 0 0', fontSize:'0.8rem', color:'#7dd8ff' }}>Ask about {selectedAsana}</p>
+                  </div>
+                </div>
+                <div style={{ height:'320px', overflowY:'auto', display:'flex', flexDirection:'column', gap:'12px', paddingRight:'4px' }}>
+                  {chatMessages.map((m, i) => (
+                    <div key={i} className={m.role === 'user' ? 'chat-msg chat-msg-user' : 'chat-msg chat-msg-bot'}>{m.text}</div>
+                  ))}
+                  <div ref={chatEndRef} />
+                </div>
+                <form onSubmit={sendChat} style={{ display:'flex', gap:'10px', alignItems:'center' }}>
+                  <input 
+                    value={chatInput} 
+                    onChange={e => setChatInput(e.target.value)} 
+                    placeholder="Ask about your practice..." 
+                    style={{ flex:1, padding:'12px 14px', borderRadius:'12px', background:'rgba(0,0,0,0.3)', border:'1px solid rgba(54, 244, 163, 0.25)', color:'var(--text)', fontSize:'0.87rem', transition:'all 0.3s' }} 
+                  />
+                  <button type="submit" disabled={chatSending} style={{ padding:'12px 18px', borderRadius:'12px', background:'linear-gradient(135deg, #36f4a3, #29a9ff)', color:'#03101c', fontWeight:700, fontSize:'0.85rem', cursor: chatSending ? 'not-allowed' : 'pointer', opacity: chatSending ? 0.6 : 1 }}>
+                    {chatSending ? '...' : 'Ask'}
+                  </button>
+                </form>
               </div>
             </div>
-            <div className="analysis-row session-summary-row">
-              <span>Live Coach</span>
-              <div className="session-summary-text">
-                {sessionActive
-                  ? feedbackList[0] || 'Keep your posture steady and breathe deeply.'
-                  : 'Start a session to get real-time posture cues.'}
-              </div>
-            </div>
-            <div className="webcam-report-actions">
-              <button onClick={generateReport} disabled={!sessionSummary}>Open Report</button>
-            </div>
-          </div>
-        </div>
+          )}
+        </main>
       )}
 
       {/* ── REPORT VIEW ──────────────────────────────────── */}
       {view === 'report' && (
-        <main className="dashboard report-view" style={{ minHeight:'100vh', padding:'12px', display:'flex', flexDirection:'column', gap:'16px' }}>
+        <main className="dashboard report-view" style={{ minHeight:'100vh', padding:'12px', display:'flex', flexDirection:'column', gap:'16px', background:'var(--bg)', overflow:'auto' }}>
           <header className="header">
             <div className="header-top">
               <div className="header-brand">
@@ -686,82 +1049,180 @@ ${topCorrections}
             <p className="status-text" style={{ color:'var(--muted)' }}>Review your detailed posture analysis and mental wellness recommendations.</p>
           </header>
 
-          <div className="dashboard-grid" style={{ gridTemplateColumns:'1fr' }}>
+          <div className="dashboard-grid" style={{ display:'grid', gridTemplateColumns:'1fr', gap:'16px', flex:1 }}>
             <section className="panel" style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'12px' }}>
-                <div style={{ display:'flex', gap:'10px' }}>
-                  <button className="open-live-practice-btn" style={{ padding:'10px 20px' }} onClick={downloadReport}>
-                    <span role="img" aria-label="download">📥</span> Download PDF Report
-                  </button>
-                  <button className="secondary-nav-btn" style={{ padding:'10px 20px' }} onClick={() => setChatOpen(!chatOpen)}>
-                    {chatOpen ? 'Close Assistant' : '💬 Ask AI Assistant'}
-                  </button>
+              {/* Session Summary Stats */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'12px', marginBottom:'12px' }}>
+                <div style={{ background:'rgba(54, 244, 163, 0.08)', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'12px', padding:'16px' }}>
+                  <p style={{ margin:'0 0 8px 0', color:'#7dd8ff', fontSize:'0.9rem' }}>Asana</p>
+                  <p style={{ margin:0, fontSize:'1.2rem', fontWeight:700 }}>{sessionSummary?.asana || '—'}</p>
                 </div>
-                <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-                  <span style={{ fontSize:'0.85rem', color:'var(--muted)' }}>Analysis Source:</span>
-                  <span className="report-source-badge" style={{ margin:0 }}>{reportLoading ? 'Analyzing...' : 'OpenRouter AI'}</span>
+                <div style={{ background:'rgba(54, 244, 163, 0.08)', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'12px', padding:'16px' }}>
+                  <p style={{ margin:'0 0 8px 0', color:'#7dd8ff', fontSize:'0.9rem' }}>Accuracy Score</p>
+                  <p style={{ margin:0, fontSize:'1.2rem', fontWeight:700 }}>{sessionSummary?.avgScore?.toFixed(1) || '—'}/100</p>
+                </div>
+                <div style={{ background:'rgba(54, 244, 163, 0.08)', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'12px', padding:'16px' }}>
+                  <p style={{ margin:'0 0 8px 0', color:'#7dd8ff', fontSize:'0.9rem' }}>Angle Error</p>
+                  <p style={{ margin:0, fontSize:'1.2rem', fontWeight:700 }}>{sessionSummary?.avgAngleError?.toFixed(1) || '—'}°</p>
+                </div>
+                <div style={{ background:'rgba(54, 244, 163, 0.08)', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'12px', padding:'16px' }}>
+                  <p style={{ margin:'0 0 8px 0', color:'#7dd8ff', fontSize:'0.9rem' }}>Detection Confidence</p>
+                  <p style={{ margin:0, fontSize:'1.2rem', fontWeight:700 }}>{sessionSummary?.confidence?.toFixed(1) || '—'}%</p>
                 </div>
               </div>
 
+              {/* Report Content - Structured Format */}
               {reportLoading ? (
-                <div style={{ padding:'60px 0', textAlign:'center', display:'flex', flexDirection:'column', alignItems:'center', gap:'20px' }}>
-                  <div className="report-loading-spinner" style={{ width:'48px', height:'48px', border:'4px solid var(--stroke)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'report-spin 1s linear infinite' }} />
-                  <p style={{ color:'var(--muted)', fontSize:'1.1rem' }}>Our AI is generating your personalized mental wellness report...</p>
-                  <style>{`@keyframes report-spin { to { transform: rotate(360deg); } }`}</style>
+                <div style={{ padding:'60px 20px', textAlign:'center', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'20px', minHeight:'300px' }}>
+                  <div className="report-loading-spinner" style={{ width:'48px', height:'48px', border:'4px solid var(--stroke)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 1s linear infinite' }} />
+                  <p style={{ color:'var(--muted)', fontSize:'1.1rem' }}>Generating your personalized mental wellness report...</p>
+                </div>
+              ) : sessionSummary ? (
+                <div className="report-box" style={{ background:'rgba(5,16,27,0.7)', padding:'32px', borderRadius:'18px', border:'1px solid var(--stroke)', boxShadow:'0 10px 40px rgba(0,0,0,0.3)' }}>
+                  {/* User Info Header */}
+                  <div style={{ marginBottom:'32px', paddingBottom:'20px', borderBottom:'2px solid rgba(54, 244, 163, 0.2)' }}>
+                    <h2 style={{ margin:'0 0 12px 0', color:'var(--accent)', fontSize:'1.4rem' }}>🧘 {sessionSummary.asana} Session Report</h2>
+                    <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'16px', fontSize:'0.95rem' }}>
+                      <div>
+                        <p style={{ margin:'0 0 4px 0', color:'#7dd8ff', fontWeight:700 }}>👤 Practitioner</p>
+                        <p style={{ margin:0, color:'#d1e2f0' }}>{userName}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin:'0 0 4px 0', color:'#7dd8ff', fontWeight:700 }}>📅 Date & Time</p>
+                        <p style={{ margin:0, color:'#d1e2f0' }}>{new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin:'0 0 4px 0', color:'#7dd8ff', fontWeight:700 }}>⏱️ Duration</p>
+                        <p style={{ margin:0, color:'#d1e2f0' }}>{Math.floor(sessionSummary.sessionDuration / 60)}m {sessionSummary.sessionDuration % 60}s</p>
+                      </div>
+                      <div>
+                        <p style={{ margin:'0 0 4px 0', color:'#7dd8ff', fontWeight:700 }}>👤 Profile</p>
+                        <p style={{ margin:0, color:'#d1e2f0' }}>Age: {sessionSummary.userProfile?.age}yrs | Weight: {sessionSummary.userProfile?.weight}kg</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Performance Metrics Table */}
+                  <div style={{ marginBottom:'32px' }}>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>📊 Performance Metrics</h3>
+                    <div style={{ overflowX:'auto' }}>
+                      <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.95rem' }}>
+                        <tbody>
+                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Accuracy Score</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.avgScore?.toFixed(1) || '—'} / 100</td>
+                          </tr>
+                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Confidence Level</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.confidence?.toFixed(1) || '—'}%</td>
+                          </tr>
+                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Avg Angle Error</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.avgAngleError?.toFixed(1) || '—'}°</td>
+                          </tr>
+                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Frames Analyzed</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.totalFrames}</td>
+                          </tr>
+                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Best Score</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.bestScore?.toFixed(1) || '—'}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Worst Score</td>
+                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.worstScore?.toFixed(1) || '—'}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Session Summary */}
+                  <div style={{ marginBottom:'32px' }}>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>📝 Session Summary</h3>
+                    <p style={{ margin:0, lineHeight:'1.8', color:'#d1e2f0' }}>In today's yoga session, we focused on {sessionSummary.asana}, a foundational pose that promotes stability and mindfulness. The session lasted for {Math.floor(sessionSummary.sessionDuration / 60)}m {sessionSummary.sessionDuration % 60}s, allowing us to connect with our breath and body. While the pose accuracy score was {sessionSummary.avgScore?.toFixed(1)} out of 100, this is a great starting point for continuous improvement. Remember, yoga is a journey, and every session helps us improve and grow.</p>
+                  </div>
+
+                  {/* Pose Accuracy Analysis */}
+                  <div style={{ marginBottom:'32px' }}>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>🎯 Pose Accuracy Analysis</h3>
+                    <p style={{ margin:0, lineHeight:'1.8', color:'#d1e2f0' }}>During the session, we observed an average angle error of {sessionSummary.avgAngleError?.toFixed(1)} degrees, indicating room for improvement in your alignment. The detection stability was at {sessionSummary.confidence?.toFixed(1)}%, suggesting {'maintaining balance in ' + sessionSummary.asana + ' can be challenging. The top corrections included reminders to maintain proper alignment, which are essential for achieving the correct posture. Remember, it\'s perfectly okay to take your time with these adjustments.'}</p>
+                  </div>
+
+                  {/* Mental Wellness Benefits */}
+                  <div style={{ marginBottom:'32px' }}>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>✨ Mental Wellness Benefits</h3>
+                    <p style={{ margin:0, lineHeight:'1.8', color:'#d1e2f0' }}>Practicing {sessionSummary.asana} offers several mental wellness benefits. This pose encourages mindfulness, helping to ground you in the present moment. By focusing on your breath and body, you can reduce stress and anxiety. Even in this short session, you likely experienced a sense of calm and clarity. Regular practice can enhance your mood and promote a positive mindset, making it easier to navigate daily challenges.</p>
+                  </div>
+
+                  {/* What to Improve */}
+                  <div>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>🚀 What to Improve</h3>
+                    <ul style={{ margin:0, paddingLeft:'20px', lineHeight:'1.8', color:'#d1e2f0' }}>
+                      <li>Focus on maintaining steady breathing throughout the pose</li>
+                      <li>Work on consistent alignment with regular practice</li>
+                      <li>Build endurance by holding the pose for longer durations</li>
+                      <li>Practice {sessionSummary.userProfile?.fitnessLevel === 'beginner' ? '2-3 times per week' : sessionSummary.userProfile?.fitnessLevel === 'moderate' ? '4-5 times per week' : '5-6 times per week'} for steady progress</li>
+                    </ul>
+                  </div>
                 </div>
               ) : (
-                <div className="report-box" style={{ background:'rgba(5,16,27,0.7)', padding:'32px', borderRadius:'18px', border:'1px solid var(--stroke)', boxShadow:'0 10px 40px rgba(0,0,0,0.3)' }}>
-                  <div id="reportOutput" className="report-output" style={{ fontSize:'1rem', lineHeight:'1.8', color:'#d1e2f0' }}>
-                    {reportText ? (
-                      <div dangerouslySetInnerHTML={{ __html: reportText.replace(/\n/g, '<br/>').replace(/## (.*)/g, '<h3 class="report-section-title" style="color:var(--accent);margin-top:24px;margin-bottom:12px;border-left:4px solid var(--accent);padding-left:12px;">$1</h3>').replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text);">$1</strong>') }} />
-                    ) : (
-                      <p style={{ textAlign:'center', color:'var(--muted)', padding:'40px' }}>No report data available. Please complete a practice session first.</p>
-                    )}
-                  </div>
+                <div style={{ padding:'40px', textAlign:'center', color:'var(--muted)' }}>
+                  <p>No report data available. Please complete a practice session first.</p>
+                  <button className="secondary-nav-btn" onClick={() => setView('livePractice')} style={{ marginTop:'16px' }}>Start a Session</button>
                 </div>
               )}
 
-              {/* Visuals Section (matches sedentary) */}
+              {/* Visuals Section - Display Captured Frames */}
               <div className="info-box" style={{ marginTop:'10px' }}>
-                <h3 style={{ marginBottom:'16px' }}>Session Visuals & Key Frames</h3>
-                <div id="reportVisuals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:'20px' }}>
-                  {/* If we had session captures, they would go here */}
-                  <div style={{ background:'rgba(156,197,220,0.05)', height:'200px', borderRadius:'12px', border:'1px dashed var(--stroke)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:'0.85rem' }}>
-                    Visual frame capture 1
+                <h3 style={{ marginBottom:'16px', color:'var(--accent)' }}>📸 Session Captured Moments</h3>
+                {sessionSummary?.frames && sessionSummary.frames.length > 0 ? (
+                  <div id="reportVisuals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(240px, 1fr))', gap:'16px' }}>
+                    {sessionSummary.frames.map((frame, idx) => (
+                      <div key={idx} style={{ background:'rgba(54, 244, 163, 0.08)', borderRadius:'12px', border:'1px solid rgba(54, 244, 163, 0.2)', overflow:'hidden', boxShadow:'0 4px 12px rgba(0,0,0,0.3)' }}>
+                        <img src={frame} alt={`Session frame ${idx + 1}`} style={{ width:'100%', height:'160px', objectFit:'cover', display:'block' }} />
+                        <div style={{ padding:'10px', background:'rgba(5,16,27,0.8)', borderTop:'1px solid rgba(54, 244, 163, 0.15)' }}>
+                          <p style={{ margin:0, fontSize:'0.85rem', color:'#7dd8ff', fontWeight:700 }}>Frame {idx + 1}</p>
+                          <p style={{ margin:'2px 0 0 0', fontSize:'0.75rem', color:'var(--muted)' }}>~{(idx + 1) * 2}s into session</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div style={{ background:'rgba(156,197,220,0.05)', height:'200px', borderRadius:'12px', border:'1px dashed var(--stroke)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:'0.85rem' }}>
-                    Visual frame capture 2
+                ) : (
+                  <div style={{ padding:'40px 20px', textAlign:'center', background:'rgba(156,197,220,0.05)', borderRadius:'12px', border:'1px dashed var(--stroke)', color:'var(--muted)' }}>
+                    <p style={{ margin:0, fontSize:'0.9rem' }}>No frame captures were recorded during this session.</p>
+                    <p style={{ margin:'8px 0 0 0', fontSize:'0.8rem' }}>Frames capture every 2 seconds during practice.</p>
                   </div>
-                  <div style={{ background:'rgba(156,197,220,0.05)', height:'200px', borderRadius:'12px', border:'1px dashed var(--stroke)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:'0.85rem' }}>
-                    Visual frame capture 3
-                  </div>
-                </div>
+                )}
               </div>
             </section>
           </div>
 
           {/* Chatbot Overlay (for report view) */}
           {chatOpen && (
-            <div className="report-assistant-panel" style={{ position:'fixed', bottom:'80px', right:'24px', width:'380px', zIndex:100, background:'linear-gradient(170deg, rgba(14,38,62,0.98), rgba(7,19,33,0.99))', border:'1px solid var(--stroke)', borderRadius:'20px', boxShadow:'0 20px 60px rgba(0,0,0,0.6)', overflow:'hidden' }}>
-              <div className="chatbot-box" style={{ padding:'20px' }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px' }}>
-                  <h2 style={{ fontSize:'1.1rem', margin:0 }}>Report Assistant</h2>
-                  <button className="secondary-nav-btn" style={{ padding:'4px 10px', fontSize:'0.75rem' }} onClick={() => setChatOpen(false)}>Close</button>
+            <div className="report-assistant-panel" style={{ position:'fixed', bottom:'100px', right:'32px', width:'400px', zIndex:100, background:'linear-gradient(170deg, rgba(14,38,62,0.99), rgba(7,19,33,0.99))', border:'1px solid rgba(54, 244, 163, 0.2)', borderRadius:'24px', boxShadow:'0 25px 60px rgba(0,0,0,0.7)', overflow:'hidden', animation:'slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
+              <div className="chatbot-box" style={{ padding:'24px', display:'flex', flexDirection:'column', gap:'14px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', paddingBottom:'12px', borderBottom:'1px solid rgba(54, 244, 163, 0.15)' }}>
+                  <div>
+                    <h2 style={{ fontSize:'1.15rem', margin:0, fontWeight:700, color:'#fff' }}>Session Assistant</h2>
+                    <p style={{ margin:'4px 0 0 0', fontSize:'0.8rem', color:'#7dd8ff' }}>AI-powered guidance</p>
+                  </div>
+                  <button className="secondary-nav-btn" style={{ padding:'6px 12px', fontSize:'0.8rem', borderRadius:'10px', background:'rgba(255,68,68,0.15)', border:'1px solid rgba(255,68,68,0.3)', color:'#ff6b6b' }} onClick={() => setChatOpen(false)}>✕</button>
                 </div>
-                <div style={{ height:'280px', overflowY:'auto', marginBottom:'16px', display:'flex', flexDirection:'column', gap:'10px' }}>
+                <div style={{ height:'320px', overflowY:'auto', display:'flex', flexDirection:'column', gap:'12px', paddingRight:'4px' }}>
                   {chatMessages.map((m, i) => (
-                    <div key={i} className={m.role === 'user' ? 'chat-msg chat-msg-user' : 'chat-msg chat-msg-bot'} style={{ fontSize:'0.85rem' }}>{m.text}</div>
+                    <div key={i} className={m.role === 'user' ? 'chat-msg chat-msg-user' : 'chat-msg chat-msg-bot'}>{m.text}</div>
                   ))}
                   <div ref={chatEndRef} />
                 </div>
-                <form className="chatbot-form" onSubmit={sendChat} style={{ display:'flex', gap:'8px' }}>
+                <form className="chatbot-form" onSubmit={sendChat} style={{ display:'flex', gap:'10px', alignItems:'center' }}>
                   <input 
                     value={chatInput} 
                     onChange={e => setChatInput(e.target.value)} 
-                    placeholder="Ask about your report..." 
-                    style={{ flex:1, padding:'8px 12px', borderRadius:'10px', background:'rgba(0,0,0,0.2)', border:'1px solid var(--stroke)', color:'var(--text)', fontSize:'0.85rem' }} 
+                    placeholder="Ask about your session..." 
+                    style={{ flex:1, padding:'12px 14px', borderRadius:'12px', background:'rgba(0,0,0,0.3)', border:'1px solid rgba(54, 244, 163, 0.25)', color:'var(--text)', fontSize:'0.87rem', transition:'all 0.3s' }} 
                   />
-                  <button type="submit" disabled={chatSending} style={{ padding:'8px 16px', borderRadius:'10px', background:'var(--accent)', color:'#03101c', fontWeight:700, fontSize:'0.85rem' }}>
+                  <button type="submit" disabled={chatSending} style={{ padding:'12px 18px', borderRadius:'12px', background:'linear-gradient(135deg, #36f4a3, #29a9ff)', color:'#03101c', fontWeight:700, fontSize:'0.85rem', cursor: chatSending ? 'not-allowed' : 'pointer', opacity: chatSending ? 0.6 : 1 }}>
                     {chatSending ? '...' : 'Ask'}
                   </button>
                 </form>

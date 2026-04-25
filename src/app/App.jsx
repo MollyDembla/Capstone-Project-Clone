@@ -111,8 +111,15 @@ export default function App() {
 
 			<div id="profileModal" className="modal hidden">
 				<div className="modal-card">
-					<h2>Complete Your Profile</h2>
-					<p>Add indirect parameters for personalized analysis.</p>
+					<div className="profile-modal-header">
+						<button id="profileBackBtn" className="back-arrow-btn" type="button" aria-label="Back to login">
+							← Back
+						</button>
+						<div className="profile-header-content">
+							<h2>Complete Your Profile</h2>
+							<p>Add indirect parameters for personalized analysis.</p>
+						</div>
+					</div>
 					<form id="profileForm">
 						<label>Age
 							<input id="profileAge" type="number" min="20" max="60" defaultValue="30" required />

@@ -76,6 +76,7 @@ h3 {
 	border-radius: 20px;
 	padding: 24px;
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+	animation: cardSlideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .login-card h1 {
@@ -133,6 +134,29 @@ label {
 	gap: 6px;
 	font-size: 0.93rem;
 	color: var(--muted);
+	animation: fadeInUp 0.5s ease-out forwards;
+	opacity: 0;
+}
+
+label:nth-of-type(1) { animation-delay: 0.1s; }
+label:nth-of-type(2) { animation-delay: 0.15s; }
+label:nth-of-type(3) { animation-delay: 0.2s; }
+label:nth-of-type(4) { animation-delay: 0.25s; }
+label:nth-of-type(5) { animation-delay: 0.3s; }
+label:nth-of-type(6) { animation-delay: 0.35s; }
+label:nth-of-type(7) { animation-delay: 0.4s; }
+label:nth-of-type(8) { animation-delay: 0.45s; }
+label:nth-of-type(9) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 input,
@@ -149,6 +173,15 @@ select {
 	border: 1px solid var(--stroke);
 	background: rgba(5, 16, 26, 0.8);
 	color: var(--text);
+	transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+	border-color: rgba(54, 244, 163, 0.5);
+	background: rgba(5, 16, 26, 0.95);
+	box-shadow: 0 0 0 2px rgba(54, 244, 163, 0.15);
+	outline: none;
 }
 
 button {
@@ -159,10 +192,17 @@ button {
 	color: #03101c;
 	font-weight: 700;
 	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 button:hover {
 	filter: brightness(1.05);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(41, 222, 149, 0.3);
+}
+
+button:active {
+	transform: translateY(0);
 }
 
 .secondary-link {
@@ -199,12 +239,66 @@ button:hover {
 	padding: 16px;
 	z-index: 5;
 	overflow-y: auto;
+	animation: modalBackdropFadeIn 0.4s ease-out;
+}
+
+@keyframes modalBackdropFadeIn {
+	from {
+		opacity: 0;
+		backdrop-filter: blur(0px);
+	}
+	to {
+		opacity: 1;
+		backdrop-filter: blur(4px);
+	}
+}
+
+.modal.hidden {
+	animation: modalBackdropFadeOut 0.3s ease-in forwards;
+}
+
+@keyframes modalBackdropFadeOut {
+	from {
+		opacity: 1;
+		backdrop-filter: blur(4px);
+	}
+	to {
+		opacity: 0;
+		backdrop-filter: blur(0px);
+	}
 }
 
 .modal-card {
 	max-height: calc(100vh - 32px);
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
+	animation: cardSlideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cardSlideInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px) scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.modal.hidden .modal-card {
+	animation: cardSlideOutDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardSlideOutDown {
+	from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(30px) scale(0.95);
+	}
 }
 
 .feedback-modal-card {
@@ -815,12 +909,14 @@ button:hover {
 	min-width: calc((100% - 20px) / 3);
 	height: 100%;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	border: 1px solid rgba(156, 197, 220, 0.3);
 	border-radius: 12px;
 	overflow: hidden;
 	background: rgba(3, 10, 18, 0.8);
+	padding: 8px;
 }
 
 .tutorial-pose-item-empty {
@@ -832,10 +928,11 @@ button:hover {
 
 .tutorial-pose-item img {
 	width: 100%;
-	height: 100%;
+	height: calc(100% - 32px);
 	min-height: 0;
 	object-fit: contain;
 	display: block;
+	flex: 1;
 }
 
 #tutorialVideo {
@@ -1750,6 +1847,7 @@ button:hover {
 	border-radius: 24px;
 	padding: 32px;
 	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+	animation: cardSlideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .module-select-header {
@@ -1799,6 +1897,28 @@ button:hover {
 	transition: all 0.25s ease;
 	position: relative;
 	overflow: hidden;
+	animation: buttonSlideIn 0.5s ease-out;
+}
+
+.module-card-btn:nth-child(1) {
+	animation-delay: 0.1s;
+	animation-fill-mode: both;
+}
+
+.module-card-btn:nth-child(2) {
+	animation-delay: 0.2s;
+	animation-fill-mode: both;
+}
+
+@keyframes buttonSlideIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .module-card-btn::before {
@@ -1875,29 +1995,43 @@ button:hover {
    CHATBOT MESSAGE BUBBLES (used by mental module)
    ════════════════════════════════════════════════════════════ */
 .chat-msg {
-	padding: 9px 13px;
-	border-radius: 12px;
+	padding: 12px 14px;
+	border-radius: 14px;
 	font-size: 0.88rem;
-	line-height: 1.5;
-	max-width: 90%;
+	line-height: 1.6;
+	max-width: 85%;
 	word-break: break-word;
+	animation: fadeInMessage 0.3s ease-out;
 }
 
 .chat-msg-bot {
-	background: rgba(14, 35, 55, 0.85);
-	border: 1px solid rgba(154, 194, 219, 0.2);
-	color: #c4d6e6;
+	background: linear-gradient(135deg, rgba(20, 50, 75, 0.9), rgba(14, 38, 62, 0.9));
+	border: 1px solid rgba(54, 244, 163, 0.2);
+	color: #d4e4f7;
 	align-self: flex-start;
-	border-radius: 12px 12px 12px 4px;
+	border-radius: 14px 14px 14px 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .chat-msg-user {
-	background: linear-gradient(135deg, rgba(54, 244, 163, 0.18), rgba(41, 169, 255, 0.15));
-	border: 1px solid rgba(54, 244, 163, 0.3);
-	color: #e7f3ff;
+	background: linear-gradient(135deg, rgba(54, 244, 163, 0.25), rgba(41, 169, 255, 0.22));
+	border: 1.5px solid rgba(54, 244, 163, 0.45);
+	color: #ffffff;
 	align-self: flex-end;
 	margin-left: auto;
-	border-radius: 12px 12px 4px 12px;
+	border-radius: 14px 14px 4px 14px;
+	box-shadow: 0 2px 8px rgba(54, 244, 163, 0.15);
+	font-weight: 500;
+}
+
+@keyframes slideInUp {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInMessage {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1918,15 +2052,21 @@ button:hover {
 
 .report-assistant-panel {
 	position: fixed;
-	bottom: 80px;
-	right: 24px;
-	width: min(420px, calc(100vw - 32px));
+	bottom: 100px;
+	right: 32px;
+	width: min(400px, calc(100vw - 64px));
 	z-index: 50;
-	background: linear-gradient(170deg, rgba(14, 38, 62, 0.97), rgba(7, 19, 33, 0.98));
-	border: 1px solid var(--stroke);
-	border-radius: 20px;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+	background: linear-gradient(170deg, rgba(14, 38, 62, 0.99), rgba(7, 19, 33, 0.99));
+	border: 1px solid rgba(54, 244, 163, 0.2);
+	border-radius: 24px;
+	box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
 	overflow: hidden;
+	animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideInUp {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 
 .chatbot-box {
@@ -2050,4 +2190,52 @@ button:hover {
 .stat-subtext {
 	font-size: 0.75rem;
 	color: var(--muted);
+}
+
+/* Profile Modal Back Button */
+.profile-modal-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.back-arrow-btn {
+	padding: 8px 12px;
+	border-radius: 10px;
+	background: rgba(126, 216, 255, 0.12);
+	border: 1px solid rgba(126, 216, 255, 0.42);
+	color: #d8f2ff;
+	font-weight: 600;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	width: fit-content;
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+.back-arrow-btn:hover {
+	background: rgba(126, 216, 255, 0.2);
+	border-color: rgba(126, 216, 255, 0.6);
+	transform: translateX(-2px);
+}
+
+.back-arrow-btn:active {
+	transform: translateX(0);
+}
+
+.profile-header-content {
+	flex: 1;
+}
+
+.profile-header-content h2 {
+	margin: 0 0 6px 0;
+	font-size: 1.4rem;
+}
+
+.profile-header-content p {
+	margin: 0;
+	color: var(--muted);
+	font-size: 0.95rem;
 }
