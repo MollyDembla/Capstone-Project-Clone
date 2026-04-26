@@ -1587,13 +1587,16 @@ button:active {
 }
 
 .pipeline-flow-wrap {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	display: flex;
 	align-items: stretch;
 	gap: 10px;
+	overflow-x: auto;
+	padding-bottom: 6px;
 }
 
 .pipeline-stage-card {
+	flex: 1 1 0;
+	min-width: 0;
 	background: var(--card);
 	border: 1px solid var(--stroke);
 	border-radius: 14px;
@@ -1777,7 +1780,8 @@ button:active {
 	}
 
 	.pipeline-flow-wrap {
-		grid-template-columns: 1fr;
+		flex-direction: column;
+		overflow-x: visible;
 	}
 
 	.pipeline-stage-card {

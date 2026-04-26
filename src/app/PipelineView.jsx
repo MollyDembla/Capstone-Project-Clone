@@ -156,6 +156,8 @@ export default function PipelineView() {
 					<p>Keypoints are already generated during session processing and used for stability scoring.</p>
 				</article>
 
+				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
+
 				<article className="pipeline-stage-card">
 					<h2>Angle Analysis</h2>
 					<div className="pipeline-metric-list">
@@ -167,6 +169,8 @@ export default function PipelineView() {
 					</div>
 					<p>Uses stored angle outputs from the completed session analysis.</p>
 				</article>
+
+				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
 
 				<article className="pipeline-stage-card">
 					<h2>Score</h2>
