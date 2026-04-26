@@ -219,8 +219,8 @@ export default function App() {
 						<button id="selectMentalBtn" className="module-card-btn module-card-mental" type="button">
 							<span className="module-icon">🧠</span>
 							<span className="module-title">Mental Health Yoga</span>
-							<span className="module-desc">Yoga poses focused on mental wellness — Tadasana, Konasana, Trikonasana — with live pose detection, feedback, and AI reports.</span>
-							<span className="module-badge module-badge-mental">Mental Wellness</span>
+							<span className="module-desc">AI-powered yoga sessions designed to bring clarity and calm to your mind. Practice guided asanas with real-time feedback, reduce stress, and build mental balance through personalized insights and session reports.</span>
+							<span className="module-badge module-badge-mental">From chaos to calm.</span>
 						</button>
 					</div>
 				</div>
