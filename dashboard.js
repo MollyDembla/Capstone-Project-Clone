@@ -1,3 +1,6 @@
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+
 const FALLBACK_ASANA_CATALOG = [
 	{
 		id: 'konasana',
@@ -10,9 +13,9 @@ const FALLBACK_ASANA_CATALOG = [
 			'Q: Where should my gaze be? A: Look forward or slightly upward while keeping the neck relaxed.',
 		],
 		anatomicalFocus: {
-			targetMuscles: '<ul><li><b>Obliques (side abdominal muscles)</b> – primary muscles engaged during the side bend</li><li><b>Core muscles</b> – stabilize the body and maintain balance</li><li><b>Shoulders & arms</b> – support the raised arm and help in stretching</li><li><b>Hamstrings & inner thighs</b> – lightly stretched due to wide stance</li></ul>',
+			targetMuscles: '<ul><li><b>Obliques (side abdominal muscles)</b> G�� primary muscles engaged during the side bend</li><li><b>Core muscles</b> G�� stabilize the body and maintain balance</li><li><b>Shoulders & arms</b> G�� support the raised arm and help in stretching</li><li><b>Hamstrings & inner thighs</b> G�� lightly stretched due to wide stance</li></ul>',
 			healthBenefits: '<ul><li>Improves flexibility of the spine, especially side bending</li><li>Strengthens the core and waist muscles</li><li>Enhances digestion by compressing and stretching abdominal organs</li><li>Improves posture and balance</li><li>Helps in reducing stiffness in the back and sides</li></ul>',
-			precautions: '<ul><li>Avoid if you have lower back injury or severe spinal issues</li><li>Do not bend forward or backward — only sideways bending should be done</li><li>Avoid overstretching; go only as far as comfortable</li><li>Keep breathing normal and steady</li></ul>',
+			precautions: '<ul><li>Avoid if you have lower back injury or severe spinal issues</li><li>Do not bend forward or backward G�� only sideways bending should be done</li><li>Avoid overstretching; go only as far as comfortable</li><li>Keep breathing normal and steady</li></ul>',
 		},
 		tutorialSteps: [
 			{
@@ -78,6 +81,94 @@ function getPredictionClass(label) {
 	if (label === 'moderate') return 'pred-moderate';
 	if (label === 'incorrect') return 'pred-incorrect';
 	return '';
+}
+
+let reportChartsRoot = null;
+let reportChartsMountEl = null;
+let reportChartsRenderToken = 0;
+
+function toNumberOrNull(value, digits = 2) {
+	const num = Number(value);
+	return Number.isFinite(num) ? Number(num.toFixed(digits)) : null;
+}
+
+function clearReportCharts() {
+	if (reportChartsRoot) {
+		reportChartsRoot.unmount();
+		reportChartsRoot = null;
+	}
+	if (reportChartsMountEl) {
+		reportChartsMountEl.innerHTML = '';
+	}
+	reportChartsMountEl = null;
+}
+
+function normalizeReportChartData(finalReport) {
+	if (!finalReport || typeof finalReport !== 'object') {
+		return null;
+	}
+
+	const stepScores = finalReport?.overallScore?.stepScores || {};
+	const userTimes = finalReport?.timingAnalysis?.userTimes || {};
+	const overallScore = toNumberOrNull(finalReport?.overallScore?.finalScore, 1);
+
+	const stepMetrics = [
+		{ step: 'Step 1', score: toNumberOrNull(stepScores.step1, 1), timing: toNumberOrNull(userTimes.step1, 2) },
+		{ step: 'Step 2', score: toNumberOrNull(stepScores.step2, 1), timing: toNumberOrNull(userTimes.step2, 2) },
+		{ step: 'Step 3', score: toNumberOrNull(stepScores.step3, 1), timing: toNumberOrNull(userTimes.step3, 2) },
+	];
+
+	const hasScoreData = stepMetrics.some((item) => Number.isFinite(item.score));
+	const hasTimingData = stepMetrics.some((item) => Number.isFinite(item.timing));
+	const hasOverall = Number.isFinite(overallScore);
+
+	if (!hasScoreData && !hasTimingData && !hasOverall) {
+		return null;
+	}
+
+	return {
+		stepMetrics: stepMetrics.map((item) => ({
+			...item,
+			score: Number.isFinite(item.score) ? item.score : 0,
+			timing: Number.isFinite(item.timing) ? item.timing : 0,
+		})),
+		overallScore,
+	};
+}
+
+function renderReportCharts(finalReport = null) {
+	const chartsEl = document.getElementById('reportCharts');
+	if (!chartsEl) {
+		clearReportCharts();
+		return;
+	}
+
+	const chartData = normalizeReportChartData(finalReport);
+	if (!chartData) {
+		clearReportCharts();
+		return;
+	}
+
+	if (!reportChartsRoot || reportChartsMountEl !== chartsEl) {
+		if (reportChartsRoot) {
+			reportChartsRoot.unmount();
+		}
+		reportChartsMountEl = chartsEl;
+		reportChartsRoot = createRoot(chartsEl);
+	}
+
+	const currentToken = ++reportChartsRenderToken;
+	import('./src/app/SessionReportCharts.jsx')
+		.then(({ default: SessionReportCharts }) => {
+			if (currentToken !== reportChartsRenderToken || !reportChartsRoot) {
+				return;
+			}
+			reportChartsRoot.render(createElement(SessionReportCharts, { data: chartData }));
+		})
+		.catch((error) => {
+			console.error('Failed to render report charts:', error);
+			clearReportCharts();
+		});
 }
 
 export function initDashboard({ onAsanaChanged, onGenerateReport, onLogout, onStartSession, onEndSession }) {
@@ -378,7 +469,7 @@ export function renderPrediction({ label, confidence, score, feedback }) {
 
 	if (feedbackList) {
 		feedbackList.innerHTML = '';
-		const items = feedback?.length ? feedback : ['Waiting for stable pose...'];
+		const items = feedback?.length ? feedback : ['Waiting for you to stop wobbling... 🫨'];
 		for (const message of items) {
 			const li = document.createElement('li');
 			li.textContent = message;
@@ -594,7 +685,7 @@ function renderStructuredReportText(text, outputEl) {
 	}
 
 	if (!outputEl.textContent?.trim()) {
-		outputEl.textContent = 'No report generated yet.';
+		outputEl.textContent = "No report yet! Strike a pose first - we can't grade thin air 🌬️🧘";
 	}
 }
 
@@ -607,12 +698,14 @@ export function renderReport(text, finalReport = null, meta = null) {
 
 	const visualsEl = document.getElementById('reportVisuals');
 	if (!visualsEl) {
+		renderReportCharts(finalReport);
 		return;
 	}
 
 	visualsEl.innerHTML = '';
 	const images = finalReport?.skeletonImages || null;
 	if (!images) {
+		renderReportCharts(finalReport);
 		return;
 	}
 
@@ -636,6 +729,8 @@ export function renderReport(text, finalReport = null, meta = null) {
 		card.appendChild(image);
 		visualsEl.appendChild(card);
 	}
+
+	renderReportCharts(finalReport);
 }
 
 export function renderLiveCoachTip(text) {
@@ -680,8 +775,8 @@ export function renderSessionSummary(sessionReport) {
 
 export function setWelcomeText(user) {
 	const text = user?.fullName
-		? `Welcome, ${user.fullName} (${user.email})`
-		: `Welcome, ${user?.email || 'User'}`;
+		? `Welcome, ${user.fullName} (${user.email}) (Your spine called - it says it's ready 🦴)`
+		: `Welcome, ${user?.email || 'User'} (Your spine called - it says it's ready 🦴)`;
 	const welcomeEls = ['welcomeText', 'welcomeTextLive'];
 	for (const id of welcomeEls) {
 		const el = document.getElementById(id);

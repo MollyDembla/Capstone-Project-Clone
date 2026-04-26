@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Router from './Router.jsx';
 import PipelineView from './PipelineView.jsx';
+import BackNavButton from './BackNavButton.jsx';
 
 export default function App() {
 	const isPipelineRoute = typeof window !== 'undefined' && window.location.pathname === '/pipeline';
@@ -82,6 +83,7 @@ export default function App() {
 
 	return (
 		<>
+			<BackNavButton />
 			<div className="bg-shape bg-shape-a"></div>
 			<div className="bg-shape bg-shape-b"></div>
 
@@ -91,7 +93,7 @@ export default function App() {
 						<img src="/logo.png" alt="YogMitra logo" className="login-logo" />
 						<h1>YogMitra</h1>
 					</div>
-					<p>AI-based yoga posture analysis and guided practice.</p>
+					<p>AI-based yoga coach. Unlike a real guru, it won't make you hold Warrior II for 10 minutes. 🧘</p>
 					<div className="auth-tabs" role="tablist" aria-label="Authentication mode">
 						<button id="signInTab" className="auth-tab active" type="button" role="tab" aria-selected="true">Sign In</button>
 						<button id="signUpTab" className="auth-tab" type="button" role="tab" aria-selected="false">Sign Up</button>
@@ -184,7 +186,7 @@ export default function App() {
 					<div className="module-select-header">
 						<img src="/logo.png" alt="YogMitra logo" className="login-logo" style={{width:'52px',height:'52px'}} />
 						<h2>Choose Your Wellness Module</h2>
-						<p>Select the type of yoga practice you want to start today.</p>
+						<p>Choose your destiny. Your back already knows which one it needs. 😅</p>
 					</div>
 					<div className="module-select-grid">
 						<button id="selectSedentaryBtn" className="module-card-btn" type="button">
@@ -461,7 +463,7 @@ export default function App() {
 						<button id="endSessionBtn" type="button" disabled>End Session</button>
 					</div>
 
-					<p className="camera-guide-text">Keep your full body visible: head, both palms, and both feet.</p>
+					<p className="camera-guide-text">Keep your full body visible - yes, feet too. We see you trying to cheat 👀</p>
 
 					<div className="live-stats-row">
 						<div className="panel live-stat-card">
@@ -506,12 +508,10 @@ export default function App() {
 							<h1>Session Report</h1>
 						</div>
 						<div className="live-practice-header-actions">
-							<button id="backToLivePracticeFromReportBtn" type="button" className="secondary-nav-btn">Back to Live Practice</button>
-							<button id="backToDashboardFromReportBtn" type="button" className="secondary-nav-btn">Back to Dashboard</button>
 							<button id="logoutBtnReport" className="logout-btn" type="button">Logout</button>
 						</div>
 					</div>
-					<p className="status-text">Review your generated report. Open assistant only when needed.</p>
+					<p className="status-text">Your posture report is in. Don't worry, we won't show it to your yoga teacher 🤫</p>
 				</header>
 
 				<div className="report-only-grid">
@@ -531,7 +531,8 @@ export default function App() {
 								<h2>AI Posture Report</h2>
 								<span id="reportSourceBadge" className="report-source-badge">Awaiting Report</span>
 							</div>
-							<div id="reportOutput" className="report-output">No report generated yet.</div>
+							<div id="reportOutput" className="report-output">No report yet! Strike a pose first - we can't grade thin air 🌬️🧘</div>
+							<div id="reportCharts" className="report-charts-grid"></div>
 							<div id="reportVisuals" className="report-visuals"></div>
 						</div>
 					</section>

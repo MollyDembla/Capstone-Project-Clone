@@ -220,6 +220,30 @@ button:active {
 	color: #a6e6ff;
 }
 
+.fixed-back-btn {
+	position: fixed;
+	left: 14px;
+	top: 14px;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	border-radius: 999px;
+	border: 1px solid rgba(126, 216, 255, 0.45);
+	background: rgba(7, 17, 27, 0.58);
+	color: #d8f2ff;
+	font-size: 1.05rem;
+	line-height: 1;
+	z-index: 60;
+	backdrop-filter: blur(6px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.fixed-back-btn:hover {
+	background: rgba(126, 216, 255, 0.2);
+	filter: none;
+	transform: translateY(-1px);
+}
+
 .auth-error {
 	margin: 0;
 	padding: 8px 10px;
@@ -816,6 +840,63 @@ button:active {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 	gap: 10px;
+}
+
+.report-charts-grid {
+	margin-top: 12px;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.report-chart-card {
+	background: rgba(10, 25, 41, 0.55);
+	border: 1px solid rgba(156, 197, 220, 0.22);
+	border-radius: 10px;
+	padding: 10px;
+	display: grid;
+	gap: 8px;
+}
+
+.report-chart-card h3 {
+	margin: 0;
+	font-size: 0.9rem;
+	color: #d8e9f8;
+}
+
+.report-chart-canvas {
+	height: 220px;
+	position: relative;
+}
+
+.report-chart-card-radial {
+	grid-column: 1 / -1;
+}
+
+.report-chart-radial-wrap {
+	display: grid;
+	place-items: center;
+	min-height: 220px;
+}
+
+.report-radial-center-value {
+	position: absolute;
+	text-align: center;
+	display: grid;
+	gap: 2px;
+	align-items: center;
+	justify-items: center;
+}
+
+.report-radial-center-value strong {
+	font-size: 1.5rem;
+	color: #eaf7ff;
+	line-height: 1;
+}
+
+.report-radial-center-value span {
+	font-size: 0.78rem;
+	color: var(--muted);
 }
 
 .report-visual-card {
@@ -1430,6 +1511,10 @@ button:active {
 		left: 12px;
 		bottom: 92px;
 		width: auto;
+	}
+
+	.report-charts-grid {
+		grid-template-columns: 1fr;
 	}
 }
 

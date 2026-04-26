@@ -237,6 +237,20 @@ export default function MentalApp({ userName = 'User', onLogout }) {
 
   const currentAsana = ASANA_CATALOG[selectedAsana];
 
+  function handleMentalBack() {
+    if (view === 'report') {
+      setView('livePractice');
+      return;
+    }
+
+    if (view === 'livePractice') {
+      setView('dashboard');
+      return;
+    }
+
+    window.location.href = '/';
+  }
+
   function handleImageError(idx) {
     setImageErrors(prev => ({ ...prev, [idx]: true }));
   }
@@ -739,6 +753,16 @@ Keep practicing, ${userName}! Each session deepens the triangle. 🙏`;
   // ─────────────────────────────────────────────────────────────
   return (
     <div style={{ minHeight:'100vh', padding: view === 'livePractice' ? '0' : '12px', display:'flex', flexDirection:'column', gap:'12px' }}>
+      <button
+        type="button"
+        className="fixed-back-btn"
+        onClick={handleMentalBack}
+        aria-label="Go back"
+        title="Back"
+      >
+        ←
+      </button>
+
       {/* Hidden canvas for frame capture */}
       <canvas ref={canvasRef} width={640} height={480} style={{ display:'none' }} />
 
@@ -934,7 +958,6 @@ Keep practicing, ${userName}! Each session deepens the triangle. 🙏`;
                 <h1 style={{ fontSize:'1.1rem', margin:0 }}>Live Practice — {selectedAsana}</h1>
               </div>
               <div style={{ display:'flex', gap:'10px' }}>
-                <button className="secondary-nav-btn" onClick={() => setView('dashboard')}>Back to Dashboard</button>
                 <button className="logout-btn" onClick={onLogout}>Logout</button>
               </div>
             </div>
@@ -1173,7 +1196,6 @@ Keep practicing, ${userName}! Each session deepens the triangle. 🙏`;
               </div>
               <div style={{ display:'flex', gap:'10px' }}>
                 <button className="secondary-nav-btn" onClick={() => setView('livePractice')}>Back to Practice</button>
-                <button className="secondary-nav-btn" onClick={() => setView('dashboard')}>Dashboard</button>
                 <button className="logout-btn" onClick={onLogout}>Logout</button>
               </div>
             </div>

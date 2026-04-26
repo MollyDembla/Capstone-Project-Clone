@@ -3237,7 +3237,7 @@ function resetAnalysisUI() {
 	renderSessionSummary(null);
 	setSessionControlState(false);
 	renderLiveCoachTip('Start session to get real-time posture cues.');
-	renderReport('No report generated yet.', null);
+	renderReport("No report yet! Strike a pose first - we can't grade thin air 🌬️🧘", null);
 	latestReportText = '';
 	setDownloadReportState(false);
 }

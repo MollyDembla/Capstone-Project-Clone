@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import BackNavButton from './BackNavButton.jsx';
 
 const PIPELINE_STORAGE_KEY = 'sedentary_pipeline_view_data';
 
@@ -75,6 +77,7 @@ function formatStepName(stepKey) {
 }
 
 export default function PipelineView() {
+	const navigate = useNavigate();
 	const [pipelineData, setPipelineData] = useState(null);
 
 	useEffect(() => {
@@ -103,19 +106,23 @@ export default function PipelineView() {
 
 	return (
 		<main className="pipeline-page">
+			<BackNavButton />
 			<header className="pipeline-header">
 				<div>
 					<h1>Pipeline View</h1>
-					<p>
-						Explainable session flow for {pipelineData?.asanaName || 'your latest session'}.
-					</p>
+					<p>The nerdy behind-the-scenes of your session. Your CPU suffered so you could bend better 🤖</p>
 				</div>
 				<div className="pipeline-header-actions">
 					<button
 						type="button"
 						className="secondary-nav-btn"
 						onClick={() => {
-							window.location.href = '/';
+							navigate(-1);
+							window.setTimeout(() => {
+								if (window.location.pathname === '/pipeline') {
+									window.location.href = '/';
+								}
+							}, 180);
 						}}
 					>
 						Back To App
