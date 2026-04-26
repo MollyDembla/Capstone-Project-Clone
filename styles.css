@@ -828,7 +828,7 @@ button:active {
 	width: 100%;
 	height: 100%;
 	min-height: 0;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 4 / 3;
 	max-height: none;
 	border-radius: 12px;
 	border: 1px solid rgba(156, 197, 220, 0.2);
@@ -1035,8 +1035,8 @@ button:active {
 .video-card video,
 .annotated-wrap {
 	width: 100%;
-	aspect-ratio: 16 / 7;
-	max-height: 215px;
+	aspect-ratio: 4 / 3;
+	max-height: 320px;
 	border-radius: 12px;
 	border: 1px solid rgba(156, 197, 220, 0.2);
 	background: #000;
@@ -1062,6 +1062,7 @@ button:active {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
+	object-position: center center;
 	background: #000;
 }
 
@@ -1070,6 +1071,7 @@ button:active {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
+	object-position: center center;
 	background: #000;
 }
 
@@ -1585,16 +1587,13 @@ button:active {
 }
 
 .pipeline-flow-wrap {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	align-items: stretch;
 	gap: 10px;
-	overflow-x: auto;
-	padding-bottom: 6px;
 }
 
 .pipeline-stage-card {
-	min-width: 290px;
-	max-width: 340px;
 	background: var(--card);
 	border: 1px solid var(--stroke);
 	border-radius: 14px;
@@ -1778,12 +1777,10 @@ button:active {
 	}
 
 	.pipeline-flow-wrap {
-		flex-direction: column;
-		overflow-x: visible;
+		grid-template-columns: 1fr;
 	}
 
 	.pipeline-stage-card {
-		max-width: none;
 		width: 100%;
 	}
 
@@ -2058,6 +2055,8 @@ button:active {
 	font-size: 0.85rem;
 	color: var(--muted);
 	line-height: 1.5;
+	text-align: justify;
+	text-align-last: left;
 }
 
 .module-badge {
@@ -2129,11 +2128,18 @@ button:active {
 	bottom: 24px;
 	right: 24px;
 	z-index: 50;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	padding: 12px 18px;
+	min-height: 44px;
 	border-radius: 999px;
 	background: linear-gradient(135deg, #29de95, #29a9ff);
 	color: #03101c;
 	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
 	box-shadow: 0 8px 24px rgba(41, 222, 149, 0.35);
 }
 

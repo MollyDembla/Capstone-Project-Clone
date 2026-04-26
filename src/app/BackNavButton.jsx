@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+const RETURN_TO_REPORT_KEY = 'yogmitra_return_to_report';
+
 function isVisibleById(id) {
 	const el = document.getElementById(id);
 	return Boolean(el && !el.classList.contains('hidden'));
@@ -57,6 +59,21 @@ export default function BackNavButton() {
 		return observeSurfaceChanges(setSurface);
 	}, [location.pathname]);
 
+	useEffect(() => {
+		if (location.pathname !== '/' || typeof window === 'undefined') {
+			return;
+		}
+
+		const shouldReturnToReport = window.sessionStorage.getItem(RETURN_TO_REPORT_KEY) === '1';
+		if (!shouldReturnToReport) {
+			return;
+		}
+
+		window.sessionStorage.removeItem(RETURN_TO_REPORT_KEY);
+		showOnly('reportView');
+		setSurface('report');
+	}, [location.pathname]);
+
 	const isPipelineRoute = location.pathname === '/pipeline';
 	const hideOnLogin = location.pathname === '/' && surface === 'login';
 	const hideOnModuleSelector = location.pathname === '/' && surface === 'moduleSelector';
@@ -66,7 +83,11 @@ export default function BackNavButton() {
 	}
 
 	function handlePipelineBack() {
-		navigate(-1);
+		if (typeof window !== 'undefined') {
+			window.sessionStorage.setItem(RETURN_TO_REPORT_KEY, '1');
+		}
+
+		navigate('/');
 		window.setTimeout(() => {
 			if (window.location.pathname === '/pipeline') {
 				window.location.href = '/';

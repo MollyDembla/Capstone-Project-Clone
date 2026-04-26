@@ -35,6 +35,8 @@ const ANGLE_FEEDBACK = [
   'Deepen the lateral tilt — reach further toward your shin/ankle.',
 ];
 
+const MENTAL_TUTORIAL_VIDEO = '/assets/yoga-poses/trikonasana-final.mp4';
+
 const ASANA_CATALOG = {
   Tadasana: {
     description: 'Tadasana (Mountain Pose) builds foundational alignment through neutral spine, stable feet, and vertical balance. It grounds the mind and promotes full body awareness.',
@@ -58,12 +60,12 @@ const ASANA_CATALOG = {
       '/assets/yoga-poses/pose-arms-raised.png',
       '/assets/yoga-poses/pose-stretch.png',
     ],
-    videoLinks: ['/assets/videos/tadasana-video.mp4'],
+    videoLinks: [MENTAL_TUTORIAL_VIDEO],
     tutorialCaption: 'Follow this guided Tadasana demo video for mental clarity.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Stand with feet together or slightly apart, arms by your side.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 2', caption: 'Interlace fingers, turn palms out, and raise arms straight overhead.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 3', caption: 'Lengthen through the spine, lifting through the crown of the head.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 1', caption: 'Stand with feet together or slightly apart, arms by your side.', videoUrl: MENTAL_TUTORIAL_VIDEO },
+      { title: 'Step 2', caption: 'Interlace fingers, turn palms out, and raise arms straight overhead.', videoUrl: MENTAL_TUTORIAL_VIDEO },
+      { title: 'Step 3', caption: 'Lengthen through the spine, lifting through the crown of the head.', videoUrl: MENTAL_TUTORIAL_VIDEO },
     ],
   },
   Konasana: {
@@ -88,12 +90,12 @@ const ASANA_CATALOG = {
       '/assets/yoga-poses/pose-arms-raised.png',
       '/assets/yoga-poses/pose-stretch.png',
     ],
-    videoLinks: ['/assets/videos/tadasana-video.mp4'],
+    videoLinks: [MENTAL_TUTORIAL_VIDEO],
     tutorialCaption: 'Deepen your lateral stretch with this Konasana tutorial.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Stand tall and raise one arm overhead.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 2', caption: 'Slide the other hand down your leg as you bend sideways.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 3', caption: 'Hold and breathe into the side ribs, then return.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      { title: 'Step 1', caption: 'Stand tall and raise one arm overhead.', videoUrl: MENTAL_TUTORIAL_VIDEO },
+      { title: 'Step 2', caption: 'Slide the other hand down your leg as you bend sideways.', videoUrl: MENTAL_TUTORIAL_VIDEO },
+      { title: 'Step 3', caption: 'Hold and breathe into the side ribs, then return.', videoUrl: MENTAL_TUTORIAL_VIDEO },
     ],
   },
   Trikonasana: {
@@ -120,25 +122,25 @@ const ASANA_CATALOG = {
       '/assets/yoga-poses/image2.png',
       '/assets/yoga-poses/image3.png',
     ],
-    videoLinks: ['/assets/videos/trikonasana-video.mp4'],
+    videoLinks: [MENTAL_TUTORIAL_VIDEO],
     tutorialCaption: 'Follow the 3-step Trikonasana progression — build the pose gradually for safe, effective mental and physical benefits.',
     tutorialSteps: [
       {
         title: 'Step 1 — Wide Stance & T-Arms',
         caption: 'Stand tall. Step feet 3–4 feet apart. Extend both arms horizontally at shoulder height, palms facing down. Keep legs straight, spine long, and gaze forward. Hold and breathe.',
-        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        videoUrl: MENTAL_TUTORIAL_VIDEO,
         imageUrl: '/assets/yoga-poses/image1.png'
       },
       {
         title: 'Step 2 — Lateral Bend & Reach',
         caption: 'Inhale. On exhale, hinge at the right hip and reach your right hand toward your right shin. Keep the chest open — do not collapse forward. Raise the left arm skyward. Continue breathing steadily.',
-        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        videoUrl: MENTAL_TUTORIAL_VIDEO,
         imageUrl: '/assets/yoga-poses/image2.png'
       },
       {
         title: 'Step 3 — Full Triangle Hold',
         caption: 'Deepen the bend — lower your right hand to the ankle or floor beside it. Stack the left shoulder directly above the right. Extend the top arm fully to the sky and gaze upward. Hold for 5–8 deep breaths.',
-        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        videoUrl: MENTAL_TUTORIAL_VIDEO,
         imageUrl: '/assets/yoga-poses/image3.png'
       },
     ],

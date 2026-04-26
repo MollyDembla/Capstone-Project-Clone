@@ -81,6 +81,27 @@ export default function App() {
 		window.__yogmitraAsanas = asanaCatalog;
 	}, [asanaCatalog]);
 
+	useEffect(() => {
+		const videoUrl = '/assets/yoga-poses/Long Konasana video with music.mp4';
+		const videoIds = ['tutorialVideoDashboard', 'tutorialVideo'];
+		const galleryIds = ['tutorialPoseGalleryDashboard', 'tutorialPoseGallery'];
+
+		for (const videoId of videoIds) {
+			const videoEl = document.getElementById(videoId);
+			if (!videoEl) continue;
+			videoEl.src = videoUrl;
+			videoEl.load();
+			videoEl.classList.remove('hidden');
+		}
+
+		for (const galleryId of galleryIds) {
+			const galleryEl = document.getElementById(galleryId);
+			if (galleryEl) {
+				galleryEl.classList.add('hidden');
+			}
+		}
+	}, []);
+
 	return (
 		<>
 			<BackNavButton />
@@ -192,8 +213,8 @@ export default function App() {
 						<button id="selectSedentaryBtn" className="module-card-btn" type="button">
 							<span className="module-icon">🧘</span>
 							<span className="module-title">Sedentary Yoga</span>
-							<span className="module-desc">AI-powered posture analysis for Konasana and other asanas with real-time webcam tracking, angle scoring, and session reports.</span>
-							<span className="module-badge">Pose Correction</span>
+							<span className="module-desc">AI-powered posture correction that transforms daily sitting into strength. Track your movements in real time, improve alignment with smart feedback, and turn strain into stability through guided asanas and detailed session insights. From strain to strength.</span>
+							<span className="module-badge">From strain to strength</span>
 						</button>
 						<button id="selectMentalBtn" className="module-card-btn module-card-mental" type="button">
 							<span className="module-icon">🧠</span>

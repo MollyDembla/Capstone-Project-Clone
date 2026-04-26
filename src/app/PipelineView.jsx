@@ -56,19 +56,6 @@ function StepTripletPreview({ images, fallbackText }) {
 	);
 }
 
-function RawFrameTriplet() {
-	return (
-		<div className="pipeline-raw-triplet">
-			{STEP_KEYS.map((stepKey) => (
-				<div key={stepKey} className="pipeline-raw-step-chip">
-					<strong>{formatStepName(stepKey)}</strong>
-					<span>Raw frame preview not persisted</span>
-				</div>
-			))}
-		</div>
-	);
-}
-
 function formatStepName(stepKey) {
 	if (stepKey === 'step1') return 'Step 1';
 	if (stepKey === 'step2') return 'Step 2';
@@ -161,14 +148,6 @@ export default function PipelineView() {
 
 			<section className="pipeline-flow-wrap">
 				<article className="pipeline-stage-card">
-					<h2>Raw Frames</h2>
-					<RawFrameTriplet />
-					<p>All captured session frames enter the temporal pipeline first.</p>
-				</article>
-
-				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
-
-				<article className="pipeline-stage-card">
 					<h2>Skeleton + Keypoints</h2>
 					<StepTripletPreview
 						images={pipelineData?.images || null}
@@ -176,32 +155,6 @@ export default function PipelineView() {
 					/>
 					<p>Keypoints are already generated during session processing and used for stability scoring.</p>
 				</article>
-
-				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
-
-				<article className="pipeline-stage-card">
-					<h2>Stable Frame Selection</h2>
-					<div className="pipeline-selection-summary">
-						{STEP_KEYS.map((stepKey) => {
-							const frame = pipelineData?.selectedFrames?.[stepKey] || null;
-							const tier = pipelineData?.frameSelectionTiers?.[stepKey]?.tier || 'N/A';
-							const segmentSize = pipelineData?.majorSegmentCounts?.[stepKey] ?? null;
-							return (
-								<div key={stepKey} className="pipeline-selection-row">
-									<strong>{formatStepName(stepKey)}</strong>
-									<span>Segment: {formatValue(segmentSize)} frames</span>
-									<span>Tier: {tier}</span>
-									<span>Chosen frame confidence: {formatValue(toNumberOrNull(frame?.confidence), '%')}</span>
-								</div>
-							);
-						})}
-					</div>
-					<p>
-						Temporal pipeline selects one representative frame per step from stable activity windows.
-					</p>
-				</article>
-
-				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
 
 				<article className="pipeline-stage-card">
 					<h2>Angle Analysis</h2>
@@ -214,8 +167,6 @@ export default function PipelineView() {
 					</div>
 					<p>Uses stored angle outputs from the completed session analysis.</p>
 				</article>
-
-				<div className="pipeline-arrow" aria-hidden="true">-&gt;</div>
 
 				<article className="pipeline-stage-card">
 					<h2>Score</h2>
