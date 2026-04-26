@@ -1,0 +1,147 @@
+﻿python : WARNING: All log 
+messages before 
+absl::InitializeLog() is 
+called are written to 
+STDERR
+At line:1 char:1
++ python "c:\Projects\Caps
+tone-Project-Clone\src\mod
+ules\mental\Yoga-Po ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (W  
+  ARNING: All lo...itte   
+ n to STDERR:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+I0000 
+00:00:1777194248.355775   
+25096 port.cc:153] oneDNN 
+custom operations are on. 
+You may see slightly 
+different numerical 
+results due to 
+floating-point round-off 
+errors from different 
+computation orders. To 
+turn them off, set the 
+environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages 
+before 
+absl::InitializeLog() is 
+called are written to 
+STDERR
+I0000 
+00:00:1777194255.841411   
+25096 port.cc:153] oneDNN 
+custom operations are on. 
+You may see slightly 
+different numerical 
+results due to 
+floating-point round-off 
+errors from different 
+computation orders. To 
+turn them off, set the 
+environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+TensorFlow 2.21.0 loaded.
+Traceback (most recent 
+call last):
+  File "c:\Projects\Capsto
+ne-Project-Clone\src\modul
+es\mental\Yoga-Pose Detect
+ion\dataset_generation.py"
+, line 44, in <module>
+    import tensorflowjs 
+as tfjs
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\__init__.p
+y", line 21, in <module>
+    from tensorflowjs 
+import converters
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\converters
+\__init__.py", line 21, 
+in <module>
+    from tensorflowjs.conv
+erters.converter import 
+convert
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\converters
+\converter.py", line 35, 
+in <module>
+    from 
+tensorflowjs.converters 
+import 
+keras_h5_conversion as 
+conversion
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\converters
+\keras_h5_conversion.py", 
+line 33, in <module>
+    from tensorflowjs 
+import write_weights  # 
+pylint: 
+disable=import-error
+    ^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\write_weig
+hts.py", line 25, in 
+<module>
+    from tensorflowjs 
+import read_weights
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\tensorflowjs\read_weigh
+ts.py", line 28, in 
+<module>
+    np.uint8, np.uint16, 
+np.object, np.bool]
+                         
+^^^^^^^^^
+  File "C:\Users\molly\App
+Data\Local\Programs\Python
+\Python313\Lib\site-packag
+es\numpy\__init__.py", 
+line 410, in __getattr__
+    raise AttributeError(_
+_former_attrs__[attr], 
+name=None)
+AttributeError: module 
+'numpy' has no attribute 
+'object'.
+`np.object` was a 
+deprecated alias for the 
+builtin `object`. To 
+avoid this error in 
+existing code, use 
+`object` by itself. Doing 
+this will not modify any 
+behavior and is safe. 
+The aliases was 
+originally deprecated in 
+NumPy 1.20; for more 
+details and guidance see 
+the original release note 
+at:
+    https://numpy.org/devd
+ocs/release/1.20.0-notes.h
+tml#deprecations

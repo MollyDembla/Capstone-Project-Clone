@@ -52,11 +52,18 @@ export default function App() {
 		{
 			id: 'trikonasana',
 			name: 'Trikonasana',
-			description: 'Details not available.',
-			faqs: ['Details not available.'],
-			photoLinks: [],
-			videoLinks: [],
-			tutorialCaption: 'Details not available.',
+			description: 'Trikonasana (Triangle Pose) stretches the legs and spine, opens the chest, and improves balance. It is highly effective for mental clarity and stress reduction.',
+			faqs: [
+				'Q: How wide should my feet be? A: Roughly 3.5 to 4 feet apart.',
+				'Q: Should my back be against a wall? A: Practicing against a wall is great for beginners to learn the lateral plane.',
+			],
+			photoLinks: [
+				'/assets/yoga-poses/image1.png',
+				'/assets/yoga-poses/image2.png',
+				'/assets/yoga-poses/image3.png',
+			],
+			videoLinks: ['/assets/videos/trikonasana-video.mp4'],
+			tutorialCaption: 'Master the three phases of Triangle Pose.',
 		},
 		{
 			id: 'vrikshasana',

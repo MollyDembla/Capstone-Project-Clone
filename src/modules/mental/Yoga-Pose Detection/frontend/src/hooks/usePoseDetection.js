@@ -311,5 +311,6 @@ export function usePoseDetection(
     startDetection,
     stopDetection,
     initializeModel,
+    detectPose,
   };
 }

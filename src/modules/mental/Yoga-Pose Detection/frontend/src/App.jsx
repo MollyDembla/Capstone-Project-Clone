@@ -5,51 +5,64 @@ import { computeYogaScore } from "./utils/scoringUtils";
 import "./App.css";
 
 // Ideal joint angles for each asana
-// Order: [left_elbow, right_elbow, left_shoulder, right_shoulder, left_knee, right_knee, hip, spine]
+// Order: [left_elbow, right_elbow, left_shoulder, right_shoulder,
+//         left_knee,  right_knee,  hip,           spine]
 const IDEAL_POSES = {
   Tadasana: [
-    170, // left_elbow - close to straight
+    170, // left_elbow  - close to straight
     170, // right_elbow - close to straight
-    90, // left_shoulder - at rest
-    90, // right_shoulder - at rest
-    170, // left_knee - straight
+    90,  // left_shoulder  - at rest
+    90,  // right_shoulder - at rest
+    170, // left_knee  - straight
     170, // right_knee - straight
-    170, // hip - neutral pelvis
+    170, // hip  - neutral
     180, // spine - vertical
   ],
   Konasana: [
-    140, // left_elbow - slightly bent
+    140, // left_elbow  - slightly bent
     140, // right_elbow - slightly bent
-    110, // left_shoulder - raised
+    110, // left_shoulder  - raised
     110, // right_shoulder - raised
-    170, // left_knee - straight
+    170, // left_knee  - straight
     170, // right_knee - straight
-    165, // hip - slightly open
+    165, // hip  - slightly open
     160, // spine - bent to side
   ],
+  // Trikonasana (Triangle Pose) — primary pose for the Mental Health module
+  // These represent the FULL POSE (Step 3) angles used for live scoring.
+  // Step-aware scoring uses TRIKONASANA_STEP_ANGLES below.
   Trikonasana: [
-    170, // left_elbow - extended
-    170, // right_elbow - extended
-    100, // left_shoulder - open
-    100, // right_shoulder - open
-    170, // left_knee - straight
+    170, // left_elbow  - fully extended
+    170, // right_elbow - fully extended
+    90,  // left_shoulder  - opened laterally
+    90,  // right_shoulder - opened laterally
+    170, // left_knee  - straight
     170, // right_knee - straight
-    160, // hip - open
-    150, // spine - twisted/bent
+    90,  // hip  - wide stance spread
+    120, // spine - full lateral tilt
   ],
 };
 
-// Feedback messages for angle corrections
-const ANGLE_FEEDBACK = {
-  0: "Straighten your left elbow more.",
-  1: "Straighten your right elbow more.",
-  2: "Adjust your left shoulder position.",
-  3: "Adjust your right shoulder position.",
-  4: "Keep your left leg straight.",
-  5: "Keep your right leg straight.",
-  6: "Align your hips properly.",
-  7: "Keep your spine aligned vertically.",
+// Per-step Trikonasana ideal angles for progressive live feedback
+const TRIKONASANA_STEP_ANGLES = {
+  step1: [170, 170, 90, 90, 170, 170, 90, 165], // Wide stance, T-arms
+  step2: [170, 170, 90, 90, 170, 170, 90, 145], // Reaching / lateral bend
+  step3: [170, 170, 90, 90, 170, 170, 90, 120], // Full triangle hold
 };
+
+
+// Feedback messages for angle corrections (Trikonasana-aware)
+const ANGLE_FEEDBACK = {
+  0: "Straighten your left elbow — keep the arm fully extended.",
+  1: "Straighten your right elbow — reach toward the sky or floor.",
+  2: "Open your left shoulder — align it vertically above the right.",
+  3: "Open your right shoulder — keep it stacked below the left.",
+  4: "Keep your left leg straight — engage the quadriceps.",
+  5: "Keep your right leg straight — do not bend the front knee.",
+  6: "Widen your hip stance — feet should be 3–4 feet apart.",
+  7: "Deepen the lateral tilt — reach further toward your shin/ankle.",
+};
+
 
 const ASANA_CONTENT = {
   Konasana: {
@@ -106,7 +119,7 @@ const TADASANA_FAQS = [
 
 function App() {
   const [keypoints, setKeypoints] = useState([]);
-  const [selectedAsana, setSelectedAsana] = useState("Tadasana");
+  const [selectedAsana, setSelectedAsana] = useState("Trikonasana");
   const [showTutorial, setShowTutorial] = useState(true);
   const [enableLiveAnalysis, setEnableLiveAnalysis] = useState(true);
   const [mirrorView, setMirrorView] = useState(false);
@@ -171,9 +184,21 @@ function App() {
         averageConfidence: avgConfidence,
       });
 
-      // Calculate joint angles from detected keypoints
+      // Calculate joint angles and determine ideal angles based on pose & step
       const userAngles = calculateJointAngles(newKeypoints, 0.3);
-      const idealAngles = IDEAL_POSES[selectedAsana];
+      let idealAngles = IDEAL_POSES[selectedAsana];
+
+      // Trikonasana: detect current step from spine-tilt angle and apply step-aware targets
+      if (selectedAsana === "Trikonasana" && Array.isArray(userAngles)) {
+        const spineAngle = userAngles[7] || 165;
+        if (spineAngle >= 155) {
+          idealAngles = TRIKONASANA_STEP_ANGLES.step1;
+        } else if (spineAngle >= 130) {
+          idealAngles = TRIKONASANA_STEP_ANGLES.step2;
+        } else {
+          idealAngles = TRIKONASANA_STEP_ANGLES.step3;
+        }
+      }
 
       // Compare user angles with ideal angles
       const angleComparison = compareAngles(userAngles, idealAngles);

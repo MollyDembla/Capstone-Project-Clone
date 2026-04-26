@@ -32,7 +32,11 @@ import "./PoseDetectorComponent.css";
  * @param {Function} onKeypointsUpdate - Callback when keypoints are updated
  * @param {Object} options - Component options
  */
-export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
+export function PoseDetectorComponent({
+  onKeypointsUpdate,
+  options = {},
+  isActive = false,
+}) {
   // DOM References
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -104,6 +108,15 @@ export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
       // Now set the video element in state so hook gets the real element
       setVideoElement(videoRef.current);
       setIsCameraReady(true);
+
+      // Aggressive Warmup: Run multiple frames to pre-compile WebGL shaders and stabilize FPS
+      console.log("Warming up pose detection engine (5-frame sequence)...");
+      await poseDetection.initializeModel();
+      for(let i=0; i<5; i++) {
+        await poseDetection.detectPose();
+        await new Promise(r => setTimeout(r, 100)); // Small pause to let GPU breath
+      }
+      console.log("✅ Engine fully optimized and lag-free");
     } catch (error) {
       console.error("Camera initialization error:", error);
       setCameraError(error.message || "Failed to initialize camera");
@@ -257,8 +270,17 @@ export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
     poseDetection.fps,
   ]);
 
+  // Start/Stop detection based on isActive prop
+  useEffect(() => {
+    if (isActive && isCameraReady && !poseDetection.isDetecting) {
+      poseDetection.startDetection();
+    } else if (!isActive && poseDetection.isDetecting) {
+      poseDetection.stopDetection();
+    }
+  }, [isActive, isCameraReady, poseDetection]);
+
   /**
-   * Handle start/stop button click
+   * Handle start/stop button click (manually)
    */
   function handleToggleDetection() {
     if (poseDetection.isDetecting) {
@@ -276,7 +298,11 @@ export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
   }
 
   return (
-    <div className="pose-detector-container" ref={containerRef}>
+    <div
+      className="pose-detector-container"
+      ref={containerRef}
+      style={{ height: "100%", width: "100%" }}
+    >
       {!options.hideUI && (
         <div className="pose-detector-header">
           <h2>Real-Time Pose Detection</h2>
@@ -334,6 +360,7 @@ export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
           playsInline
           width={videoDimensions.width}
           height={videoDimensions.height}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
         {/* Canvas overlay for visualization */}
@@ -342,6 +369,7 @@ export function PoseDetectorComponent({ onKeypointsUpdate, options = {} }) {
           className="pose-detector-canvas"
           width={videoDimensions.width}
           height={videoDimensions.height}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
         {/* Loading state overlay */}

@@ -1,22 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// ── Ideal joint angles (same order as sedentary module)
-// [left_elbow, right_elbow, left_shoulder, right_shoulder, left_knee, right_knee, hip, spine]
+// ── Ideal joint angles per pose & step
+// Order: [left_elbow, right_elbow, left_shoulder, right_shoulder,
+//         left_knee,  right_knee,  hip,           spine]
 const IDEAL_POSES = {
   Tadasana:   [170, 170,  90,  90, 170, 170, 170, 180],
   Konasana:   [140, 140, 110, 110, 170, 170, 165, 160],
-  Trikonasana:[170, 170, 100, 100, 170, 170, 160, 150],
+  // Trikonasana uses 3 progressive steps — use step3 (full pose) for live scoring
+  Trikonasana:[170, 170,  90,  90, 170, 170,  90, 120],
+};
+
+// Per-step ideal angles for Trikonasana (used in timing & detailed scoring)
+const TRIKONASANA_STEP_ANGLES = {
+  step1: [170, 170, 90, 90, 170, 170, 90, 165], // Wide stance, T-arms
+  step2: [170, 170, 90, 90, 170, 170, 90, 145], // Reaching / lateral bend
+  step3: [170, 170, 90, 90, 170, 170, 90, 120], // Full triangle hold
+};
+
+// Ideal hold timings (ms from session start anchor)
+const TRIKONASANA_IDEAL_TIMINGS = {
+  step1Time: 0,
+  step2Time: 5000,
+  step3Time: 12000,
 };
 
 const ANGLE_FEEDBACK = [
-  'Straighten your left elbow.',
-  'Straighten your right elbow.',
-  'Adjust your left shoulder.',
-  'Adjust your right shoulder.',
-  'Keep your left leg straight.',
-  'Keep your right leg straight.',
-  'Align your hips properly.',
-  'Keep your spine vertical.',
+  'Straighten your left elbow — keep the arm fully extended.',
+  'Straighten your right elbow — reach toward the sky or floor.',
+  'Open your left shoulder — align it over the right shoulder.',
+  'Open your right shoulder — stack it directly below the left.',
+  'Keep your left leg straight — engage the quadriceps.',
+  'Keep your right leg straight — do not bend the front knee.',
+  'Widen your hip stance — feet should be 3–4 feet apart.',
+  'Deepen the lateral tilt — reach further toward your shin/ankle.',
 ];
 
 const ASANA_CATALOG = {
@@ -81,32 +97,50 @@ const ASANA_CATALOG = {
     ],
   },
   Trikonasana: {
-    description: 'Trikonasana (Triangle Pose) improves lateral flexibility and opens hips, hamstrings, and shoulders. It stimulates mental clarity and relieves emotional blockages.',
+    description: 'Trikonasana (Triangle Pose) is the primary pose for this mental wellness module. It improves lateral flexibility, opens the hips, hamstrings, and shoulders, and deeply stimulates mental clarity while relieving emotional blockages through controlled lateral extension and breath.',
     focus: [
-      'Stimulates mental clarity and problem-solving abilities',
-      'Relieves mental fatigue and emotional blockages',
-      'Enhances focus, creativity, and mental vitality',
+      'Stimulates mental clarity, focus, and problem-solving ability',
+      'Relieves mental fatigue, anxiety, and emotional blockages',
+      'Activates the parasympathetic nervous system — calms stress',
+      'Enhances creativity, vitality, and mind-body awareness',
     ],
     faqs: [
-      { q: 'How wide should my stance be?', a: 'Roughly 3–4 feet apart, with your front foot pointing forward.' },
-      { q: 'Can Trikonasana help with anxiety?', a: 'Yes. The lateral extension and deep breathing activate the parasympathetic nervous system.' },
+      { q: 'How wide should my stance be in Trikonasana?', a: 'Set your feet roughly 3–4 feet apart. The front foot points forward and the back foot turns out about 45–60°. A wider stance increases the stretch intensity.' },
+      { q: 'Can Trikonasana help with anxiety and stress?', a: 'Yes. The lateral extension, deep breathing, and grounded stance activate the parasympathetic nervous system, reducing cortisol and promoting calm focus.' },
+      { q: 'What are the 3 steps of Trikonasana?', a: 'Step 1 — Wide stance with arms extended horizontally (T-shape). Step 2 — Begin the lateral bend, reaching your hand toward the shin. Step 3 — Full triangle with one hand near the ankle and the top arm pointing to the sky.' },
+      { q: 'Should I look up, forward or down?', a: 'In the full pose (Step 3), gaze upward toward the raised hand. If you have neck issues, look forward or slightly downward instead.' },
     ],
     anatomicalFocus: {
-      targetMuscles: '<ul><li><b>Hamstrings & Hips</b> – deep opening and strengthening</li><li><b>Shoulders & Chest</b> – expanded for better respiration</li><li><b>Lower Back</b> – lengthened and released</li></ul>',
-      healthBenefits: '<ul><li>Relieves stress and improves psychological endurance</li><li>Increases focus and concentration</li><li>Boosts energy levels</li></ul>',
-      precautions: '<ul><li>Keep your legs straight but not hyper-extended</li><li>Look down if neck pain occurs</li></ul>',
+      targetMuscles: '<ul><li><b>Hamstrings & IT Band</b> – deep lateral lengthening</li><li><b>Hip Abductors & Groins</b> – opened by the wide stance</li><li><b>Obliques & Intercostals</b> – stretched through lateral flexion</li><li><b>Shoulders & Chest</b> – expanded for fuller respiration</li><li><b>Lower Back Extensors</b> – lengthened and decompressed</li></ul>',
+      healthBenefits: '<ul><li>Reduces cortisol — alleviates chronic stress and anxiety</li><li>Increases concentration and mental sharpness</li><li>Improves spinal flexibility and posture</li><li>Boosts energy levels and emotional resilience</li><li>Stimulates abdominal organs, improving digestion</li></ul>',
+      precautions: '<ul><li>Keep both legs straight — avoid hyperextending the knees</li><li>Keep the chest open, not collapsed toward the floor</li><li>Look down or forward if neck discomfort is felt</li><li>Avoid if you have a recent hip or back injury</li></ul>',
     },
     photoLinks: [
-      '/assets/yoga-poses/pose-neutral.png',
-      '/assets/yoga-poses/pose-arms-raised.png',
-      '/assets/yoga-poses/pose-stretch.png',
+      '/assets/yoga-poses/image1.png',
+      '/assets/yoga-poses/image2.png',
+      '/assets/yoga-poses/image3.png',
     ],
-    videoLinks: ['/assets/videos/tadasana-video.mp4'],
-    tutorialCaption: 'Master the geometric precision of Triangle Pose.',
+    videoLinks: ['/assets/videos/trikonasana-video.mp4'],
+    tutorialCaption: 'Follow the 3-step Trikonasana progression — build the pose gradually for safe, effective mental and physical benefits.',
     tutorialSteps: [
-      { title: 'Step 1', caption: 'Extend arms horizontally and step feet wide.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 2', caption: 'Reach down toward your shin while keeping the chest open.', videoUrl: '/assets/videos/tadasana-video.mp4' },
-      { title: 'Step 3', caption: 'Extend the top arm toward the sky and breathe.', videoUrl: '/assets/videos/tadasana-video.mp4' },
+      {
+        title: 'Step 1 — Wide Stance & T-Arms',
+        caption: 'Stand tall. Step feet 3–4 feet apart. Extend both arms horizontally at shoulder height, palms facing down. Keep legs straight, spine long, and gaze forward. Hold and breathe.',
+        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        imageUrl: '/assets/yoga-poses/image1.png'
+      },
+      {
+        title: 'Step 2 — Lateral Bend & Reach',
+        caption: 'Inhale. On exhale, hinge at the right hip and reach your right hand toward your right shin. Keep the chest open — do not collapse forward. Raise the left arm skyward. Continue breathing steadily.',
+        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        imageUrl: '/assets/yoga-poses/image2.png'
+      },
+      {
+        title: 'Step 3 — Full Triangle Hold',
+        caption: 'Deepen the bend — lower your right hand to the ankle or floor beside it. Stack the left shoulder directly above the right. Extend the top arm fully to the sky and gaze upward. Hold for 5–8 deep breaths.',
+        videoUrl: '/assets/videos/trikonasana-video.mp4',
+        imageUrl: '/assets/yoga-poses/image3.png'
+      },
     ],
   },
 };
@@ -160,7 +194,7 @@ import PoseDetectorComponent from './Yoga-Pose Detection/frontend/src/components
 export default function MentalApp({ userName = 'User', onLogout }) {
   // View state: 'dashboard' | 'livePractice' | 'report'
   const [view, setView] = useState('dashboard');
-  const [selectedAsana, setSelectedAsana] = useState('Tadasana');
+  const [selectedAsana, setSelectedAsana] = useState('Trikonasana');
   const [openFaqIdx, setOpenFaqIdx] = useState(-1);
 
   // Session state
@@ -262,7 +296,7 @@ export default function MentalApp({ userName = 'User', onLogout }) {
     // Filter keypoints with minimum confidence
     const confidentKps = newKps.filter(k => (k.score || 0) > 0.25);
     if (confidentKps.length < 10) return; // Need at least 10 confident keypoints
-    
+
     // Calculate average confidence from all keypoints
     const avgConf = newKps.reduce((s, k) => s + (k.score || 0), 0) / newKps.length;
     detStatsRef.current = {
@@ -272,8 +306,21 @@ export default function MentalApp({ userName = 'User', onLogout }) {
 
     // Extract angles and compare with ideal
     const userAngles = extractAngles(newKps);
-    const idealAngles = IDEAL_POSES[selectedAsana] || IDEAL_POSES.Tadasana;
-    
+
+    // For Trikonasana: detect current step from spine tilt (angle index 7)
+    // and select the matching ideal angles to provide step-aware feedback
+    let idealAngles = IDEAL_POSES[selectedAsana] || IDEAL_POSES.Trikonasana;
+    if (selectedAsana === 'Trikonasana') {
+      const spineAngle = userAngles[7] || 165; // spine/lateral-tilt angle
+      if (spineAngle >= 155) {
+        idealAngles = TRIKONASANA_STEP_ANGLES.step1;
+      } else if (spineAngle >= 130) {
+        idealAngles = TRIKONASANA_STEP_ANGLES.step2;
+      } else {
+        idealAngles = TRIKONASANA_STEP_ANGLES.step3;
+      }
+    }
+
     // Filter out zero angles (which indicate low confidence keypoints)
     const validAngles = userAngles.map((a, i) => a > 0 ? a : null);
     const errors = validAngles.map((a, i) => a !== null ? Math.abs(a - idealAngles[i]) : 0);
@@ -294,23 +341,49 @@ export default function MentalApp({ userName = 'User', onLogout }) {
     }
     setFeedbackList(fb);
 
-    // Calculate accuracy score: angle-based (70%) + stability-based (30%)
-    // Improved scoring: rewards good alignment while considering confidence
-    const avgErrorNormalized = Math.min(avgError / 30, 1); // Normalize error to 0-1 scale
-    const angleAcc = Math.max(0, 100 * (1 - avgErrorNormalized)); // More gradual penalty
+    // Calculate accuracy score: angle-based (80%) + stability-based (20%)
+    // Improved scoring: 0-10 deg = 90-100%, 10-20 deg = 75-90%, >20 deg = gradual drop
+    const errorPenalty = avgError <= 10 ? (avgError / 10) * 10 
+                       : avgError <= 20 ? 10 + ((avgError - 10) / 10) * 15
+                       : 25 + ((avgError - 20) / 30) * 75;
+    
+    const angleAcc = Math.max(0, 100 - errorPenalty);
     const stabilityScore = Math.min(avgConf * 100, 100);
-    const score = Math.max(0, Math.min(100, angleAcc * 0.7 + stabilityScore * 0.3));
+    const score = Math.max(0, Math.min(100, angleAcc * 0.8 + stabilityScore * 0.2));
     
     setPoseAccuracy(score.toFixed(1));
-    // Improved thresholds for better user experience
-    setPoseStatus(score >= 80 ? 'CORRECT' : score >= 60 ? 'NEUTRAL' : 'INCORRECT');
+    // Correct status at 75+ (Neutral), 85+ (Correct)
+    setPoseStatus(score >= 85 ? 'CORRECT' : score >= 65 ? 'NEUTRAL' : 'INCORRECT');
 
-    // Track metrics
+    // Track overall metrics
     const m = metricsRef.current;
+    
+    // Track step-specific metrics
+    let stepKey = 'step1';
+    if (selectedAsana === 'Trikonasana') {
+      const spineAngle = userAngles[7] || 165;
+      if (spineAngle >= 155) stepKey = 'step1';
+      else if (spineAngle >= 130) stepKey = 'step2';
+      else stepKey = 'step3';
+    }
+    
+    const sm = m.stepMetrics[stepKey];
+    if (sm.firstEntry === null) {
+      sm.firstEntry = (Date.now() - sessionStartTimeRef.current) / 1000;
+    }
+    sm.count++;
+    sm.sumScore += score;
+    sm.sumAngle += avgError;
+    if (score >= sm.bestScore) {
+      sm.bestScore = score;
+      sm.bestKeypoints = newKps;
+    }
+
     const nextCorrections = { ...m.corrections };
     fb.forEach(msg => { nextCorrections[msg] = (nextCorrections[msg] || 0) + 1; });
     
     metricsRef.current = {
+      ...m,
       frameCount: m.frameCount + 1,
       scoreSum: m.scoreSum + score,
       angleSum: m.angleSum + avgError,
@@ -323,7 +396,19 @@ export default function MentalApp({ userName = 'User', onLogout }) {
   // ── Session controls ──────────────────────────────────────────
   function startSession() {
     sessionStartTimeRef.current = Date.now();
-    metricsRef.current = { frameCount:0, scoreSum:0, angleSum:0, bestScore:0, worstScore:100, corrections:{} };
+    metricsRef.current = { 
+      frameCount:0, 
+      scoreSum:0, 
+      angleSum:0, 
+      bestScore:0, 
+      worstScore:100, 
+      corrections:{},
+      stepMetrics: {
+        step1: { firstEntry: null, sumScore: 0, sumAngle: 0, count: 0, bestKeypoints: null, bestScore: 0 },
+        step2: { firstEntry: null, sumScore: 0, sumAngle: 0, count: 0, bestKeypoints: null, bestScore: 0 },
+        step3: { firstEntry: null, sumScore: 0, sumAngle: 0, count: 0, bestKeypoints: null, bestScore: 0 }
+      }
+    };
     detStatsRef.current = { totalDetections:0, avgConf:0 };
     setFeedbackList([]);
     setPoseAccuracy(0);
@@ -429,6 +514,18 @@ export default function MentalApp({ userName = 'User', onLogout }) {
       frames: capturedFrames,
       userProfile: userProfile,
       improvementRate: fc > 0 ? Math.min(100, Math.round((m.bestScore - m.worstScore))) : 0,
+      stepMetrics: Object.keys(m.stepMetrics).reduce((acc, key) => {
+        const sm = m.stepMetrics[key];
+        const count = Math.max(1, sm.count);
+        acc[key] = {
+          userTime: sm.firstEntry || 0,
+          idealTime: key === 'step1' ? 0 : key === 'step2' ? 5 : 12,
+          avgScore: sm.sumScore / count,
+          avgAngle: sm.sumAngle / count,
+          bestKeypoints: sm.bestKeypoints
+        };
+        return acc;
+      }, {})
     };
     
     console.log('Session summary:', summary);
@@ -489,9 +586,9 @@ export default function MentalApp({ userName = 'User', onLogout }) {
   function buildLocalReport(s) {
     const topCorrections = Object.entries(s.corrections || {})
       .sort((a,b) => b[1]-a[1])
-      .slice(0,3)
-      .map(([k]) => `- ${k}`)
-      .join('\n') || '- No specific corrections recorded.';
+      .slice(0,4)
+      .map(([k, cnt]) => `- ${k} (detected ${cnt}× during session)`)
+      .join('\n') || '- No specific alignment corrections recorded.';
 
     const mins = Math.floor((s.sessionDuration || 0) / 60);
     const secs = (s.sessionDuration || 0) % 60;
@@ -502,65 +599,98 @@ export default function MentalApp({ userName = 'User', onLogout }) {
     const age = s.userProfile?.age || 30;
     const fitnessLevel = s.userProfile?.fitnessLevel || 'moderate';
     const weightCategory = weight > 85 ? 'higher body weight' : weight < 50 ? 'lighter frame' : 'average weight';
-    const ageCategory = age > 50 ? 'mature' : age < 25 ? 'young' : 'mid-age';
-    const holdDuration = weight > 85 ? '15-20 seconds' : age > 50 ? '20-25 seconds' : '30-45 seconds';
-    const frequencyAdvice = fitnessLevel === 'beginner' ? '2-3 times per week' : fitnessLevel === 'moderate' ? '4-5 times per week' : '6-7 times per week';
-    const strengthAdvice = weight > 85 ? 'use yoga props (blocks, straps) to reduce strain' : 'gradually increase depth and duration';
-    const cardioAdvice = age > 50 ? 'Focus on balance and stability' : 'Build endurance gradually';
+    const ageCategory = age > 50 ? 'mature practitioner' : age < 25 ? 'young practitioner' : 'mid-age practitioner';
+    const holdDuration = weight > 85 ? '15–20 seconds' : age > 50 ? '20–25 seconds' : '30–45 seconds';
+    const frequencyAdvice = fitnessLevel === 'beginner' ? '2–3 times per week' : fitnessLevel === 'moderate' ? '4–5 times per week' : '6–7 times per week';
+    const depthAdvice = weight > 85 ? 'use a yoga block under the lower hand to ease hamstring strain' : age > 50 ? 'bend only as far as comfortable — prioritise a straight spine over depth' : 'gradually deepen the lateral bend while keeping both legs straight';
+    const cardioAdvice = age > 50 ? 'Focus on balance and breath control rather than maximal depth' : 'Gradually increase your hold time to build lateral endurance';
 
-    return `## Mental Health Yoga Session Report - ${s.asana}
+    const avgScore = typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore) || 0;
+    const avgConf  = typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence) || 0;
+    const avgErr   = typeof s.avgAngleError === 'number' ? s.avgAngleError : parseFloat(s.avgAngleError) || 0;
+
+    const scoreLevel = avgScore >= 80 ? 'excellent — precise Trikonasana geometry achieved!'
+      : avgScore >= 60 ? 'good progress — minor alignment refinements will sharpen your triangle.'
+      : 'developing — regular practice of the 3 steps will build the necessary flexibility and balance.';
+
+    const confLevel = avgConf >= 80 ? 'very reliable and consistent throughout the session.'
+      : avgConf >= 60 ? 'fairly consistent — keep the full body visible in the frame.'
+      : 'variable — ensure good lighting and step back so your full body is visible.';
+
+    return `## Trikonasana (Triangle Pose) — Mental Health Session Report
 
 **Date:** ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
-**Practitioner:** ${userName} | **Age:** ${age} years | **Weight:** ${weight}kg
-**Fitness Level:** ${fitnessLevel}
-**Session Duration:** ${duration}
+**Practitioner:** ${userName} | **Age:** ${age} yrs | **Weight:** ${weight} kg
+**Fitness Level:** ${fitnessLevel} | **Session Duration:** ${duration}
 
-### Performance Metrics
-**Accuracy Score:** ${typeof s.avgScore === 'number' ? s.avgScore.toFixed(1) : s.avgScore} / 100
-**Confidence Level:** ${typeof s.confidence === 'number' ? s.confidence.toFixed(1) : s.confidence}%
-**Total Frames Analyzed:** ${s.totalFrames}
-**Average Angle Error:** ${typeof s.avgAngleError === 'number' ? s.avgAngleError.toFixed(1) : s.avgAngleError}°
-**Best Score:** ${typeof s.bestScore === 'number' ? s.bestScore.toFixed(1) : s.bestScore} | **Worst Score:** ${typeof s.worstScore === 'number' ? s.worstScore.toFixed(1) : s.worstScore}
-**Session Status:** ${s.status}
+---
 
-## Form Analysis
+### 1) Session Performance Summary
+Your overall Trikonasana performance score was **${avgScore.toFixed(1)} / 100**.
+- Pose detection confidence : ${avgConf.toFixed(1)}%
+- Average joint-angle error  : ${avgErr.toFixed(1)}°
+- Frames analysed            : ${s.totalFrames}
+- Best frame score           : ${typeof s.bestScore === 'number' ? s.bestScore.toFixed(1) : s.bestScore}
+- Improvement range          : ${s.improvementRate || 0}% across the session
+
+---
+
+### 2) Trikonasana Step-by-Step Technique Breakdown
+**Step 1 — Wide Stance & T-Arms** (target: 0 s)
+A solid foundation in Step 1 (shoulder-width arm extension, straight legs, upright spine) is the basis for a clean triangle.
+
+**Step 2 — Lateral Bend & Reach** (target: ~5 s)
+Smooth lateral hinging without forward/backward collapse is key. The chest must remain open and stacked over the front leg.
+
+**Step 3 — Full Triangle Hold** (target: ~12 s)
+Bottom hand near the ankle, top arm vertical, gaze skyward. Hold for 5–8 deep breaths to receive full mental and physical benefit.
+
+---
+
+### 3) Alignment Corrections Detected
 ${topCorrections}
 
-## Mental Wellness Benefits
-Regular practice of ${s.asana} helps with:
-- Emotional balance and stress reduction
-- Improved focus and mental clarity
-- Enhanced breathing patterns and oxygen flow
-- Greater body awareness and mind-body connection
-- Nervous system regulation and relaxation
+---
 
-## Performance Insights
-Your accuracy score of **${(typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)).toFixed(1)}/100** indicates ${(typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)) >= 80 ? 'excellent form - keep practicing consistently!' : (typeof s.avgScore === 'number' ? s.avgScore : parseFloat(s.avgScore)) >= 60 ? 'good progress - focus on the corrections listed above for further improvement.' : 'developing form - practice the pose regularly and focus on the alignment corrections provided.'}
+### 4) What Needs Improvement
+${avgErr > 20
+  ? '- Major joint deviations detected — focus on Step 1 before attempting full depth.'
+  : avgErr > 12
+    ? '- Moderate deviations — isolate the lateral bend and practise against a wall for guidance.'
+    : '- Minor refinements only — focus on breath quality and gaze (drishti) during Step 3 holds.'}
+${avgScore < 60 ? '- Practise Step 1 in isolation daily to build the T-arm alignment habit.' : ''}
+${avgScore < 80 ? '- Use a yoga block at Step 3 to maintain a straight spine while building hamstring flexibility.' : ''}
 
-With a confidence level of **${(typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)).toFixed(1)}%**, your pose detection was ${(typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)) >= 80 ? 'very reliable and consistent.' : (typeof s.confidence === 'number' ? s.confidence : parseFloat(s.confidence)) >= 60 ? 'fairly consistent across the session.' : 'variable - try to maintain full body visibility in frame for better detection.'}
+---
 
-## Next Session Recommendations (Personalized for ${ageCategory} with ${weightCategory})
-- **Optimal Hold Duration:** ${holdDuration} per pose
+### 5) Corrective Drills (Step-by-Step)
+1. **Wall Triangle Drill (5 min):** Stand with your back heel touching the wall. Extend arms and bend laterally — the wall prevents leaning forward/backward.
+2. **Strap-Assisted Reach (5 min):** Loop a strap around your front ankle and hold with the lower hand to deepen the stretch without collapsing the chest.
+3. **3-Count Breath Hold (8 min):** At Step 3 depth, inhale 4 counts, hold 4 counts, exhale 6 counts. Repeat × 5 per side to build parasympathetic activation.
+
+---
+
+### 6) Next Session Targets (Personalised for ${ageCategory} / ${weightCategory})
+- **Hold Duration:** ${holdDuration} per side at Step 3
 - **Practice Frequency:** ${frequencyAdvice}
-- **Strength Focus:** ${strengthAdvice}
+- **Depth Progression:** ${depthAdvice}
 - **Endurance Focus:** ${cardioAdvice}
-- **Breathing:** Use 4-7-8 technique (4 count inhale, 7 count hold, 8 count exhale)
-- **Recovery:** Take 5-10 minute meditation/pranayama session after practice
-- **Progression:** Increase hold time by 5 seconds each session while maintaining accuracy
+- **Target Score:** Aim for ≥ ${Math.min(95, Math.round(avgScore + 8))} / 100
+- **Target Angle Error:** Reduce to ≤ ${Math.max(8, Math.round(avgErr - 3))}°
 
-## Wellness Goal
-Consistency is key to mental wellness through yoga. Your profile (${age}yr, ${weight}kg, ${fitnessLevel} fitness) means ${frequencyAdvice} practice will build sustainable strength and mental clarity. Celebrate today's progress and commit to your next practice session!
+---
 
-### What Makes You Unique
-- **Age-Appropriate Strategy:** ${cardioAdvice}
-- **Body-Specific Modifications:** When doing ${s.asana}, ${strengthAdvice} to prevent injury
-- **Mental Health Focus:** Consistent practice improves mood, reduces anxiety, and builds resilience
-- **Progress Tracking:** Compare your improvement rate (${s.improvementRate || 0}%) across sessions
+### Mental Wellness Impact
+Regular Trikonasana practice — even ${frequencyAdvice} — significantly reduces cortisol, improves lateral spinal mobility, and trains the nervous system to maintain calm focus under physical challenge. Your score of **${avgScore.toFixed(1)}/100** shows ${scoreLevel}
 
-Your dedication to mental wellness through yoga is admirable. Keep practicing! 🙏`;
+Detection reliability was ${confLevel}
+
+Keep practicing, ${userName}! Each session deepens the triangle. 🙏`;
   }
 
+
   function downloadReport() {
+
     if (!reportText) return;
     const a = document.createElement('a');
     const blob = new Blob([reportText], { type:'text/plain' });
@@ -872,6 +1002,7 @@ Your dedication to mental wellness through yoga is admirable. Keep practicing! �
                   {sessionActive ? (
                     <PoseDetectorComponent 
                       onKeypointsUpdate={handleKeypoints} 
+                      isActive={true}
                       options={{ 
                         modelType:'lite', 
                         frameSkip:1, 
@@ -1102,9 +1233,9 @@ Your dedication to mental wellness through yoga is admirable. Keep practicing! �
                     </div>
                   </div>
 
-                  {/* Performance Metrics Table */}
+                  {/* Performance Metrics Table (Restored) */}
                   <div style={{ marginBottom:'32px' }}>
-                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>📊 Performance Metrics</h3>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>📊 Performance Summary</h3>
                     <div style={{ overflowX:'auto' }}>
                       <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.95rem' }}>
                         <tbody>
@@ -1124,14 +1255,43 @@ Your dedication to mental wellness through yoga is admirable. Keep practicing! �
                             <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Frames Analyzed</td>
                             <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.totalFrames}</td>
                           </tr>
-                          <tr style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.2)' }}>
-                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Best Score</td>
-                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.bestScore?.toFixed(1) || '—'}</td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Step-wise Technique Breakdown Table */}
+                  <div style={{ marginBottom:'32px' }}>
+                    <h3 style={{ margin:'0 0 16px 0', color:'var(--accent)', borderLeft:'4px solid var(--accent)', paddingLeft:'12px' }}>⏱️ Step-wise Timing & Comparison</h3>
+                    <div style={{ overflowX:'auto' }}>
+                      <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.9rem', color:'#d1e2f0' }}>
+                        <thead>
+                          <tr style={{ borderBottom:'2px solid rgba(54, 244, 163, 0.3)', textAlign:'left' }}>
+                            <th style={{ padding:'12px' }}>Step</th>
+                            <th style={{ padding:'12px' }}>Angle vs Ideal</th>
+                            <th style={{ padding:'12px' }}>User Time</th>
+                            <th style={{ padding:'12px' }}>Ideal Time</th>
+                            <th style={{ padding:'12px' }}>Delay</th>
+                            <th style={{ padding:'12px' }}>Weighted Score</th>
                           </tr>
-                          <tr>
-                            <td style={{ padding:'12px', color:'#7dd8ff', fontWeight:700 }}>Worst Score</td>
-                            <td style={{ padding:'12px', color:'#d1e2f0', textAlign:'right', fontSize:'1.1rem', fontWeight:700 }}>{sessionSummary.worstScore?.toFixed(1) || '—'}</td>
-                          </tr>
+                        </thead>
+                        <tbody>
+                          {['step1', 'step2', 'step3'].map((key) => {
+                            const m = sessionSummary.stepMetrics?.[key] || {};
+                            const delay = (m.userTime - m.idealTime).toFixed(2);
+                            const angleErr = (m.avgAngle || 0).toFixed(2);
+                            const perf = angleErr < 15 ? 'Correct' : angleErr < 25 ? 'Moderate' : 'Incorrect';
+                            return (
+                              <tr key={key} style={{ borderBottom:'1px solid rgba(54, 244, 163, 0.15)' }}>
+                                <td style={{ padding:'12px', fontWeight:700 }}>{key.toUpperCase()}</td>
+                                <td style={{ padding:'12px' }}>{angleErr}° ({perf})</td>
+                                <td style={{ padding:'12px' }}>{m.userTime?.toFixed(2)}s</td>
+                                <td style={{ padding:'12px' }}>{m.idealTime?.toFixed(2)}s</td>
+                                <td style={{ padding:'12px', color: parseFloat(delay) > 1 ? '#ff6b6b' : '#36f4a3' }}>{delay}s</td>
+                                <td style={{ padding:'12px' }}>{m.avgScore?.toFixed(2)}</td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>

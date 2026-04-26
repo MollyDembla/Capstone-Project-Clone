@@ -77,13 +77,16 @@ function getAverageAngleError(anglesInput) {
 }
 
 function getTimingDeviationMs(timingInput) {
+  // Trikonasana ideal timings (ms from session start)
+  // step1: 0 ms  | step2: 5000 ms  | step3: 12000 ms
   if (Number.isFinite(timingInput)) {
     return Math.abs(timingInput);
   }
 
   if (timingInput && typeof timingInput === "object") {
     if (Number.isFinite(timingInput.sessionDurationSec)) {
-      const targetSec = 30;
+      // Full 3-step Trikonasana ideally takes ~20 s
+      const targetSec = 20;
       return Math.abs((timingInput.sessionDurationSec - targetSec) * 1000);
     }
 
@@ -172,33 +175,33 @@ function buildFallbackReport(metrics) {
 
   const report = [
     "### 1) Session Performance Summary",
-    `In your recent yoga session for ${metrics.asana || "the selected"} pose, your overall performance score was ${finalScore.toFixed(2)}/100.`,
+    `In your recent Trikonasana (Triangle Pose) session, your overall score was ${finalScore.toFixed(2)}/100.`,
     `Model-estimated pose accuracy: ${(accuracyRatio * 100).toFixed(1)}%. Average joint-angle error: ${angleError.toFixed(2)} degrees.`,
-    `Timing deviation from expected hold/transition rhythm: ${Math.round(timingDeviationMs)} ms.`,
+    `Timing deviation from ideal step rhythm (Step1=0s, Step2=5s, Step3=12s): ${Math.round(timingDeviationMs)} ms.`,
     "",
-    "### 2) Technique Breakdown",
-    "The model assessed posture quality using alignment, stability, and timing signals.",
+    "### 2) Trikonasana Technique Breakdown",
+    "The model assessed posture quality using joint alignment, lateral stability, and step-transition timing.",
     angleError > 20
-      ? "Alignment quality is currently inconsistent; major joints are frequently off target."
+      ? "Step alignment is significantly off — major joints deviate from the Trikonasana geometry."
       : angleError > 12
-        ? "Alignment is moderate with noticeable deviations in one or more joints."
-        : "Alignment is strong with only minor correction needs.",
+        ? "Alignment is moderate — the lateral tilt and arm extension need more consistency."
+        : "Alignment is strong — the triangle geometry is well-formed with only minor corrections needed.",
     timingDeviationMs > 900
-      ? "Transition timing needs improvement; holds or transitions are irregular."
-      : "Transition timing is reasonably controlled.",
+      ? "Step transition timing needs improvement — hold each step closer to the ideal duration."
+      : "Step transition timing is well controlled.",
     "",
     "### 3) What Needs Improvement",
     ...improvements.map((item, idx) => `${idx + 1}. ${item}`),
     "",
-    "### 4) Top Detected Corrections",
+    "### 4) Top Detected Alignment Corrections",
     correctionSection,
     "",
-    "### 5) Corrective Drills (Step-by-step)",
-    "1. Wall Alignment Hold (5 minutes): stand against a wall, keep spine long, shoulders neutral, and hold 30 seconds x 5 rounds.",
-    "2. Slow Transition Practice (8-10 minutes): move in and out of pose over 4-count inhale and 6-count exhale to improve control.",
-    "3. Stability Breathing (5 minutes): keep gaze fixed, activate core gently, and maintain even nasal breathing.",
+    "### 5) Corrective Drills for Trikonasana",
+    "1. Wall Triangle Drill (5 min): Stand with back heel on a wall; bend laterally while keeping the chest open and both legs straight.",
+    "2. Strap-Assisted Deep Reach (5 min): Loop a strap around the front ankle and hold end with lower hand — deepen the stretch without collapsing the chest.",
+    "3. Breath-Hold Stability (8 min): At full Step 3 depth, inhale 4 counts, hold 4 counts, exhale 6 counts × 5 reps per side.",
     "",
-    "### 6) Next Session Target",
+    "### 6) Next Session Targets",
     `Aim for accuracy above ${Math.min(95, Math.round(accuracyRatio * 100 + 8))}% and reduce average angle error below ${Math.max(8, Math.round(angleError - 3))} degrees.`,
   ].join("\n");
 
@@ -232,19 +235,19 @@ async function generateAiReport(metrics, fallbackReport) {
   const prompt = {
     role: "user",
     content: [
-      "You are a yoga coach assistant.",
-      "Generate a detailed, structured JSON report for this session.",
+      "You are a certified yoga coach assistant specialising in Trikonasana (Triangle Pose) for mental health.",
+      "Generate a detailed, structured JSON report for this Trikonasana session.",
       "Return ONLY valid JSON with keys: summary, strengths, improvements, report, finalScore.",
-      "The report field must be a multi-section markdown text with at least 6 sections:",
-      "1) Session Performance Summary",
-      "2) Technique Breakdown",
-      "3) What Needs Improvement",
-      "4) Top Detected Corrections",
-      "5) Corrective Drills (Step-by-step)",
-      "6) Next Session Target",
+      "The report field must be multi-section markdown with exactly 6 sections:",
+      "1) Session Performance Summary (include score, accuracy, angle error, timing)",
+      "2) Trikonasana Technique Breakdown (assess each of the 3 steps: Wide Stance, Lateral Bend, Full Triangle)",
+      "3) What Needs Improvement (list concrete action items)",
+      "4) Top Detected Alignment Corrections (from correctionCounts in the metrics)",
+      "5) Corrective Drills for Trikonasana (3 specific drills with timing)",
+      "6) Next Session Targets (personalised score and angle targets)",
       "strengths and improvements must be string arrays.",
       "finalScore must be a number 0-100.",
-      "Session metrics:",
+      "Session metrics (pose=Trikonasana, step1=0s, step2=5s, step3=12s ideal timings):",
       JSON.stringify(metrics),
     ].join("\n"),
   };
